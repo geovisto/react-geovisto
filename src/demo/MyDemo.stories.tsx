@@ -7,8 +7,9 @@ import {
 // React
 import React, { Component } from "react";
 
-// React-Geovisto
-import ReactGeovistoMap from "../react/ReactGeovistoMap";
+// import Tool from "../react/Tool";
+import { MyGeovistoMap } from "../react/MyGeovistoMap";
+import { Theme } from "../react/Theme";
 
 import './Demo.scss';
 
@@ -35,13 +36,13 @@ const C_ID_input_config = "leaflet-combined-map-input-config";
 const C_ID_input_import = "leaflet-combined-map-input-import";
 const C_ID_input_export = "leaflet-combined-map-input-export";
 
-class Demo extends Component<Record<string, never>, { data: unknown, config: Record<string, unknown> }> {
+class MyDemo extends Component<Record<string, never>, { data: unknown, config: Record<string, unknown> }> {
     
     private polygons: unknown;
     private centroids: unknown;
     private polygons2: unknown;
     private centroids2: unknown;
-    private map: React.RefObject<ReactGeovistoMap>;
+    private map: React.RefObject<typeof MyGeovistoMap>;
 
     public constructor(props: Record<string, never>) {
         super(props);
@@ -64,139 +65,138 @@ class Demo extends Component<Record<string, never>, { data: unknown, config: Rec
         this.map = React.createRef();
     }
 
-    public componentDidMount(): void {
+    // public componentDidMount(): void {
 
-        // ------ enable check boxes ------ //
+    //     // ------ enable check boxes ------ //
 
-        const enableInput = function(checked: boolean, id: string) {
-            if(checked) {
-                document.getElementById(id).removeAttribute("disabled");
-            } else {
-                document.getElementById(id).setAttribute("disabled", "disabled");
-            }
-        };
+    //     const enableInput = function(checked: boolean, id: string) {
+    //         if(checked) {
+    //             document.getElementById(id).removeAttribute("disabled");
+    //         } else {
+    //             document.getElementById(id).setAttribute("disabled", "disabled");
+    //         }
+    //     };
 
-        // enable data check box
-        const enableDataInput = function(e: Event) {
-            enableInput((e.target as HTMLInputElement).checked, C_ID_input_data);
-        };
-        document.getElementById(C_ID_input_data).setAttribute("disabled", "disabled");
-        document.getElementById(C_ID_check_data).onchange = enableDataInput;
+    //     // enable data check box
+    //     const enableDataInput = function(e: Event) {
+    //         enableInput((e.target as HTMLInputElement).checked, C_ID_input_data);
+    //     };
+    //     document.getElementById(C_ID_input_data).setAttribute("disabled", "disabled");
+    //     document.getElementById(C_ID_check_data).onchange = enableDataInput;
 
-        // enable config check box
-        const enableConfigInput = function(e: Event) {
-            enableInput((e.target as HTMLInputElement).checked, C_ID_input_config);
-        };
-        document.getElementById(C_ID_input_config).setAttribute("disabled", "disabled");
-        document.getElementById(C_ID_check_config).onchange = enableConfigInput;
+    //     // enable config check box
+    //     const enableConfigInput = function(e: Event) {
+    //         enableInput((e.target as HTMLInputElement).checked, C_ID_input_config);
+    //     };
+    //     document.getElementById(C_ID_input_config).setAttribute("disabled", "disabled");
+    //     document.getElementById(C_ID_check_config).onchange = enableConfigInput;
 
-        // ------ process files ------ //
+    //     // ------ process files ------ //
 
-        // process path
-        const pathSubmitted = function(file: File, result: { json: unknown | undefined }) {
-            const reader = new FileReader();
-            const onLoadAction = function(e: ProgressEvent<FileReader>) {
-                try {
-                    console.log(e);
-                    //console.log(reader.result);
-                    if(typeof reader.result == "string") {
-                        result.json = JSON.parse(reader.result);
-                    }
-                } catch(ex) {
-                    console.log("unable to read file");
-                    console.log(ex);
-                    // TODO: notify user
-                }
-            };
-            reader.onload = onLoadAction;
-            reader.readAsText(file);
-        };
+    //     // process path
+    //     const pathSubmitted = function(file: File, result: { json: unknown | undefined }) {
+    //         const reader = new FileReader();
+    //         const onLoadAction = function(e: ProgressEvent<FileReader>) {
+    //             try {
+    //                 console.log(e);
+    //                 //console.log(reader.result);
+    //                 if(typeof reader.result == "string") {
+    //                     result.json = JSON.parse(reader.result);
+    //                 }
+    //             } catch(ex) {
+    //                 console.log("unable to read file");
+    //                 console.log(ex);
+    //                 // TODO: notify user
+    //             }
+    //         };
+    //         reader.onload = onLoadAction;
+    //         reader.readAsText(file);
+    //     };
 
-        // process data path
-        const data = {
-            json: undefined
-        };
-        const dataPathSubmitted = function(this: HTMLInputElement) {
-            console.log(this.files);
-            pathSubmitted(this.files[0], data);
-        };
-        document.getElementById(C_ID_input_data).addEventListener('change', dataPathSubmitted, false);
+    //     // process data path
+    //     const data = {
+    //         json: undefined
+    //     };
+    //     const dataPathSubmitted = function(this: HTMLInputElement) {
+    //         console.log(this.files);
+    //         pathSubmitted(this.files[0], data);
+    //     };
+    //     document.getElementById(C_ID_input_data).addEventListener('change', dataPathSubmitted, false);
 
-        // process config path
-        const config = {
-            json: undefined
-        };
-        const configPathSubmitted = function(this: HTMLInputElement) {
-            console.log(this.files);
-            pathSubmitted(this.files[0], config);
-        };
-        document.getElementById(C_ID_input_config).addEventListener('change', configPathSubmitted, false);
+    //     // process config path
+    //     const config = {
+    //         json: undefined
+    //     };
+    //     const configPathSubmitted = function(this: HTMLInputElement) {
+    //         console.log(this.files);
+    //         pathSubmitted(this.files[0], config);
+    //     };
+    //     document.getElementById(C_ID_input_config).addEventListener('change', configPathSubmitted, false);
 
-        // ------ import ------ //
+    //     // ------ import ------ //
 
-        // import action
-        const importAction = (e: MouseEvent) => {
+    //     // import action
+    //     const importAction = (e: MouseEvent) => {
 
-            console.log(e);
-            console.log("data: ", data);
-            console.log("config: ", config);
+    //         console.log(e);
+    //         console.log("data: ", data);
+    //         console.log("config: ", config);
 
-            // process data json
-            if(!(document.getElementById(C_ID_check_data) as HTMLInputElement).checked || data.json == undefined) {
-                const fileName = (document.getElementById(C_ID_select_data) as HTMLInputElement).value;
-                console.log(fileName);
-                data.json = require('/static/data/' + fileName);
-            }
+    //         // process data json
+    //         if(!(document.getElementById(C_ID_check_data) as HTMLInputElement).checked || data.json == undefined) {
+    //             const fileName = (document.getElementById(C_ID_select_data) as HTMLInputElement).value;
+    //             console.log(fileName);
+    //             data.json = require('/static/data/' + fileName);
+    //         }
 
-            // process config json
-            if(!(document.getElementById(C_ID_check_config) as HTMLInputElement).checked || config.json == undefined) {
-                config.json = require('/static/config/config.json');
-            }
+    //         // process config json
+    //         if(!(document.getElementById(C_ID_check_config) as HTMLInputElement).checked || config.json == undefined) {
+    //             config.json = require('/static/config/config.json');
+    //         }
 
-            // update state
-            this.setState({
-                data: data.json,
-                config: config.json
-            });
-        };
-        document.getElementById(C_ID_input_import).addEventListener('click', importAction);
+    //         // update state
+    //         this.setState({
+    //             data: data.json,
+    //             config: config.json
+    //         });
+    //     };
+    //     document.getElementById(C_ID_input_import).addEventListener('click', importAction);
 
-        // ------ export ------ //
+    //     // ------ export ------ //
 
-        // export action
-        const exportAction = (e: MouseEvent) => {
-            console.log(e);
+    //     // export action
+    //     // const exportAction = (e: MouseEvent) => {
+    //     //     console.log(e);
 
-            // expert map configuration
-            const config = JSON.stringify(this.map.current.getMap().export(), null, 2);
+    //     //     // expert map configuration
+    //     //     const config = JSON.stringify(this.map.current.getMap().export(), null, 2);
 
-            // download file
-            const element = document.createElement('a');
-            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(config));
-            element.setAttribute('download', "config.json");
-            element.style.display = 'none';
-            document.body.appendChild(element);
-            element.click();
-            document.body.removeChild(element);
+    //     //     // download file
+    //     //     const element = document.createElement('a');
+    //     //     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(config));
+    //     //     element.setAttribute('download', "config.json");
+    //     //     element.style.display = 'none';
+    //     //     document.body.appendChild(element);
+    //     //     element.click();
+    //     //     document.body.removeChild(element);
 
-            console.log("rendered map:", );
-        };
-        document.getElementById(C_ID_input_export).addEventListener('click', exportAction);
-    }
+    //     //     console.log("rendered map:", );
+    //     // };
+    //     // document.getElementById(C_ID_input_export).addEventListener('click', exportAction);
+    // }
 
     public render(): JSX.Element {
-        console.log("rendering...");
         return (
             <div className="demo-container">
                 <div className="demo-toolbar">
-                    <span>Data file: </span>
+                    {/* <span>Data file: </span>
                     <select id={C_ID_select_data}>
                         <option value="timeData.json">timeData.json</option>
                         <option value="demo1.json">demo1.json</option>
                         <option value="demo2.json">demo2.json</option>
                         <option value="covidCzechDistricts.json">covid czech districts</option>
                         <option value="covidCzechDistrictsCumulative.json">covid czech districts (cumulative)</option>
-                        <option value="ovidCzechDistrictsCategoric.json">covid czech districts (categoric)</option>
+                        <option value="covidCzechDistrictsCategoric.json">covid czech districts (categoric)</option>
                         <option disabled></option>
                     </select>
 
@@ -208,12 +208,12 @@ class Demo extends Component<Record<string, never>, { data: unknown, config: Rec
                     <input id={C_ID_input_config} type="file" accept=".json" size={3}/>
 
                     <input id={C_ID_input_import} type="submit" value="import"/>
-                    <input id={C_ID_input_export} type="submit" value="export"/>
+                    <input id={C_ID_input_export} type="submit" value="export"/> */}
                 </div>
                 <div className="demo-map">
-                    <ReactGeovistoMap
-                        ref={this.map}
-                        id="my-geovisto-map"
+                    <MyGeovistoMap
+                        // ref={this.map}
+                        id="my-new-geovisto-map"
                         data={Geovisto.getMapDataManagerFactory().json(this.state.data)}
                         geoData={Geovisto.getGeoDataManager([
                             Geovisto.getGeoDataFactory().geojson("world polygons", this.polygons),
@@ -266,7 +266,11 @@ class Demo extends Component<Record<string, never>, { data: unknown, config: Rec
                                 id: "geovisto-tool-layer-connection"
                             }),
                         ])}
-                    />
+                    >
+                        {/* <Tool id="geovisto-tool-sidebar"></Tool> */}
+                        <Theme></Theme>
+                        {/* <Tool id="tool-id-pretest"></Tool> */}
+                    </MyGeovistoMap>
                 </div>
             </div>
         );
@@ -275,7 +279,7 @@ class Demo extends Component<Record<string, never>, { data: unknown, config: Rec
 
 export default {
     title: 'Demo',
-    component: Demo,
+    component: MyDemo,
 } as Meta;
 
-export const GeovistoMap: Story = () => <Demo />;
+export const OwnGeovistoMap: Story = () => <MyDemo />;

@@ -27,6 +27,8 @@ class ReactGeovistoMap extends Component<IReactGeovistoMapProps, Record<string, 
     public constructor(props: IReactGeovistoMapProps) {
         super(props);
 
+        console.log(props);
+
         if(props.id == undefined) props.id = this.getDefaultId();
 
         this.m = null;
@@ -58,7 +60,7 @@ class ReactGeovistoMap extends Component<IReactGeovistoMapProps, Record<string, 
      */
     public componentDidMount(): void {
 
-
+        // After all children are mounted
 
         // create new Geovisto map
         this.m = Geovisto.createMap(this.props);

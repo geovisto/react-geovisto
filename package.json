@@ -15,7 +15,7 @@
   },
   "scripts": {
     "clean": "rimraf dist",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "start-storybook -p 6007",
     "storybook:build": "build-storybook",
     "build": "rollup -c",
     "build:watch": "rollup -c -w",

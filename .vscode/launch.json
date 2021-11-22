@@ -8,14 +8,14 @@
             "type": "firefox",
             "request": "launch",
             "name": "Launch Firefox against localhost",
-            "url": "http://localhost:6006/",
+            "url": "http://localhost:6007/",
             "webRoot": "${workspaceFolder}"
         },
         {
             "type": "pwa-chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
-            "url": "http://localhost:6006",
+            "url": "http://localhost:6007",
             "webRoot": "${workspaceFolder}"
         }
     ]

@@ -7,8 +7,8 @@ export const Theme: React.FC<IThemeProps> = ({}) => {
 
     useEffect(() => {
         // Update the document title using the browser API
-        console.log("I ve mounted");
+        console.log("THEME has mounted");
       });
 
-    return (<div>Hello World</div>);
+    return (<></>);
 }
