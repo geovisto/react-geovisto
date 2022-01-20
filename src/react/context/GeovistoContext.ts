@@ -1,43 +1,66 @@
+import { any } from "prop-types";
 import React, { FC, useState } from "react";
 import { createContext, useContext } from "react";
-import { IGeoDataManager, IMapConfigManager, IMapDataManager, IMapGlobals, IMapTemplates, IMapTool, IMapToolsManager } from "..";
-import { IMyGeovistoMapProps } from "./MyGeovistoMap";
+import { IGeoDataManager, IMapConfigManager, IMapDataManager, IMapGlobals, IMapTemplates, IMapTool, IMapToolsManager } from "../..";
+import { IMyGeovistoMapProps } from "../MyGeovistoMap";
+import { IToolProps } from "../Tool";
+import { IGeovistoContext } from "./GeovistoContext.types";
 
 // *************************************
 // POZOR, tento soubor je TS a ne TSX //
 // *************************************
 
-type IGeovistoContext = IMyGeovistoMapProps;
-// interface IGeovistoContext {
-//     templates: IMapTemplates;
-//     globals: IMapGlobals;
-//     data: IMapDataManager;
-//     geoData: IGeoDataManager;
-//     tools: IMapToolsManager;
-//     config: IMapConfigManager;
-// };
-  
+const errorHandler = (subject : string) => { throw new Error(subject + ' must be defined in provider'); };
+
+
 const geovistoContextDefault = {
-    data : undefined
+    // templates: any,
+    // globals: any,
+    // data: undefined,
+    // geoData: any,
+    // tools: any,
+    // config: any,
+
+    sample: undefined,
+    setSample: () => errorHandler('setSample'),
+    data: undefined,
+    setData: () => errorHandler('setData'),
+    tools: undefined,
+    setTools: () => errorHandler('setTools')
+
+    // invokeAddToolHandler: errorHandler , 
+    // registerAddToolHandler: errorHandler
 };
 
 // Partial<IThemeContext> -- The Partial generic function tells TypeScript that we don't require all values to be defined
-const GeovistoContext = createContext<IGeovistoContext>(
-  geovistoContextDefault
+export const GeovistoContext = createContext<IGeovistoContext>(
+   geovistoContextDefault
 );
 
-export const GeovistoProvider = GeovistoContext.Provider;
-
-export function useGeovistoContext(): Partial<IGeovistoContext> {
+export function useGeovistoContext(): IGeovistoContext {
     const context = useContext(GeovistoContext);
+
+    if (context === undefined) {
+        throw new Error('useGeovistoContext must be used within a GeovistoContextProvider');
+    }
 
     // TODO: Muze byt null? Asi ani ne, kdyz jsi oddelal typ
     if (context == null) {
-      throw new Error('No context provided');
+        throw new Error('No context provided');
     }
 
     return context;
   }
+
+
+
+
+
+
+
+
+
+
 
 // https://felixgerschau.com/react-typescript-context/#tldr---how-to-make-react-context-typescript-compatible
 //////////////////////////////////

@@ -1,6 +1,9 @@
 import React, { Children, RefObject, useContext, useEffect, useImperativeHandle, useState } from 'react'
 import { Geovisto, IMap, IMapConfigManager, IMapProps } from '..';
-import { GeovistoProvider, useGeovistoContext } from './GeovistoContext';
+import { useGeovistoContext } from './context/GeovistoContext';
+import { GeovistoProvider } from './context/GeovistoContextProvider';
+import { MyGeovistoMapMiddleware } from './MyGeovistoMapMiddleware';
+
 
 export type IMyGeovistoMapProps = IMapProps & {
     // ref: RefObject<typeof MyGeovistoMap>,
@@ -8,65 +11,32 @@ export type IMyGeovistoMapProps = IMapProps & {
 }
 export const MyGeovistoMap: React.FC<IMyGeovistoMapProps> = (props) => {
 
-    const [map, setMap] = useState<IMap>();
-    let context = useGeovistoContext();
-    // const [templates, globals, data, geoData, tools, config] = useGeovistoContext();
 
-    const [ownProps, setOwnProps] = useState<IMyGeovistoMapProps>();
-    
-    // let ownProps: IMyGeovistoMapProps;
-    //  React.forwardRef((props, ref)
-    // useImperativeHandle(ref, () => ({
-    //     getMap: () => {return map}
-    //   }));
+    // useEffect(() => {
 
-    useEffect(() => {
-        document.title = `Hello World!`;
+    //     // TODO: resolve unnecessary redrawing 
+    //     console.log("changed");
 
-        console.log(context);
+    //     if(map != undefined){
 
+    //         console.log("called rewrite");
+    //         map.redraw(props.config ?? Geovisto.getMapConfigManagerFactory().default({}), props);
+    //     }
 
-        // context = {...props};
+    // }, [map]);
 
-        setOwnProps({...props});
+    // context.registerAddToolHandler((tool) => console.log(tool));
 
-        console.log(props);
+    // useEffect(() => {
 
-        if(map == null)
-        {
-            let map = Geovisto.createMap(props);
+    //     // TODO: resolve unnecessary redrawing 
+    //     console.log(context.data);
 
-            setMap(map);
-            
-            // draw map with the current config
-            map.draw(props.config ?? Geovisto.getMapConfigManagerFactory().default({}));
-        }
-    }, []);
-
-
-    useEffect(() => {
-
-        // TODO: resolve unnecessary redrawing 
-        console.log("changed");
-
-        if(map != undefined){
-
-            console.log("called rewrite");
-            map.redraw(props.config ?? Geovisto.getMapConfigManagerFactory().default({}), props);
-        }
-
-    }, [map]);
-
-    useEffect(() => {
-
-        // TODO: resolve unnecessary redrawing 
-        console.log(context.data);
-
-    }, [context.data]);
+    // }, [context.data]);
 
     return (
-        <GeovistoProvider value={context}>
-            <div id={props.id} className='geovisto-map' >{props.children}</div>
+        <GeovistoProvider>
+            <MyGeovistoMapMiddleware {...props} />
         </GeovistoProvider>
     );
 }

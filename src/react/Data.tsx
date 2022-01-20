@@ -1,19 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Geovisto } from '..';
 import { GeovistoSidebarTool } from '../tools';
-import { useGeovistoContext } from './GeovistoContext';
+import { useGeovistoContext } from './context/GeovistoContext';
 
 interface IDataProps {
     data: unknown
 }
 
-export const Data: React.FC<IDataProps> = (props) => {
+export const Data: React.FC<IDataProps> = ({data}) => {
 
-    // const context = useGeovistoContext();
+    const context = useGeovistoContext();
 
-    let {data} = useGeovistoContext();
-
-    data = Geovisto.getMapDataManagerFactory().json(props.data);
+    useEffect(() => {
+        const result = Geovisto.getMapDataManagerFactory().json(data);
+        context.setData(result);
+    }, []);
 
     return <></>;
 }

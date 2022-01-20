@@ -26,6 +26,9 @@ import {
     GeovistoConnectionLayerTool
 } from '../tools';
 import { Geovisto } from '..';
+import { Tool } from '../react/Tool';
+import { ToolGroup } from '../react/ToolGroup';
+import { ToolType } from '../react/Tool.types';
 
 /* example of screen component with grid layout and card wrapper usage */
 
@@ -47,10 +50,10 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
 
     // implicit data
     // const [data, setData] = useState<unknown>(require('/static/data/covidCzechDistricts.json'));
-    const [data, setData] = useState<unknown>(require('/static/data/timeData.json'));
+    const [data] = useState<unknown>(require('/static/data/timeData.json'));
 
     // imlipcit config
-    const [config, setConfig] = useState<Record<string, unknown>>(require('/static/config/config.json'));
+    const [config] = useState<Record<string, unknown>>(require('/static/config/config.json'));
 
     useEffect(() => {
 
@@ -212,52 +215,16 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                     config={Geovisto.getMapConfigManagerFactory().default(config)}
                     globals={undefined}
                     templates={undefined}
-                    tools={Geovisto.createMapToolsManager([
-                        GeovistoSidebarTool.createTool({
-                            id: "geovisto-tool-sidebar",
-                        }),
-                        GeovistoFiltersTool.createTool({
-                            id: "geovisto-tool-filters",
-                            manager: GeovistoFiltersTool.createFiltersManager([
-                                // filter operations
-                                GeovistoFiltersTool.createFilterOperationEq(),
-                                GeovistoFiltersTool.createFilterOperationNeq(),
-                                GeovistoFiltersTool.createFilterOperationReg()
-                            ])
-                        }),
-                        GeovistoThemesTool.createTool({
-                            id: "geovisto-tool-themes",
-                            manager: GeovistoThemesTool.createThemesManager([
-                                // style themes
-                                GeovistoThemesTool.createThemeLight1(),
-                                GeovistoThemesTool.createThemeLight2(),
-                                GeovistoThemesTool.createThemeLight3(),
-                                GeovistoThemesTool.createThemeDark1(),
-                                GeovistoThemesTool.createThemeDark2(),
-                                GeovistoThemesTool.createThemeDark3(),
-                                GeovistoThemesTool.createThemeBasic()
-                            ])
-                        }),
-                        GeovistoSelectionTool.createTool({
-                            id: "geovisto-tool-selection"
-                        }),
-                        GeovistoTilesLayerTool.createTool({
-                            id: "geovisto-tool-layer-map"
-                        }),
-                        GeovistoChoroplethLayerTool.createTool({
-                            id: "geovisto-tool-layer-choropleth"
-                        }),
-                        GeovistoMarkerLayerTool.createTool({
-                            id: "geovisto-tool-layer-marker"
-                        }),
-                        GeovistoConnectionLayerTool.createTool({
-                            id: "geovisto-tool-layer-connection"
-                        }),
-                    ])}
+                    
                 >
-                    {/* <Tool id="geovisto-tool-sidebar"></Tool> */}
                     <Data data={data}/>
-                    {/* <Tool id="tool-id-pretest"></Tool> */}
+                    
+                    <ToolGroup>
+                        <Tool id="geovisto-tool-layer-map" type={ToolType.LayerMap}></Tool>
+                        <Tool id="geovisto-tool-sidebar" type={ToolType.Sidebar}></Tool>
+                        {/* customProps={} */}
+                    </ToolGroup>
+                    
                 </MyGeovistoMap>
             </div>
         </div>
