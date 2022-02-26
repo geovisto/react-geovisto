@@ -21,7 +21,8 @@ import {
     GeovistoTilesLayerTool,
     GeovistoChoroplethLayerTool,
     GeovistoMarkerLayerTool,
-    GeovistoConnectionLayerTool
+    GeovistoConnectionLayerTool,
+    SidebarTab
 } from '../tools';
 import { Geovisto } from '..';
 
@@ -184,6 +185,20 @@ class Demo extends Component<Record<string, never>, { data: unknown, config: Rec
         document.getElementById(C_ID_input_export).addEventListener('click', exportAction);
     }
 
+    readonly sidebarTabTiles = new SidebarTab({
+        enabled: true,
+        name: "[CUSTOM] Map layer settings",
+        icon: "<i class=\"fa fa-eur\"></i>",
+        checkButton: false
+    });
+
+    readonly sidebarTabChoropleth = new SidebarTab({
+        enabled: true,
+        name: "[CUSTOM] Choropleth layer settings",
+        icon: "<i class=\"fa fa-usd\"></i>",
+        checkButton: true
+    });
+
     public render(): JSX.Element {
         console.log("rendering...");
         return (
@@ -221,12 +236,16 @@ class Demo extends Component<Record<string, never>, { data: unknown, config: Rec
                             Geovisto.getGeoDataFactory().geojson("czech polygons", this.polygons2),
                             Geovisto.getGeoDataFactory().geojson("czech centroids", this.centroids2)
                         ])}
-                        config={Geovisto.getMapConfigManagerFactory().default(this.state.config)}
+                        // config={Geovisto.getMapConfigManagerFactory().default(this.state.config)}
                         globals={undefined}
                         templates={undefined}
                         tools={Geovisto.createMapToolsManager([
                             GeovistoSidebarTool.createTool({
                                 id: "geovisto-tool-sidebar",
+                                tabs: [
+                                    ["geovisto-tool-layer-map", this.sidebarTabTiles],
+                                    ["geovisto-tool-layer-choropleth", this.sidebarTabChoropleth]
+                                ]
                             }),
                             GeovistoFiltersTool.createTool({
                                 id: "geovisto-tool-filters",
@@ -251,10 +270,12 @@ class Demo extends Component<Record<string, never>, { data: unknown, config: Rec
                                 ])
                             }),
                             GeovistoSelectionTool.createTool({
-                                id: "geovisto-tool-selection"
+                                id: "geovisto-tool-selection",
                             }),
                             GeovistoTilesLayerTool.createTool({
-                                id: "geovisto-tool-layer-map"
+                                id: "geovisto-tool-layer-map",
+                                enabled: true,
+                                name: "Map layer"
                             }),
                             GeovistoChoroplethLayerTool.createTool({
                                 id: "geovisto-tool-layer-choropleth"

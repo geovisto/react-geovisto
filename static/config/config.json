@@ -34,13 +34,6 @@
                 "checkButton": true
             },
             {
-                "tool": "geovisto-tool-layer-map",
-                "enabled": true,
-                "name": "Map layer settings",
-                "icon": "<i class=\"fa fa-globe\"></i>",
-                "checkButton": true
-            },
-            {
                 "tool": "geovisto-tool-layer-choropleth",
                 "enabled": true,
                 "name": "Choropleth layer settings",
@@ -91,12 +84,6 @@
             "type": "geovisto-tool-selection",
             "id": "geovisto-tool-selection",
             "enabled": true
-        },
-        {
-            "type": "geovisto-tool-layer-map",
-            "id": "geovisto-tool-layer-map",
-            "enabled": true,
-            "layerName": "Map layer"
         },
         {
             "type": "geovisto-tool-layer-choropleth",

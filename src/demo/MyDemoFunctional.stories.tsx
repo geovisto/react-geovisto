@@ -23,12 +23,14 @@ import {
     GeovistoTilesLayerTool,
     GeovistoChoroplethLayerTool,
     GeovistoMarkerLayerTool,
-    GeovistoConnectionLayerTool
+    GeovistoConnectionLayerTool,
 } from '../tools';
 import { Geovisto } from '..';
-import { Tool } from '../react/Tool';
-import { ToolGroup } from '../react/ToolGroup';
-import { ToolType } from '../react/Tool.types';
+
+import { CHOROPLETH_ID, MARKER_ID, SIDEBAR_ID, TILES_ID } from '../react/Constants'
+
+import { ChoroplethLayerTool, MarkerLayerTool, SidebarTab, SidebarTool, TilesLayerTool, ToolGroup } from '../react/components/index';
+
 
 /* example of screen component with grid layout and card wrapper usage */
 
@@ -50,10 +52,12 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
 
     // implicit data
     // const [data, setData] = useState<unknown>(require('/static/data/covidCzechDistricts.json'));
-    const [data] = useState<unknown>(require('/static/data/timeData.json'));
+    const [data] = useState<unknown>(require('/static/data/demo1.json'));
 
     // imlipcit config
     const [config] = useState<Record<string, unknown>>(require('/static/config/config.json'));
+
+    
 
     useEffect(() => {
 
@@ -180,7 +184,7 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
 
     return (
         <div className="demo-container">
-            <div className="demo-toolbar">
+            {/* <div className="demo-toolbar">
                 <span>Data file: </span>
                 <select id={C_ID_select_data}>
                     <option value="timeData.json">timeData.json</option>
@@ -200,29 +204,83 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                 <input id={C_ID_input_config} type="file" accept=".json" size={3}/>
 
                 <input id={C_ID_input_import} type="submit" value="import"/>
-                {/* <input id={C_ID_input_export} type="submit" value="export"/> */}
-            </div>
+                <input id={C_ID_input_export} type="submit" value="export"/>
+            </div> */}
             <div className="demo-map">
                 <MyGeovistoMap
                     // ref={map}
                     id="my-new-geovisto-map"
+                    data={Geovisto.getMapDataManagerFactory().json(data)}
                     geoData={Geovisto.getGeoDataManager([
                         Geovisto.getGeoDataFactory().geojson("world polygons", polygons),
                         Geovisto.getGeoDataFactory().geojson("world centroids", centroids),
                         Geovisto.getGeoDataFactory().geojson("czech polygons", polygons2),
                         Geovisto.getGeoDataFactory().geojson("czech centroids", centroids2)
                     ])}
-                    config={Geovisto.getMapConfigManagerFactory().default(config)}
+                    // config={Geovisto.getMapConfigManagerFactory().default(config)}
                     globals={undefined}
                     templates={undefined}
                     
                 >
-                    <Data data={data}/>
                     
                     <ToolGroup>
-                        <Tool id="geovisto-tool-layer-map" type={ToolType.LayerMap}></Tool>
-                        <Tool id="geovisto-tool-sidebar" type={ToolType.Sidebar}></Tool>
-                        {/* customProps={} */}
+                        <SidebarTool id={SIDEBAR_ID} label="Super cool sidebar">
+                            <SidebarTab
+                                tool={TILES_ID}
+                                enabled={true}
+                                name="[My] Seznam Map layer"
+                                icon='<i class="fa fa-eur"></i>'
+                                checkButton={true}
+                            />
+                            <SidebarTab
+                                tool={TILES_ID + "2"}
+                                enabled={true}
+                                name="[My] OpenStreetMap layer"
+                                icon='<i class="fa fa-won"></i>'
+                                checkButton={true}
+                            />
+                            <SidebarTab
+                                tool={CHOROPLETH_ID}
+                                enabled={true}
+                                name="[My] Choropleth"
+                                icon='<i class="fa fa-usd"></i>'
+                                checkButton={true}
+                            />
+                            <SidebarTab
+                                tool={MARKER_ID}
+                                enabled={true}
+                                name="[My] MARKER"
+                                icon='<i class="fa fa-gbp"></i>'
+                                checkButton={true}
+                            />
+                        </SidebarTool>
+                        <TilesLayerTool 
+                            id={TILES_ID}
+                            enabled={true}
+                            label="Hi, this is tiles layer speaking"
+                            baseMap={{
+                                url:'https://mapserver.mapy.cz/turist-m/{z}-{x}-{y}',
+                                maxZoom: 20,
+                                maxNativeZoom: 19
+                            }}
+                        />
+                        <TilesLayerTool 
+                            id={TILES_ID + "2"}
+                            enabled={false}
+                            label="Hi, this is ANOTHER tiles layer speaking"
+                            baseMap={{
+                                url:'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                // maxZoom: 20,
+                                // maxNativeZoom: 19
+                            }}
+                        />
+                        <ChoroplethLayerTool 
+                            id={CHOROPLETH_ID} 
+                            enabled={true} 
+                        />
+                        <MarkerLayerTool 
+                            id={MARKER_ID}
+                        />
                     </ToolGroup>
                     
                 </MyGeovistoMap>

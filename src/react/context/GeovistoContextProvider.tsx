@@ -1,4 +1,5 @@
 import React, { FC, useState } from "react";
+import { ISidebarTool, ISidebarToolProps } from "../..";
 import { IMapDataManager, IMapDataManagerFactory, IMapToolsManager } from "../../index.core";
 import { GeovistoContext } from "./GeovistoContext";
 import { IGeovistoContext, IGeovistoProvider } from "./GeovistoContext.types";
@@ -12,17 +13,20 @@ import { IGeovistoContext, IGeovistoProvider } from "./GeovistoContext.types";
 
 export const GeovistoProvider = ({ children }: IGeovistoProvider) => {
     
-    const [tools, setTools] = useState<IMapToolsManager>();
-    const [data, setData] = useState<IMapDataManager>();
-    const [sample, setSample] = useState<string>();
+  const [sidebar, setSidebar] = useState<ISidebarToolProps>();
+  const [tools, setTools] = useState<IMapToolsManager>();
+    // const [data, setData] = useState<IMapDataManager>();
+    // const [sample, setSample] = useState<string>();
 
 //   var addToolHandler : (tool: IToolProps) => void = () => {};  
 
   const instance: IGeovistoContext = {
-      sample,
-      setSample,
-      data,
-      setData,
+      // sample,
+      // setSample,
+      // data,
+      // setData,
+      sidebar,
+      setSidebar,
       tools,
       setTools,
     //   invokeAddToolHandler: function (tool): void {

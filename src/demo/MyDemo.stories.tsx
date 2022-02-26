@@ -267,7 +267,7 @@ class MyDemo extends Component<Record<string, never>, { data: unknown, config: R
                             }),
                         ])}
                     >
-                        {/* Timeline Tool */}
+                        {/* Timeline Tool ?? rozjet tento nástroj - konzultace 17.12: 28:30*/}
                         {/* <Tool id="geovisto-tool-sidebar"></Tool> */}
                         <Theme></Theme>
                         {/* <Tool id="tool-id-pretest"></Tool> */}

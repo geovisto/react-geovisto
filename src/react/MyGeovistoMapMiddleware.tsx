@@ -12,6 +12,7 @@ export const MyGeovistoMapMiddleware: React.FC<IMyGeovistoMapProps> = (props) =>
 
     const [map, setMap] = useState<IMap>();
     let context = useGeovistoContext();
+    // let map:IMap;
     // const [templates, globals, data, geoData, tools, config] = useGeovistoContext();
 
     const [ownProps, setOwnProps] = useState<IMyGeovistoMapProps>();
@@ -37,30 +38,53 @@ export const MyGeovistoMapMiddleware: React.FC<IMyGeovistoMapProps> = (props) =>
     
     useEffect(() => {
     
-        console.log(props);
+        // console.log(props);
         
         const propsCopy = {...props};
 
-        if(context.tools !== undefined && context.data !== undefined)
+        if(context.tools !== undefined)
         {
             propsCopy.tools = context.tools;
-            propsCopy.data = context.data;
+            // propsCopy.data = context.data;
 
-            if(map == null)
+            // delete props.children;
+
+            // console.log(propsCopy);
+            
+            if(map === undefined)
             {
-                let map = Geovisto.createMap({...propsCopy});
+                console.log(propsCopy.tools);
+                let myMap = Geovisto.createMap({...propsCopy});
     
-                setMap(map);
+                setMap(myMap);
                 
                 // draw map with the current config
-                map.draw(propsCopy.config ?? Geovisto.getMapConfigManagerFactory().default({}));
+                myMap.draw(propsCopy.config ?? Geovisto.getMapConfigManagerFactory().default({}));
             }
+            else
+            {
+                console.log(propsCopy.tools);
+                // let myMap = Geovisto.createMap({...propsCopy});
+                // setMap(myMap);
+                map.redraw(propsCopy.config ?? Geovisto.getMapConfigManagerFactory().default({}), propsCopy);
+            }
+
+            // if(map == null)
+            // {
+            //     console.log(propsCopy.tools);
+            //     let map = Geovisto.createMap({...propsCopy});
+    
+            //     setMap(map);
+                
+            //     // draw map with the current config
+            //     map.draw(propsCopy.config ?? Geovisto.getMapConfigManagerFactory().default({}));
+            // }
         }
 
-        console.log(propsCopy);
+        // console.log(propsCopy);
 
 
-    }, [context.tools, context.data]);
+    }, [context.tools]);
 
 
     // useEffect(() => {

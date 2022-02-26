@@ -3,7 +3,7 @@ import React, { FC, useState } from "react";
 import { createContext, useContext } from "react";
 import { IGeoDataManager, IMapConfigManager, IMapDataManager, IMapGlobals, IMapTemplates, IMapTool, IMapToolsManager } from "../..";
 import { IMyGeovistoMapProps } from "../MyGeovistoMap";
-import { IToolProps } from "../Tool";
+import { IToolProps } from "../components/Tool";
 import { IGeovistoContext } from "./GeovistoContext.types";
 
 // *************************************
@@ -21,10 +21,13 @@ const geovistoContextDefault = {
     // tools: any,
     // config: any,
 
-    sample: undefined,
-    setSample: () => errorHandler('setSample'),
-    data: undefined,
-    setData: () => errorHandler('setData'),
+    // sample: undefined,
+    // setSample: () => errorHandler('setSample'),
+    // data: undefined,
+    // setData: () => errorHandler('setData'),
+
+    sidebar: undefined,
+    setSidebar: () => errorHandler('setSidebar'),
     tools: undefined,
     setTools: () => errorHandler('setTools')
 

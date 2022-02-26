@@ -65,6 +65,8 @@ class ReactGeovistoMap extends Component<IReactGeovistoMapProps, Record<string, 
         // create new Geovisto map
         this.m = Geovisto.createMap(this.props);
 
+        console.log(this.props);
+
         // draw map with the current config
         this.m.draw(this.props.config ?? Geovisto.getMapConfigManagerFactory().default({}));
     }
@@ -74,7 +76,7 @@ class ReactGeovistoMap extends Component<IReactGeovistoMapProps, Record<string, 
      */
     public componentDidUpdate(): void {
         // redraw map with a new config and new props
-        // this.m.redraw(this.props.config ?? Geovisto.getMapConfigManagerFactory().default({}), this.props);
+        this.m?.redraw(this.props.config ?? Geovisto.getMapConfigManagerFactory().default({}), this.props);
     }
 
     /**
