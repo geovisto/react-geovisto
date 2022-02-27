@@ -1,8 +1,9 @@
 import React from 'react'
-import { ISidebarTab, ISidebarTabProps } from '../..';
+import { ISidebarTabProps } from '../..';
+import { IToolDataProps } from './Types';
 
-export interface ISidebarTabPropsExtended extends ISidebarTabProps {
+type ISidebarTabDataProps<T> =  IToolDataProps<T> & {
     tool: string
 }
 
-export const SidebarTab: React.FC<ISidebarTabPropsExtended> = ({}) => null
+export const SidebarTab: React.FC<ISidebarTabDataProps<ISidebarTabProps>> = ({}) => null

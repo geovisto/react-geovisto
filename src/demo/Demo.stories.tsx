@@ -295,7 +295,7 @@ class Demo extends Component<Record<string, never>, { data: unknown, config: Rec
 }
 
 export default {
-    title: 'Demo',
+    title: 'Maps',
     component: Demo,
 } as Meta;
 

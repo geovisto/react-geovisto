@@ -8,8 +8,7 @@ import {
 import React, { Component } from "react";
 
 // import Tool from "../react/Tool";
-import { MyGeovistoMap } from "../react/MyGeovistoMap";
-import { Theme } from "../react/Theme";
+import { GeovistoMap } from "../react/GeovistoMap";
 
 import './Demo.scss';
 
@@ -42,7 +41,7 @@ class MyDemo extends Component<Record<string, never>, { data: unknown, config: R
     private centroids: unknown;
     private polygons2: unknown;
     private centroids2: unknown;
-    private map: React.RefObject<typeof MyGeovistoMap>;
+    private map: React.RefObject<typeof GeovistoMap>;
 
     public constructor(props: Record<string, never>) {
         super(props);
@@ -211,9 +210,10 @@ class MyDemo extends Component<Record<string, never>, { data: unknown, config: R
                     <input id={C_ID_input_export} type="submit" value="export"/> */}
                 </div>
                 <div className="demo-map">
-                    <MyGeovistoMap
+                    <GeovistoMap
                         // ref={this.map}
                         id="my-new-geovisto-map"
+                        className='geovisto-map'
                         data={Geovisto.getMapDataManagerFactory().json(this.state.data)}
                         geoData={Geovisto.getGeoDataManager([
                             Geovisto.getGeoDataFactory().geojson("world polygons", this.polygons),
@@ -269,9 +269,8 @@ class MyDemo extends Component<Record<string, never>, { data: unknown, config: R
                     >
                         {/* Timeline Tool ?? rozjet tento nástroj - konzultace 17.12: 28:30*/}
                         {/* <Tool id="geovisto-tool-sidebar"></Tool> */}
-                        <Theme></Theme>
                         {/* <Tool id="tool-id-pretest"></Tool> */}
-                    </MyGeovistoMap>
+                    </GeovistoMap>
                 </div>
             </div>
         );
@@ -279,7 +278,7 @@ class MyDemo extends Component<Record<string, never>, { data: unknown, config: R
 }
 
 export default {
-    title: 'Demo',
+    title: 'Maps',
     component: MyDemo,
 } as Meta;
 

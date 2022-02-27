@@ -5,6 +5,7 @@ import { TilesLayerTool } from './TilesLayerTool';
 import { ChoroplethLayerTool } from './ChoroplethLayerTool';
 import { SidebarTab } from './SidebarTab';
 import { MarkerLayerTool } from './MarkerLayerTool';
+import { ThemesTool } from './ThemesTool';
 
 export {
     SidebarTool,
@@ -12,5 +13,6 @@ export {
     ToolGroup,
     TilesLayerTool,
     ChoroplethLayerTool,
-    MarkerLayerTool
+    MarkerLayerTool,
+    ThemesTool
 }

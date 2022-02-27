@@ -8,9 +8,7 @@ import {
 import React, { Component, useEffect, useState } from "react";
 
 // import Tool from "../react/Tool";
-import { MyGeovistoMap } from "../react/MyGeovistoMap";
-import { Theme } from "../react/Theme";
-import { Data } from "../react/Data";
+import { GeovistoMap } from "../react/GeovistoMap";
 
 import './Demo.scss';
 
@@ -27,9 +25,9 @@ import {
 } from '../tools';
 import { Geovisto } from '..';
 
-import { CHOROPLETH_ID, MARKER_ID, SIDEBAR_ID, TILES_ID } from '../react/Constants'
+import { CHOROPLETH_ID, MARKER_ID, SIDEBAR_ID, THEMES_ID, TILES_ID } from '../react/Constants'
 
-import { ChoroplethLayerTool, MarkerLayerTool, SidebarTab, SidebarTool, TilesLayerTool, ToolGroup } from '../react/components/index';
+import { ChoroplethLayerTool, MarkerLayerTool, SidebarTab, SidebarTool, ThemesTool, TilesLayerTool, ToolGroup } from '../react/components/index';
 
 
 /* example of screen component with grid layout and card wrapper usage */
@@ -48,7 +46,7 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
     let centroids = require("/static/geo/country_centroids.json");
     let polygons2 = require("/static/geo/czech_districts_polygons.json");
     let centroids2 = require("/static/geo/czech_districts_centroids.json");
-    let map: React.RefObject<typeof MyGeovistoMap>;
+    // let map: React.RefObject<typeof GeovistoMap>;
 
     // implicit data
     // const [data, setData] = useState<unknown>(require('/static/data/covidCzechDistricts.json'));
@@ -57,14 +55,20 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
     // imlipcit config
     const [config] = useState<Record<string, unknown>>(require('/static/config/config.json'));
 
-    
+    const [enableToggle, setEnableToggle] = useState(false)
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        map = React.createRef();
+    //     map = React.createRef();
 
         
-    }, []);
+    // }, []);
+
+    useEffect(() => {
+      console.log(enableToggle);
+    
+    }, [enableToggle]);
+    
 
     // // ------ enable check boxes ------ //
 
@@ -184,32 +188,14 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
 
     return (
         <div className="demo-container">
-            {/* <div className="demo-toolbar">
-                <span>Data file: </span>
-                <select id={C_ID_select_data}>
-                    <option value="timeData.json">timeData.json</option>
-                    <option value="demo1.json">demo1.json</option>
-                    <option value="demo2.json">demo2.json</option>
-                    <option value="covidCzechDistricts.json">covid czech districts</option>
-                    <option value="covidCzechDistrictsCumulative.json">covid czech districts (cumulative)</option>
-                    <option value="covidCzechDistrictsCategoric.json">covid czech districts (categoric)</option>
-                    <option disabled></option>
-                </select>
+ 
+            <button onClick={() => setEnableToggle(!enableToggle)}>Toggle enable</button><br/>
 
-                <span> or <input id={C_ID_check_data} type="checkbox"/> custom file: </span>
-                <input id={C_ID_input_data} type="file" accept=".json" size={3}/>
-
-                <input id={C_ID_check_config} type="checkbox"/>
-                <span> Configuration file: </span>
-                <input id={C_ID_input_config} type="file" accept=".json" size={3}/>
-
-                <input id={C_ID_input_import} type="submit" value="import"/>
-                <input id={C_ID_input_export} type="submit" value="export"/>
-            </div> */}
             <div className="demo-map">
-                <MyGeovistoMap
+                <GeovistoMap
                     // ref={map}
                     id="my-new-geovisto-map"
+                    className="geovisto-map"
                     data={Geovisto.getMapDataManagerFactory().json(data)}
                     geoData={Geovisto.getGeoDataManager([
                         Geovisto.getGeoDataFactory().geojson("world polygons", polygons),
@@ -222,9 +208,15 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                     templates={undefined}
                     
                 >
-                    
                     <ToolGroup>
                         <SidebarTool id={SIDEBAR_ID} label="Super cool sidebar">
+                            <SidebarTab
+                                tool={THEMES_ID}
+                                enabled={true}
+                                name="[My] Themes"
+                                icon='<i class="fa fa-btc"></i>'
+                                checkButton={false}
+                            />
                             <SidebarTab
                                 tool={TILES_ID}
                                 enabled={true}
@@ -266,7 +258,7 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                         />
                         <TilesLayerTool 
                             id={TILES_ID + "2"}
-                            enabled={false}
+                            enabled={enableToggle}
                             label="Hi, this is ANOTHER tiles layer speaking"
                             baseMap={{
                                 url:'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -281,16 +273,31 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                         <MarkerLayerTool 
                             id={MARKER_ID}
                         />
+                        {/* <ThemesTool
+                            id={THEMES_ID}
+                            manager={GeovistoThemesTool.createThemesManager([
+                                    // style themes
+                                    GeovistoThemesTool.createThemeLight1(),
+                                    GeovistoThemesTool.createThemeLight2(),
+                                    GeovistoThemesTool.createThemeLight3(),
+                                    GeovistoThemesTool.createThemeDark1(),
+                                    GeovistoThemesTool.createThemeDark2(),
+                                    GeovistoThemesTool.createThemeDark3(),
+                                    GeovistoThemesTool.createThemeBasic()
+                                ])
+                            } 
+                            enabled={true}
+                        ></ThemesTool> */}
                     </ToolGroup>
                     
-                </MyGeovistoMap>
+                </GeovistoMap>
             </div>
         </div>
     );
 }
 
 export default {
-    title: 'Demo',
+    title: 'Maps',
     component: MyDemoFunctional,
 } as Meta;
 

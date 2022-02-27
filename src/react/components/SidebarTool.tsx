@@ -1,53 +1,50 @@
-import React, { Children, useEffect, useState } from 'react'
-import { Geovisto, ISidebarTab, ISidebarTabProps, ISidebarToolConfig, ISidebarToolProps, SidebarTab } from '../..';
+import React, { useEffect } from 'react'
+import { ISidebarTab, ISidebarTabProps, ISidebarToolProps, SidebarTab } from '../..';
 import { useGeovistoContext } from '../context/GeovistoContext';
-import { ISidebarTabPropsExtended } from './SidebarTab';
-
-// interface ISidebarToolPropsExtended extends Omit<ISidebarToolProps, "tabs">
+import { IToolDataProps } from './Types';
 
 // Exclude undesirable properties
-type ISidebarToolPropsExtended = Omit<ISidebarToolProps, "tabs">
+// type ISidebarToolPropsExtended = Omit<ISidebarToolProps, "tabs">
 
-export const SidebarTool: React.FC<ISidebarToolPropsExtended> = (props) => {
+// Exclude undesirable properties
+type  ISidebarToolDataProps<T> = IToolDataProps<Omit<T, "tabs">>
 
 
-    const context = useGeovistoContext();
+export const SidebarTool: React.FC<ISidebarToolDataProps<ISidebarToolProps>> = (props) => {
 
-    // (props as any).ahoj = "ahoj";
+    // const context = useGeovistoContext();
 
-    let usedTabs : [ string | undefined, ISidebarTab ][] = [];
-    // const [sidebar, setSidebar] = useState<ISidebarToolProps>();
-
-    console.log(props.children ? props.children : "undefined" );
-
-    // const count = React.Children.count(children);
-    React.Children.map(props.children, (child, index) => {
-        
-        if (React.isValidElement(child)) 
-        {
-            let tabProps = {...child.props};
-            
-            // export and delete additional property used to identify the tool
-            let toolId = child.props.tool as string;
-            delete tabProps.tool;
-
-            usedTabs.push([toolId, new SidebarTab(tabProps as ISidebarTabProps)]);
-        }
-
-        return;
-        // return React.isValidElement(child) ? new SidebarTab(child.props) : null;
-    });
-    
-
+    let usedTabs : [ string | undefined, ISidebarTab ][] = [];    
     
     useEffect(() => {
 
-        let sidebarProps = {...props}
-        delete sidebarProps.children;
+        console.log(props);
 
+        React.Children.map(props.children, (child, index) => {
+        
+            if (React.isValidElement(child)) 
+            {
+                let tabProps = {...child.props};
+                
+                // export and delete additional property used to identify the tool
+                let toolId = child.props.tool as string;
+                delete tabProps.tool;
+    
+                usedTabs.push([toolId, new SidebarTab(tabProps as ISidebarTabProps)]);
+            }
+    
+            return;
+            // return React.isValidElement(child) ? new SidebarTab(child.props) : null;
+        });
+        
+        
         if(usedTabs !== undefined && usedTabs!.length > 0)
         {
-            context.setSidebar({...sidebarProps, tabs: usedTabs!});
+            props.data.tabs = usedTabs;
+            
+            // let sidebarProps = {...props}
+            // delete sidebarProps.children;
+            // context.setSidebar({...sidebarProps, tabs: usedTabs!});
         } 
 
 
