@@ -1,8 +1,4 @@
-import { any } from "prop-types";
-import React, { FC, useState } from "react";
 import { createContext, useContext } from "react";
-import { IGeoDataManager, IMapConfigManager, IMapDataManager, IMapGlobals, IMapTemplates, IMapTool, IMapToolsManager } from "../..";
-import { IToolProps } from "../components/Tool";
 import { IGeovistoContext } from "./GeovistoContext.types";
 
 // *************************************

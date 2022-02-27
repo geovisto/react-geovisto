@@ -1,10 +1,8 @@
-import React, { ReactElement, ReactNode, useEffect, useState } from 'react'
+import React, { ReactElement, ReactNode, useEffect } from 'react'
 import { ChoroplethLayerTool, MarkerLayerTool, SidebarTool, ThemesTool, TilesLayerTool } from '.';
-import { GeovistoChoroplethLayerTool, GeovistoMarkerLayerTool, GeovistoSidebarTool, GeovistoThemesTool, GeovistoTilesLayerTool, SidebarTab } from '../..';
+import { GeovistoChoroplethLayerTool, GeovistoMarkerLayerTool, GeovistoSidebarTool, GeovistoThemesTool, GeovistoTilesLayerTool } from '../..';
 import { Geovisto } from '../../index.core';
-import { CHOROPLETH_ID, SIDEBAR_ID, TILES_ID } from '../Constants';
 import { useGeovistoContext } from '../context/GeovistoContext';
-import { ToolType } from './Tool.types';
 
 interface IToolGroupProps {
     children?: ReactNode
@@ -104,7 +102,6 @@ export const ToolGroup: React.FC<IToolGroupProps> = ({children}) => {
     
             newProps.data = {};
 
-            newProps.callback = () => console.log("Okay");
             return React.cloneElement(child, newProps, child.props.children);
         }
 

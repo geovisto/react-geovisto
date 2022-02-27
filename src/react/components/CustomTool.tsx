@@ -1,9 +1,8 @@
 import React, {  } from 'react'
-import { IToolProps } from './Tool';
+import { IMapToolProps } from '../../model/types/tool/IMapToolProps';
 import { IToolDataProps } from './Types';
 
-
-export const CustomTool: React.FC<IToolDataProps<IToolProps>> = (props) => {
+export const CustomTool: React.FC<IToolDataProps<IMapToolProps>> = (props) => {
     
     return <>{props.children}</>;
 }

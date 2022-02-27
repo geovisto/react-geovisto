@@ -1,4 +1,3 @@
-import { Tool } from '../components/Tool';
 import { SidebarTool } from './SidebarTool'
 import { ToolGroup } from './ToolGroup';
 import { TilesLayerTool } from './TilesLayerTool';
