@@ -273,7 +273,7 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                         <MarkerLayerTool 
                             id={MARKER_ID}
                         />
-                        {/* <ThemesTool
+                        <ThemesTool
                             id={THEMES_ID}
                             manager={GeovistoThemesTool.createThemesManager([
                                     // style themes
@@ -287,7 +287,7 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                                 ])
                             } 
                             enabled={true}
-                        ></ThemesTool> */}
+                        ></ThemesTool>
                     </ToolGroup>
                     
                 </GeovistoMap>
