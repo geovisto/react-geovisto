@@ -16,8 +16,8 @@ export interface IGeovistoContext {
     // setData: (data: IMapDataManager) => void;
     sidebar?: ISidebarToolProps;
     setSidebar: (sidebar: ISidebarToolProps) => void;
-    tools?: IMapToolsManager;
-    setTools: (tools: IMapToolsManager) => void;
+    tools?: IMapToolsManager | undefined;
+    setTools: (tools: IMapToolsManager | undefined) => void;
     // invokeAddToolHandler: (value: IToolProps) => void;    
     // registerAddToolHandler: (handler:(value: IToolProps) => void) => void; 
 }

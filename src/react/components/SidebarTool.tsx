@@ -18,8 +18,6 @@ export const SidebarTool: React.FC<ISidebarToolDataProps<ISidebarToolProps>> = (
     
     useEffect(() => {
 
-        console.log(props);
-
         React.Children.map(props.children, (child, index) => {
         
             if (React.isValidElement(child)) 
@@ -41,6 +39,7 @@ export const SidebarTool: React.FC<ISidebarToolDataProps<ISidebarToolProps>> = (
         if(usedTabs !== undefined && usedTabs!.length > 0)
         {
             props.data.tabs = usedTabs;
+            console.log(props);
             
             // let sidebarProps = {...props}
             // delete sidebarProps.children;

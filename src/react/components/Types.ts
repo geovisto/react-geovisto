@@ -8,6 +8,7 @@ export type IGeovistoMapProps = IMapProps & {
 
 export type IToolDataProps<T> = T & {
     data? : any;
+    onToolChange?: (props : any) => never;
 }
 
 // export type IToolProps<T> = T & {
