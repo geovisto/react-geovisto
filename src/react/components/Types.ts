@@ -7,8 +7,8 @@ export type IGeovistoMapProps = IMapProps & {
 }
 
 export type IToolDataProps<T> = T & {
-    data? : any;
-    onToolChange?: (props : any) => never;
+    // data? : any;
+    onToolChange?: (data: [string | React.JSXElementConstructor<any>, any]) => never;
 }
 
 // export type IToolProps<T> = T & {

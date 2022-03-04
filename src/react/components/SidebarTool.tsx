@@ -10,7 +10,7 @@ import { IToolDataProps } from './Types';
 type  ISidebarToolDataProps<T> = IToolDataProps<Omit<T, "tabs">>
 
 
-export const SidebarTool: React.FC<ISidebarToolDataProps<ISidebarToolProps>> = (props) => {
+export const SidebarTool = (props : ISidebarToolDataProps<ISidebarToolProps>>) : JSX.Element  => {
 
     // const context = useGeovistoContext();
 
@@ -36,15 +36,20 @@ export const SidebarTool: React.FC<ISidebarToolDataProps<ISidebarToolProps>> = (
         });
         
         
-        if(usedTabs !== undefined && usedTabs!.length > 0)
-        {
-            props.data.tabs = usedTabs;
-            console.log(props);
+        // if(usedTabs !== undefined && usedTabs!.length > 0)
+        // {
+            // props.data.tabs = usedTabs;
+
+            let x = typeof SidebarTool;
+            
+            props.onToolChange!({, usedTabs});
+
+            // console.log(props);
             
             // let sidebarProps = {...props}
             // delete sidebarProps.children;
             // context.setSidebar({...sidebarProps, tabs: usedTabs!});
-        } 
+        // } 
 
 
         console.log("[SideBar] Rendered");

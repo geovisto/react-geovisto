@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode, useEffect } from 'react'
+import React, { ReactElement, ReactNode, useEffect, useState } from 'react'
 import { ChoroplethLayerTool, MarkerLayerTool, SidebarTool, ThemesTool, TilesLayerTool } from '.';
 import { GeovistoChoroplethLayerTool, GeovistoMarkerLayerTool, GeovistoSidebarTool, GeovistoThemesTool, GeovistoTilesLayerTool, IMapToolsManager, } from '../..';
 import { Geovisto } from '../../index.core';
@@ -15,13 +15,15 @@ const processTool = (child : ReactElement) => {
     
     const props = child.props;
 
+    // (property) React.ReactElement<any, string | React.JSXElementConstructor<any>>.type: string | React.JSXElementConstructor<any>
+
     switch (child.type) {
         case SidebarTool:
             
             // console.log(child.props.data.tabs)
-            var sidebarToolConfig = {...props, tabs: props.data.tabs};
+            // var sidebarToolConfig = {...props};
 
-            return GeovistoSidebarTool.createTool(sidebarToolConfig);
+            return GeovistoSidebarTool.createTool(props);
             // return GeovistoSidebarTool.createTool(child.props);
 
         case TilesLayerTool:
@@ -40,50 +42,63 @@ const processTool = (child : ReactElement) => {
 export const ToolGroup: React.FC<IToolGroupProps> = (props) => {
 
     const context = useGeovistoContext();
-
+    const [counter, setCounter] = useState(0);
+    const [manager, setManager] = useState<IMapToolsManager | undefined>(Geovisto.createMapToolsManager([]));
 
     const handleToolChange = (toolProps: any) => {
 
         console.log("This tool called change: " + toolProps.id);
         
+        setCounter(counter + 1);
+
         // TODO How to process the change?     
         const reactTool = childrenCopy?.find(el => el.props.id === toolProps.id);
         
-        if(React.isValidElement(reactTool))
-        {
-            
-            const manager = (context.tools as IMapToolsManager);
+        if(counter <= React.Children.count(props.children))
+        {  
+            console.log(counter); 
 
-            
-
-            manager?.removeById(toolProps.id);
-            
-            let tool = processTool(reactTool);
-            
-            manager?.add(tool!);
-            
-
-
-            context.setTools(manager!);
-            
-            props.onRenderChange!(manager);
-
-
-            // const tools = React.Children.map(childrenCopy, (child, index) => {
-        
-            //     if (React.isValidElement(child)) {
+            if(React.isValidElement(reactTool))
+            {
+                const manager = (context.tools as IMapToolsManager);
+                                
+                let tool = processTool(reactTool);
+                
+                // manager?.removeById(toolProps.id);
+                manager?.add(tool!);
     
-            //         // TODO: Use reducer
-            //         return processTool(child);
-            //     }
-            // });
-    
-            // const manager = Geovisto.createMapToolsManager(tools!);
-            
-            // console.log(manager.);
-            // context.setTools(undefined);
-            // context.setTools(manager!);
+                context.setTools(manager!);
+                
+                props.onRenderChange!(manager);
+            }
+
+            if(counter === React.Children.count(props.children))
+            {
+                console.log("All tools processed");
+                props.onRenderChange!(manager);
+
+            }
+            else
+            {
+                console.log("skipping (counter: " + counter + ")");
+            }
+
         }
+        else
+        {
+            console.log("Should be updating");
+    
+            // manager?.removeById(toolProps.id);
+            
+            // let tool = processTool(reactTool);
+            
+            // manager?.add(tool!);
+
+            // context.setTools(manager!);
+            
+            // props.onRenderChange!(manager);
+        }
+
 
         // console.log(childrenCopy)
 
@@ -101,10 +116,6 @@ export const ToolGroup: React.FC<IToolGroupProps> = (props) => {
         // {
             let newProps = {...child.props};
     
-            newProps.data = {};
-
-
-
             newProps.onToolChange = handleToolChange
 
             return React.cloneElement(child, newProps, child.props.children);
