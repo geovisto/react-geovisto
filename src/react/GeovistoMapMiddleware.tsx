@@ -8,7 +8,7 @@ import { GeovistoProvider } from './context/GeovistoContextProvider';
 export const GeovistoMapMiddleware: React.FC<IGeovistoMapProps> = (props) => {
 
     const [map, setMap] = useState<IMap>();
-    let context = useGeovistoContext();
+    // let context = useGeovistoContext();
 
     // let map:IMap;
 
@@ -19,40 +19,40 @@ export const GeovistoMapMiddleware: React.FC<IGeovistoMapProps> = (props) => {
     //   }));
     
     // REDRAW USING CONTEXT
-    useEffect(() => {
+    // useEffect(() => {
     
-        if(context.tools !== undefined)
-        {
+    //     if(context.tools !== undefined)
+    //     {
             
-            const mapProps = {...props, tools: context.tools};
+    //         const mapProps = {...props, tools: context.tools};
             
-            // TODO: Maybe?
-            // delete props.children;
+    //         // TODO: Maybe?
+    //         // delete props.children;
 
-            // TODO: Possibly map == null should cover both - null & undefined  
-            if(map === undefined)
-            {
-                console.warn("--------------MAP DRAW--------------");
-                console.log(mapProps);
+    //         // TODO: Possibly map == null should cover both - null & undefined  
+    //         if(map === undefined)
+    //         {
+    //             console.warn("--------------MAP DRAW--------------");
+    //             console.log(mapProps);
                 
-                let mapObject = Geovisto.createMap(mapProps);
+    //             let mapObject = Geovisto.createMap(mapProps);
     
-                setMap(mapObject);
+    //             setMap(mapObject);
                 
-                // draw map with the current config
-                mapObject.draw(props.config ?? Geovisto.getMapConfigManagerFactory().default({}));
-            }
-            else
-            {
-                console.warn("--------------MAP RE-DRAW--------------");
-                console.log(mapProps);
+    //             // draw map with the current config
+    //             mapObject.draw(props.config ?? Geovisto.getMapConfigManagerFactory().default({}));
+    //         }
+    //         else
+    //         {
+    //             console.warn("--------------MAP RE-DRAW--------------");
+    //             console.log(mapProps);
 
-                // redraw map with the updated properties
-                map.redraw(props.config ?? Geovisto.getMapConfigManagerFactory().default({}), mapProps);
-            }
-        }
+    //             // redraw map with the updated properties
+    //             map.redraw(props.config ?? Geovisto.getMapConfigManagerFactory().default({}), mapProps);
+    //         }
+    //     }
 
-    }, [context.tools]);
+    // }, [context.tools]);
 
 
     // REDRAW USING CALLBACK
@@ -69,6 +69,7 @@ export const GeovistoMapMiddleware: React.FC<IGeovistoMapProps> = (props) => {
             // TODO: Maybe?
             // delete props.children;
 
+            
             // TODO: Possibly map == null should cover both - null & undefined  
             if(map === undefined)
             {
@@ -109,6 +110,6 @@ export const GeovistoMapMiddleware: React.FC<IGeovistoMapProps> = (props) => {
     });
 
     return (
-        <div id={props.id} className={props.className} >{childrenWithRenderCallback}</div>
+        <div id={props.id} className={props.className}>{childrenWithRenderCallback}</div>
     );
 }

@@ -6,4 +6,4 @@ type ISidebarTabDataProps<T> =  IToolDataProps<T> & {
     tool: string
 }
 
-export const SidebarTab: React.FC<ISidebarTabDataProps<ISidebarTabProps>> = ({}) => null
+export const SidebarTab = (props: ISidebarTabDataProps<ISidebarTabProps>) : JSX.Element => <></>

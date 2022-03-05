@@ -9,12 +9,15 @@ import { IToolDataProps } from './Types';
 // Exclude undesirable properties
 type  ISidebarToolDataProps<T> = IToolDataProps<Omit<T, "tabs">>
 
+type ISidebarTabs = [ string | undefined, ISidebarTab ][];
 
-export const SidebarTool = (props : ISidebarToolDataProps<ISidebarToolProps>>) : JSX.Element  => {
+// export const SidebarTool = (props : ISidebarToolDataProps<ISidebarToolProps>) : JSX.Element  => {
+export const SidebarTool = (props: ISidebarToolDataProps<ISidebarToolProps>) : JSX.Element => {
 
     // const context = useGeovistoContext();
 
-    let usedTabs : [ string | undefined, ISidebarTab ][] = [];    
+    // TODO: udělat nějak lidsky
+    let usedTabs: ISidebarTabs = [];    
     
     useEffect(() => {
 
@@ -40,9 +43,8 @@ export const SidebarTool = (props : ISidebarToolDataProps<ISidebarToolProps>>) :
         // {
             // props.data.tabs = usedTabs;
 
-            let x = typeof SidebarTool;
-            
-            props.onToolChange!({, usedTabs});
+        // props.onToolChange!([typeof SidebarTool, {...props, tabs: usedTabs}]);
+        props.onToolChange!({...props, tabs: usedTabs});
 
             // console.log(props);
             

@@ -287,7 +287,7 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                                 ])
                             } 
                             enabled={true}
-                        ></ThemesTool> */}
+                        /> */}
                     </ToolGroup>
                     
                 </GeovistoMap>

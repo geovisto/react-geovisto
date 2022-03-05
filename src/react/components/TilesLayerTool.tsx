@@ -3,18 +3,22 @@ import { ITilesLayerToolProps } from '../..';
 import { IToolDataProps } from './Types';
 
 
-export const TilesLayerTool: React.FC<IToolDataProps<ITilesLayerToolProps>> = (props) => {
+export const TilesLayerTool = (props: IToolDataProps<ITilesLayerToolProps>) : JSX.Element => {
+
+    // Run on component mount
+    // useEffect(() => {
+
+    //     console.log("Mounted: " + props.id);
+    // 	props.onToolChange!(props);
+    // }, []);
+
 
     useEffect(() => {
+        console.log("Updated: " + props.id);
     	props.onToolChange!(props);
-		// console.log(props.id);
 
-
-	// TODO: How to make it on all properties?
-    }, [props.enabled]);
+    }, [props.enabled])
     
-
-
 
     return <></>;
 }
