@@ -23,7 +23,7 @@ import {
     GeovistoMarkerLayerTool,
     GeovistoConnectionLayerTool,
 } from '../tools';
-import { Geovisto } from '..';
+import { Geovisto, IMapTilesModel } from '..';
 
 import { CHOROPLETH_ID, MARKER_ID, SIDEBAR_ID, THEMES_ID, TILES_ID } from '../react/Constants'
 
@@ -55,7 +55,29 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
     // imlipcit config
     const [config] = useState<Record<string, unknown>>(require('/static/config/config.json'));
 
-    const [enableToggle, setEnableToggle] = useState(false)
+    const basemap1 = {
+        url:'https://mapserver.mapy.cz/turist-m/{z}-{x}-{y}',
+        maxZoom: 20,
+        maxNativeZoom: 19
+    };
+
+    const basemap2 = {
+        url:'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    };
+
+    const [enableToggle, setEnableToggle] = useState(true);
+    const [stringToggle, setStringToggle] = useState("string111");
+    const [basemapToggle, setBasemapToggle] = useState<IMapTilesModel>(basemap1);
+    const [enableSidebarToggle, setEnableSidebarToggle] = useState(true);
+    const [enableSidebarTabToggle, setEnableSidebarTabToggle] = useState(true);
+
+
+
+    // useEffect(() => {
+    //   console.log(basemapToggle);
+    
+    // }, [basemapToggle])
+    
 
     // useEffect(() => {
 
@@ -63,12 +85,6 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
 
         
     // }, []);
-
-    useEffect(() => {
-      console.log(enableToggle);
-    
-    }, [enableToggle]);
-    
 
     // // ------ enable check boxes ------ //
 
@@ -188,8 +204,15 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
 
     return (
         <div className="demo-container">
- 
-            <button onClick={() => setEnableToggle(!enableToggle)}>Toggle enable</button><br/>
+            
+            <div className='btn-container'>
+                <button onClick={() => setEnableToggle(!enableToggle)}>{enableToggle ? "true" : "false"}</button>
+                <button onClick={() => setStringToggle(current => current == "string222" ? "string111" : "string222")}>{stringToggle}</button>
+                <button onClick={() => setBasemapToggle(current => current.url == basemap1.url ? basemap2 : basemap1)}>{basemapToggle.url == basemap1.url ? "Seznam maps" : "Openstreet maps"}</button>
+                <button onClick={() => setEnableSidebarToggle(!enableSidebarToggle)}>{"Sidebar: " + (enableSidebarToggle ? "true" : "false")}</button>
+                <button onClick={() => setEnableSidebarTabToggle(!enableSidebarTabToggle)}>{"SidebarTab: " + (enableSidebarTabToggle ? "true" : "false")}</button>
+
+            </div>
 
             <div className="demo-map">
                 <GeovistoMap
@@ -219,8 +242,8 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                             />
                             <SidebarTab
                                 tool={TILES_ID}
-                                enabled={true}
-                                name="[My] Seznam Map layer"
+                                enabled={enableSidebarTabToggle}
+                                name={stringToggle}
                                 icon='<i class="fa fa-eur"></i>'
                                 checkButton={true}
                             />
@@ -231,13 +254,16 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                                 icon='<i class="fa fa-won"></i>'
                                 checkButton={true}
                             />
-                            <SidebarTab
+                            {enableSidebarToggle &&
+
+                                <SidebarTab
                                 tool={CHOROPLETH_ID}
                                 enabled={true}
                                 name="[My] Choropleth"
                                 icon='<i class="fa fa-usd"></i>'
                                 checkButton={true}
-                            />
+                                />
+                            }
                             <SidebarTab
                                 tool={MARKER_ID}
                                 enabled={true}
@@ -250,28 +276,32 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                             id={TILES_ID}
                             enabled={true}
                             label="Hi, this is tiles layer speaking"
-                            baseMap={{
-                                url:'https://mapserver.mapy.cz/turist-m/{z}-{x}-{y}',
-                                maxZoom: 20,
-                                maxNativeZoom: 19
-                            }}
+                            baseMap={basemapToggle}
+                            // baseMap={{
+                            //     url:'https://mapserver.mapy.cz/turist-m/{z}-{x}-{y}',
+                            //     maxZoom: 20,
+                            //     maxNativeZoom: 19
+                            // }}
                         />
-                        <TilesLayerTool 
+                        {/* <TilesLayerTool 
                             id={TILES_ID + "2"}
-                            enabled={enableToggle}
+                            enabled={false}
                             label="Hi, this is ANOTHER tiles layer speaking"
                             baseMap={{
                                 url:'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                                 // maxZoom: 20,
                                 // maxNativeZoom: 19
                             }}
-                        />
+                        /> */}
                         <ChoroplethLayerTool 
                             id={CHOROPLETH_ID} 
-                            enabled={true} 
+                            icon="whatever"
+                            label="label"
+                            enabled={enableToggle}
                         />
                         <MarkerLayerTool 
                             id={MARKER_ID}
+                            enabled={enableToggle}
                         />
                         {/* <ThemesTool
                             id={THEMES_ID}

@@ -29,3 +29,10 @@ button:hover {
     color: white;
     cursor: pointer;
 }
+
+.btn-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    padding-bottom: 10px;
+}

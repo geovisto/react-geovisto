@@ -278,7 +278,9 @@ class Demo extends Component<Record<string, never>, { data: unknown, config: Rec
                                 name: "Map layer"
                             }),
                             GeovistoChoroplethLayerTool.createTool({
-                                id: "geovisto-tool-layer-choropleth"
+                                id: "geovisto-tool-layer-choropleth",
+                                enabled: true,
+                                name:"Choropleth tool"
                             }),
                             GeovistoMarkerLayerTool.createTool({
                                 id: "geovisto-tool-layer-marker"

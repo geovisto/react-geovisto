@@ -1,21 +1,25 @@
 import { ReactElement } from "react";
-import { IMapConfigManager, IMapProps } from "../../index.core"
+import { IMapToolsManager } from "../..";
+import { IMap, IMapConfigManager, IMapProps } from "../../index.core"
+
+export const ENABLED_PROP = 'enabled';
 
 export type IGeovistoMapProps = IMapProps & {
     // ref: RefObject<typeof MyGeovistoMap>,
+    children?: React.ReactNode;
     config?: IMapConfigManager;
     className: string;
 }
 
 export interface IToolGroupProps {
     children?: React.ReactNode;
-    onRenderChange?: (data: any) => never;
+    onRenderChange?: (data: any) => IMap;//IMapToolsManager | undefined;
 }
 
 export type IToolDataProps<T> = T & {
     // data? : any;
-    onToolChange?: (data: IToolData) => never;
     children?: React.ReactNode;
+    onToolChange?: (data: IToolData, property?: string) => never;
 }
 
 // export type IToolData = [string | React.JSXElementConstructor<any>, any];
