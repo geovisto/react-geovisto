@@ -170,10 +170,11 @@ class SidebarTab<T extends IMapTool & IMapFormControl> extends MapObject impleme
     public create(): this {
         const state: ISidebarTabState = this.getState();
         const sidebar: Control.Sidebar | null = state.getSidebarTool().getState().getSidebar();
+        
         if(sidebar && state.isEnabled()) {
             // render sidebar tab pane
             sidebar.addPanel(this.getTabStructure());
-
+            
             // arrange DOM elements after they are rendered
             this.postCreate();
         }
@@ -267,6 +268,8 @@ class SidebarTab<T extends IMapTool & IMapFormControl> extends MapObject impleme
     public redraw(): void {
         // get rendered sidebar tab
         const tabElement: HTMLElement | null = document.getElementById(this.getState().getId());
+
+        console.log(tabElement);
 
         // create sidebar tab content
         if(tabElement) {

@@ -7,11 +7,11 @@ import { ENABLED_PROP, IToolDataProps } from './Types';
 export const TilesLayerTool = (props: IToolDataProps<ITilesLayerToolProps>) : JSX.Element => {
 
     const {enabled, children, onToolChange, ...propsChanges} = props
-    console.error(propsChanges);
+    // console.error(propsChanges);
 
     // Run on component mount
     useEffect(() => {
-        console.log(props);
+        // console.log(props);
         props.onToolChange!(props);
     
     }, [props.id,

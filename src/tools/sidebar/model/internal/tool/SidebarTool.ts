@@ -116,6 +116,7 @@ class SidebarTool extends MapTool implements ISidebarTool {
         super.create();
         this.createSidebar();
         this.createTabs();
+        console.warn(this.getState().getSidebar());
         return this;
     }
 
@@ -134,6 +135,16 @@ class SidebarTool extends MapTool implements ISidebarTool {
             }
         }
     }
+
+    public removeFromMap(): void {
+        if(this.isEnabled()) {
+            const map = this.getMap()?.getState().getLeafletMap();
+            if(map) {
+                let sidebar = this.getState().getSidebar()?.remove();
+                this.getState().setSidebar(sidebar!);
+            }
+        }
+    } 
 
     /**
      * It returns structure of sidebar defined with respect to the leaflet-sidebar-v2 plugin specification.
@@ -177,7 +188,7 @@ class SidebarTool extends MapTool implements ISidebarTool {
                     this.createSidebarTab(tool, tabConfig, undefined);
                 }
             } else if(propsTabs) {
-                 for(const [ toolId, sidebarTab ] of propsTabs) {
+                for(const [ toolId, sidebarTab ] of propsTabs) {
                     // if the tool id is undefined a dummy tab tool is created and initialized
                     this.createSidebarTab(toolId ? map.getState().getTools().getById(toolId) : new DummyTabTool().initialize({
                         map: map

@@ -19,7 +19,7 @@ export interface IToolGroupProps {
 export type IToolDataProps<T> = T & {
     // data? : any;
     children?: React.ReactNode;
-    onToolChange?: (data: IToolData, property?: string) => never;
+    onToolChange?: (data: IToolData, property?: string) => void;
 }
 
 // export type IToolData = [string | React.JSXElementConstructor<any>, any];

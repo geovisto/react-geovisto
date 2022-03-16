@@ -1,18 +1,31 @@
-import React, { useEffect } from 'react'
+import React, { forwardRef, useEffect, useImperativeHandle } from 'react'
 import { ISidebarTab, ISidebarTabProps, ISidebarToolProps, SidebarTab } from '../..';
 import { useGeovistoContext } from '../context/GeovistoContext';
 import { IToolData, IToolDataProps } from './Types';
 
 // FIXME: remove export?
 // Exclude undesirable properties
-export type  ISidebarToolDataProps<T> = IToolDataProps<Omit<T, "tabs">>
+export type  ISidebarToolDataProps<T> = IToolDataProps<Omit<T, "tabs">>;
+
+// Handle ref calls from parent
+export type ISidebarToolHandle =  {
+    getProcessedTabs: () => void;
+}
 
 type ISidebarTabs = [ string | undefined, ISidebarTab ][];
 
 // export const SidebarTool = (props : ISidebarToolDataProps<ISidebarToolProps>) : JSX.Element  => {
-export const SidebarTool = (props: ISidebarToolDataProps<ISidebarToolProps>) : JSX.Element => {
+export const SidebarTool = forwardRef<ISidebarToolHandle, ISidebarToolDataProps<ISidebarToolProps>>((props, ref) : JSX.Element => {
 
     // const context = useGeovistoContext();
+
+    useImperativeHandle(ref, () => ({
+
+        getProcessedTabs() {
+          processTabs();
+        }
+    
+    }));
 
     const processTabs = () => {
 
@@ -67,4 +80,4 @@ export const SidebarTool = (props: ISidebarToolDataProps<ISidebarToolProps>) : J
 
     
     return <>{childrenExtended}</>;
-}
+});

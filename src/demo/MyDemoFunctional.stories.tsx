@@ -233,13 +233,13 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                 >
                     <ToolGroup>
                         <SidebarTool id={SIDEBAR_ID} label="Super cool sidebar">
-                            <SidebarTab
+                            {/* <SidebarTab
                                 tool={THEMES_ID}
                                 enabled={true}
                                 name="[My] Themes"
                                 icon='<i class="fa fa-btc"></i>'
                                 checkButton={false}
-                            />
+                            /> */}
                             <SidebarTab
                                 tool={TILES_ID}
                                 enabled={enableSidebarTabToggle}
@@ -247,14 +247,14 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                                 icon='<i class="fa fa-eur"></i>'
                                 checkButton={true}
                             />
-                            <SidebarTab
+                            {/* <SidebarTab
                                 tool={TILES_ID + "2"}
                                 enabled={true}
                                 name="[My] OpenStreetMap layer"
                                 icon='<i class="fa fa-won"></i>'
                                 checkButton={true}
-                            />
-                            {enableSidebarToggle &&
+                            /> */}
+                            {/* {enableSidebarToggle &&
 
                                 <SidebarTab
                                 tool={CHOROPLETH_ID}
@@ -263,7 +263,14 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                                 icon='<i class="fa fa-usd"></i>'
                                 checkButton={true}
                                 />
-                            }
+                            } */}
+                                <SidebarTab
+                                tool={CHOROPLETH_ID}
+                                enabled={true}
+                                name="[My] Choropleth"
+                                icon='<i class="fa fa-usd"></i>'
+                                checkButton={true}
+                                />
                             <SidebarTab
                                 tool={MARKER_ID}
                                 enabled={true}
@@ -275,7 +282,7 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                         <TilesLayerTool 
                             id={TILES_ID}
                             enabled={true}
-                            label="Hi, this is tiles layer speaking"
+                            label={stringToggle}
                             baseMap={basemapToggle}
                             // baseMap={{
                             //     url:'https://mapserver.mapy.cz/turist-m/{z}-{x}-{y}',

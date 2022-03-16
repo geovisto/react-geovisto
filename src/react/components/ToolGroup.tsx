@@ -1,28 +1,34 @@
 import { map } from 'leaflet';
-import React, { useEffect, useState } from 'react'
+import * as L from 'leaflet';
+import React, { useEffect, useRef, useState } from 'react'
 import { ChoroplethLayerTool, MarkerLayerTool, SidebarTool, ThemesTool, TilesLayerTool } from '.';
 import { GeovistoChoroplethLayerTool, GeovistoMarkerLayerTool, GeovistoSidebarTool, 
          GeovistoThemesTool, GeovistoTilesLayerTool, IChoroplethLayerTool, IMapTool, IMapToolsManager, ISidebarTabProps, ISidebarTool, ISidebarToolProps, ITilesLayerTool, SidebarToolDefaults, } from '../..';
-import { Geovisto, LayerToolRenderType } from '../../index.core';
+import { Geovisto, ILayerTool, LayerToolRenderType } from '../../index.core';
 import { CustomTool } from './CustomTool';
-import { ISidebarToolDataProps } from './SidebarTool';
+import { ISidebarToolDataProps, ISidebarToolHandle } from './SidebarTool';
 import { ENABLED_PROP, IToolData, IToolGroupProps, IToolType } from './Types';
+import { SidebarTab } from '../../tools';
+import { SIDEBAR_ID, TILES_ID } from '../Constants';
 
 
 export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
 
     // const [counter, setCounter] = useState<number>(0);
     const [manager, setManager] = useState<IMapToolsManager>(Geovisto.createMapToolsManager([]));
+
     // const [manager, setManager] = useState<IMapToolsManager>();
     const [tools, setTools] = useState<any[]>([]);
 
     const [sidebar, setSidebar] = useState<ISidebarToolDataProps<ISidebarToolProps>>();
 
+    const sidebarRef = useRef<ISidebarToolHandle>(null);
+
+    
+
 
     // const processTool = ([toolType, toolProps] : IToolData) => {
     const processTool = (toolType: IToolType, toolData: IToolData) => {
-
-        console.log(toolData);
 
         let { children, onToolChange, ...toolProps } = toolData;
 
@@ -126,11 +132,12 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
 
                 let processedTool = processTool(toolElement.type, toolData);
 
-                console.log("updating");
+                console.error("------------ Updating -------------");
+                console.warn("Edited tool: " + toolData.id);
+
 
                 if(toolElement.type == ChoroplethLayerTool)
                 {
-                    console.error("RERENDER");
 
 
                     let tool = (manager.getById(toolData.id) as IChoroplethLayerTool);
@@ -141,57 +148,86 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
                 }
                 else if(toolElement.type == TilesLayerTool)
                 {
-                    console.error("RERENDER");
-                    // console.log(toolData);
+                    
+                    let currentTool = manager.getById(toolData.id) as ILayerTool;
 
-                    console.warn("Not doin anything - check code!")
-                    // console.log(tool);
+                    // Remove current tool from manager
+                    currentTool.hideLayerItems();
+                    manager.removeById(toolData.id);
 
-                    manager.removeById(toolData.id)
+                    // Add tool with changed properties
+                    manager.add(processedTool!);
+                    
+                    // let newTool = manager.getById(toolData.id) as ILayerTool;
+                    // newTool.showLayerItems();
+
+                    // let layerItems = currentTool?.getLayerItems();
+
+                    // // render/remove items
+                    // for(let j = 0; j < layerItems.length; j++) {
+                    //     layerItems[j].addTo(leafletMap);
+                    // }
+
                     
                     // TODO: Potřebuju to odstranit z Leaflet mapy 
                     // Musím vzít layer items (získat přes getlayeritems (v abstractlayertool - 145))
                     // A odstranit je fyzicky z té mapy
+ 
 
-                    manager?.add(processedTool!);
 
                     let sidebarTool = manager.getByType(SidebarToolDefaults.TYPE)[0] as ISidebarTool;
                     
+                    let tab1 = [TILES_ID, new SidebarTab({
+                        enabled:true,
+                        name:"[My] Tiles layer",
+                        icon:'<i class="fa fa-eur"></i>',
+                        checkButton:true
+                    } as ISidebarTabProps)]
+
+                    let fakeprops = {
+                        id:SIDEBAR_ID,
+                        label:"Super cool sidebar",
+                        tabs: [tab1]
+                    }
                     
-                    if(sidebarTool !== undefined)
-                    {
+                    if(sidebarTool !== undefined) {
+
+                        sidebarTool.removeFromMap();
 
                         // let tabs = (sidebarTool as ISidebarTool).getTabs();
                         
-                        console.log(sidebarTool);
+                        sidebarRef.current!.getProcessedTabs();
 
-                        let sidebarToolId = sidebarTool.getProps().id!;
+                        // console.log(manager.getByType(SidebarToolDefaults.TYPE)[0] as ISidebarTool);
+                        // manager.removeById(sidebarTool.getId());
                         
-                        let processedSidebar = manager.getById(sidebarToolId) as ISidebarTool;
+                        // const toolElement = childrenExtended?.find(el => el.props.id === sidebarTool.getProps().id);
+                        
+                        // let newSidebarTool = processTool(toolElement!.type, fakeprops)
                         
                         
-                        if(processedSidebar !== undefined)
-                        {
-                            manager.removeById(sidebarToolId)
+                        // manager?.add(newSidebarTool!);
+                        // console.log(manager.getByType(SidebarToolDefaults.TYPE)[0] as ISidebarTool);
 
-                            // let processedSidebar = processTool(sidebarElement.type, sidebarElement.props);
-                            
-                            const toolElement = childrenExtended?.find(el => el.props.id === sidebarToolId);
+                        // let tabs = sidebarTool.getTabs();
+                        // tabs.forEach(tab => {
+                        //     tab.redraw();
+                        // });
+                        // // let processedSidebar = processTool(sidebarElement.type, sidebarElement.props);
+                        
 
-                            const { children, onToolChange, ...sidebarToolProps } = sidebar!;
-                            sidebarTool.initialize(sidebarToolProps as any);
+                        // const { children, onToolChange, ...sidebarToolProps } = sidebar!;
+                        // // sidebarTool.initialize(sidebarToolProps as any);
 
-                            console.log(sidebar);
-                            let newSidebar = processTool(toolElement!.type, sidebar);
-                            
-                            console.warn("---------------under this--------------");
-                            console.log(newSidebar);
-                            console.log(processedSidebar);
+                        // console.log(sidebarTool.getState());
+                        // let newSidebar = processTool(toolElement!.type, sidebar);
+                        
+                        // console.warn("---------------under this--------------");
+                        // console.log(newSidebar);
+                        // console.log(sidebarTool);
 
-                            
-                            
-                            manager?.add(processedSidebar!);
-                        }
+                        
+                        
                         
                         // // Find the sidebar tab corresponding to the tool
                         // let tab = tabs.find(tab => tab.getTool().getProps().id == toolData.id);
@@ -202,6 +238,17 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
                         //     tab?.setChecked(toolData.enabled);
                         // }
                             
+                    }
+                    // Sidebar component is not present, rerender the tool immiediately
+                    else {
+
+                        console.error("Sidebar is not present, rerender the tool immiediately");
+                        let map = props.onRenderChange!(manager);                
+                        let mapToolsManager = map.getState().getTools();
+    
+                        if (mapToolsManager !== undefined) {
+                            setManager(mapToolsManager);
+                        }
                     }
 
                     // let mapToolsManager = props.onRenderChange!(manager);
@@ -237,11 +284,30 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
 
                     // let mapToolsManager = props.onRenderChange!(manager);
                     
-                    let map = props.onRenderChange!(manager);
-                    let mapToolsManager = map.getState().getTools();
+                    
 
+
+                    /////////////////////// OOOOOOLDDDD //////////////////
+                    // let oldSidebarTool = manager.getByType(SidebarToolDefaults.TYPE)[0] as ISidebarTool;
+                    
+                    // oldSidebarTool.removeFromMap();
+                    // console.log(oldSidebarTool);
+                    // console.log(oldSidebarTool.getState().getSidebar());
+                    
+                    
+                    // let map = props.onRenderChange!(manager);
+                    // oldSidebarTool.initialize({map, ...fakeprops});
+                    
+                    // let mapToolsManager = map.getState().getTools();
+
+                    // let sidebar = map.getState().getTools().getByType(SidebarToolDefaults.TYPE)[0] as ISidebarTool;
+                    // console.log(sidebar.getState().getSidebar());
+
+                    // console.log(map);
+                    
                     // if (mapToolsManager !== undefined)
-                    //     setManager(mapToolsManager);
+                    // setManager(mapToolsManager);
+                    
                     
 
                     // (tool).render(0, {transitionDelay: 100, transitionDuration: 1000});
@@ -249,27 +315,28 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
                 }
                 else if(toolElement.type == SidebarTool)
                 {
+                    console.error("ATTENTION: Sidebar has changed");
 
-                    let tool = (manager.getById(toolData.id) as ISidebarTool);
-                    
-                    tool.initialize(toolData);
-                    
-                    // manager.removeById(toolData.id)
-                    // manager?.add(processTool(toolElement.type, tool)!);
-                    
-                    console.log(manager);
+                        
+                    let currentTool = manager.getById(toolData.id) as ISidebarTool;
 
-                    // let mapToolsManager = props.onRenderChange!(manager);
+                    // Remove current tool from manager
+                    currentTool.removeFromMap();
+                    manager.removeById(toolData.id);
+                    
+                    // Add tool with changed properties
+                    manager.add(processedTool!);
 
                     let map = props.onRenderChange!(manager);
                     let mapToolsManager = map.getState().getTools();
 
-                    if (mapToolsManager !== undefined)
+                    if (mapToolsManager !== undefined) {
                         setManager(mapToolsManager);
+                    }
                 }
             }  
             else {
-                console.log("Everything other");
+                console.error("Everything other");
             }
         }                      
     };
@@ -285,14 +352,19 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
 
     const childrenExtended = React.Children.map(props.children, (child, index) => {
     
-        if (!React.isValidElement(child))
+        if (!React.isValidElement(child)) {
             return;
+        }
             
         // if(child.type != CustomTool)
         // {
             let newProps = {...child.props};
     
             newProps.onToolChange = handleToolChange
+
+            if(child.type == SidebarTool) {
+                newProps.ref=sidebarRef
+            }
 
             return React.cloneElement(child, newProps, child.props.children);
         // }

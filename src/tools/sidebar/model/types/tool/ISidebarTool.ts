@@ -32,5 +32,7 @@ interface ISidebarTool<
      * Help function which returns sidebar tabs of the tool state.
      */
     getTabs(): ISidebarTab[]
+
+    removeFromMap(): void;
 }
 export default ISidebarTool;
