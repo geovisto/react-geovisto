@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { Geovisto, IMap, IMapToolsManager } from '..';
 import { IGeovistoMapProps } from './components/Types';
 
@@ -66,7 +66,7 @@ export const GeovistoMap = (props : IGeovistoMapProps) : JSX.Element => {
                 return map;
             }
         }
-    }
+    };
 
 
     // Method adds callback to the children
@@ -76,7 +76,7 @@ export const GeovistoMap = (props : IGeovistoMapProps) : JSX.Element => {
             return;
             
         const newProps = {...child.props};
-        newProps.onRenderChange = handleRenderCallback
+        newProps.onRenderChange = handleRenderCallback;
 
         return React.cloneElement(child, newProps, child.props.children);
     });

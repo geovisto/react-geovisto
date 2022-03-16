@@ -6,7 +6,7 @@ export const MarkerLayerTool = (props: IToolDataProps<IMarkerLayerToolProps>) : 
 
     // Run on component mount
     useEffect(() => {
-    	props.onToolChange!(props);
+        props.onToolChange!(props);
     }, []);
 
     return <></>;

@@ -5,29 +5,17 @@ import {
 } from '@storybook/react/types-6-0';
 
 // React
-import React, { Component, useEffect, useState } from "react";
+import React, { useState } from "react";
 
-// import Tool from "../react/Tool";
 import { GeovistoMap } from "../react/GeovistoMap";
 
 import './Demo.scss';
 
-// Geovisto Tools
-import {
-    GeovistoSidebarTool,
-    GeovistoFiltersTool,
-    GeovistoThemesTool,
-    GeovistoSelectionTool,
-    GeovistoTilesLayerTool,
-    GeovistoChoroplethLayerTool,
-    GeovistoMarkerLayerTool,
-    GeovistoConnectionLayerTool,
-} from '../tools';
 import { Geovisto, IMapTilesModel } from '..';
 
-import { CHOROPLETH_ID, MARKER_ID, SIDEBAR_ID, THEMES_ID, TILES_ID } from '../react/Constants'
+import { CHOROPLETH_ID, MARKER_ID, SIDEBAR_ID, TILES_ID } from '../react/Constants'
 
-import { ChoroplethLayerTool, MarkerLayerTool, SidebarTab, SidebarTool, ThemesTool, TilesLayerTool, ToolGroup } from '../react/components/index';
+import { ChoroplethLayerTool, MarkerLayerTool, SidebarTab, SidebarTool, TilesLayerTool, ToolGroup } from '../react/components/index';
 
 
 /* example of screen component with grid layout and card wrapper usage */
@@ -235,8 +223,8 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                     
                 >
                     <ToolGroup>
-                        {/*
-                        <SidebarTool id={SIDEBAR_ID} label={stringToggle} enabled={enableToggle}>
+                        
+                        <SidebarTool id={SIDEBAR_ID} label="label" enabled={enableSidebarToggle}>
                             {/* <SidebarTab
                                 tool={THEMES_ID}
                                 enabled={true}
@@ -244,10 +232,10 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                                 icon='<i class="fa fa-btc"></i>'
                                 checkButton={false}
                             /> */}
-                            {/* <SidebarTab
+                            <SidebarTab
                                 tool={TILES_ID}
                                 enabled={enableSidebarTabToggle}
-                                name="[My] Tiles layer"
+                                name={stringToggle}
                                 // icon='<i class="fa fa-eur"></i>'
                                 icon={iconToggle}
                                 checkButton={true}
@@ -276,7 +264,7 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                                 icon='<i class="fa fa-gbp"></i>'
                                 checkButton={true}
                             />
-                        </SidebarTool> */}
+                        </SidebarTool>
                         <TilesLayerTool 
                             id={TILES_ID}
                             enabled={enableToggle}

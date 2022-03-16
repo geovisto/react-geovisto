@@ -140,6 +140,7 @@ class MapTool extends MapObject implements IMapTool, IMapEventListener {
      */
     public setEnabled(enabled: boolean) : void {
         if(this.isEnabled() != enabled) {
+            console.log(`Please set ${enabled}`);
             this.getState().setEnabled(enabled);
         }
     }

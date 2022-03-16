@@ -1,5 +1,3 @@
-import { ReactElement } from "react";
-import { IMapToolsManager } from "../..";
 import { IMap, IMapConfigManager, IMapProps } from "../../index.core"
 
 export const ENABLED_PROP = 'enabled';
@@ -22,9 +20,8 @@ export type IToolDataProps<T> = T & {
     onToolChange?: (data: IToolData, property?: string) => void;
 }
 
-// export type IToolData = [string | React.JSXElementConstructor<any>, any];
-
 export type IToolData = any;
 
+// TODO: Sjednodit s IReactElement v Constants
 export type IToolType = string | React.JSXElementConstructor<any>;
 

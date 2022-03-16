@@ -1,7 +1,6 @@
 import React, { forwardRef, useEffect, useImperativeHandle } from 'react'
 import {SidebarTab as SidebarTabType}  from '.';
 import { ISidebarTab, ISidebarTabProps, ISidebarToolProps, SidebarTab } from '../..';
-import { useGeovistoContext } from '../context/GeovistoContext';
 import { useDidUpdateEffect } from './Hooks';
 import { ENABLED_PROP, IToolData, IToolDataProps } from './Types';
 
@@ -16,11 +15,10 @@ export type ISidebarToolHandle =  {
 
 type ISidebarTabs = [ string | undefined, ISidebarTab ][];
 
-// export const SidebarTool = (props : ISidebarToolDataProps<ISidebarToolProps>) : JSX.Element  => {
+
 export const SidebarTool = forwardRef<ISidebarToolHandle, ISidebarToolDataProps<ISidebarToolProps>>((props, ref) : JSX.Element => {
 
-    // const context = useGeovistoContext();
-
+    // Emitter from parent component to process all tabs 
     useImperativeHandle(ref, () => ({
 
         getProcessedTabs() {
@@ -32,7 +30,7 @@ export const SidebarTool = forwardRef<ISidebarToolHandle, ISidebarToolDataProps<
     // Process all children elements 
     const processTabs = () => {
 
-        let usedTabs: ISidebarTabs = [];    
+        const usedTabs: ISidebarTabs = [];    
         
         React.Children.forEach(props.children, (child, index) => {
         
@@ -40,10 +38,10 @@ export const SidebarTool = forwardRef<ISidebarToolHandle, ISidebarToolDataProps<
                 return;
             }
 
-            let tabProps = {...child.props};
+            const tabProps = {...child.props};
             
             // export and delete additional property used to identify the tool
-            let toolId = child.props.tool as string;
+            const toolId = child.props.tool as string;
             delete tabProps.tool;
 
             // Skip the tab if some tab for the same tool was already defined
@@ -56,14 +54,17 @@ export const SidebarTool = forwardRef<ISidebarToolHandle, ISidebarToolDataProps<
         });
         
         props.onToolChange!({...props, tabs: usedTabs});
-    } 
+    }; 
 
 
     const handleToolChange = (toolData: IToolData, property: string) => {
+        // TODO: When SidebarTab is Changed
         processTabs();
     };
 
 
+    // FIXME: Sidebar needs to be probably rerendered even when only enabled is changed,
+    // so is added here -> investigate
     // Run on component mount
     useEffect(() => {
 
@@ -71,13 +72,14 @@ export const SidebarTool = forwardRef<ISidebarToolHandle, ISidebarToolDataProps<
 
     }, [props.id,
         props.icon,
-        props.label,]);
+        props.label,
+        props.enabled]);
 
     // Run on component update
-    useDidUpdateEffect(() => {
-        props.onToolChange!(props, ENABLED_PROP);
+    // useDidUpdateEffect(() => {
+    //     props.onToolChange!({...props}, ENABLED_PROP);
 
-    },[props.enabled]);
+    // },[props.enabled]);
 
 
     /**
@@ -90,8 +92,8 @@ export const SidebarTool = forwardRef<ISidebarToolHandle, ISidebarToolDataProps<
             return; 
         } 
 
-        let newProps = {...child.props};
-        newProps.onToolChange = handleToolChange
+        const newProps = {...child.props};
+        newProps.onToolChange = handleToolChange;
 
         return React.cloneElement(child, newProps, child.props.children);
     });

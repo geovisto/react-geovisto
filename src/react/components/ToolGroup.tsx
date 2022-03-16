@@ -2,10 +2,10 @@ import React, { useRef, useState } from 'react'
 import { ChoroplethLayerTool, MarkerLayerTool, SidebarTool, ThemesTool, TilesLayerTool } from '.';
 import { GeovistoChoroplethLayerTool, GeovistoMarkerLayerTool, GeovistoSidebarTool, 
          GeovistoThemesTool, GeovistoTilesLayerTool, IMapTool, IMapToolsManager, ISidebarTool, ISidebarToolProps, SidebarToolDefaults, } from '../..';
-import { Geovisto, ILayerTool } from '../../index.core';
+import { DataManagerChangeEvent, Geovisto, ILayerTool } from '../../index.core';
 import { CustomTool } from './CustomTool';
 import { ISidebarToolHandle } from './SidebarTool';
-import { ENABLED_PROP, IToolData, IToolGroupProps, IToolType } from './Types';
+import { ENABLED_PROP, IToolData, IToolGroupProps, IToolType, } from './Types';
 import { IChoroplethLayerToolProps, IMarkerLayerToolProps, IThemesToolProps, ITilesLayerToolProps } from '../../tools';
 import { supportedComponentTypes } from '../Constants';
 
@@ -27,8 +27,9 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
             setManager(mapToolsManager);
     };
 
-    const processTool = (toolType: IToolType, toolData: IToolData) => {
+    const processTool = (toolType: IToolType, toolData: IToolData): IMapTool => {
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { children, onToolChange, ...toolProps } = toolData;
 
         switch (toolType) {
@@ -43,10 +44,10 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
             case ThemesTool:
                 return GeovistoThemesTool.createTool(toolProps as IThemesToolProps);
             case CustomTool:
-                return null; //TODO: Change this to return some function
+                //TODO: Change this to return some function
+                throw new Error("Not implemented");
             default:
                 throw new Error("Error: Unknown type of the tool. Component is not valid.");
-                return undefined;
         }
     };
 
@@ -60,7 +61,7 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
         const sidebarTool = manager.getByType(SidebarToolDefaults.TYPE)[0];
 
         // Disable also checkbox on the tab when the tool is disabled
-        if(sidebarTool !== undefined) {
+        if(sidebarTool !== undefined && tool !== sidebarTool) {
 
             const tabs = (sidebarTool as ISidebarTool).getTabs();
             
@@ -104,16 +105,10 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
             if(manager.getAll().length < childrenCount)
             {
                 const tool = processTool(toolElement.type, toolData);
-
-                manager.add(tool!);
-                setManager(manager);
-                
-                // setTools(tools => [...tools, tool]);
+                manager.add(tool);
                 
                 // Added tool were the latest to process, map is ready to render
-                if(manager.getAll().length === childrenCount)
-                {
-                    // let mapToolsManager = props.onRenderChange!(manager);
+                if(manager.getAll().length === childrenCount) {
                     emitRerender();
                 }
 
@@ -144,23 +139,24 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
                     // Potřebuju to odstranit z Leaflet mapy 
                     // Musím vzít layer items (získat přes getlayeritems (v abstractlayertool - 145))
                     // A odstranit je fyzicky z té mapy
- 
+                    // setManager(manager);
 
                     const sidebarTool = manager.getByType(SidebarToolDefaults.TYPE)[0] as ISidebarTool;
                     // let sidebarTab = sidebarTool.getTabs().find(tab => tab.getId() == toolData.id);
 
                     // Sidebar tool is present in configuration
-                    if(sidebarTool !== undefined) {
+                    if(sidebarTool !== undefined && toolData.enabled) {
 
                         // sidebarTool.removeFromMap();
-                        sidebarRef.current!.getProcessedTabs();                            
+                        sidebarRef.current?.getProcessedTabs();                            
                     }
                     // Sidebar component is not present, rerender the tool immiediately
                     else {
-
-                        console.error("Sidebar is not present, rerender the tool immiediately");
+                        console.warn("Sidebar is not present, rerender the tool immiediately");
                         
-                        emitRerender();
+                        if(toolData.enabled) {
+                            emitRerender();
+                        }
                     }
 
                 }
@@ -176,7 +172,14 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
                     const  processedTool = processTool(toolElement.type, toolData);
                     manager.add(processedTool!);
 
-                    emitRerender();
+                    //TODO: setManager(manager) ???????
+
+                    console.log(manager);
+
+                    // FIXME: Tento if byl přidán a nevím jestli je úplně legit
+                    if(toolData.enabled) {
+                        emitRerender();
+                    }
                 }
                 else {
                     throw Error(`Update: Tool is not supported`);
@@ -203,8 +206,7 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
         if (!React.isValidElement(child) || !supportedComponentTypes.includes(child.type)) {
             
             console.warn(`Following element is not supported and will be skipped.`);
-            console.warn(child);
-            
+            console.warn(child);            
             return;
         }            
 
