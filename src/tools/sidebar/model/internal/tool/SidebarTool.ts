@@ -116,7 +116,6 @@ class SidebarTool extends MapTool implements ISidebarTool {
         super.create();
         this.createSidebar();
         this.createTabs();
-        console.warn(this.getState().getSidebar());
         return this;
     }
 
@@ -136,6 +135,8 @@ class SidebarTool extends MapTool implements ISidebarTool {
         }
     }
 
+
+    // TODO: This is not original code -> remove
     public removeFromMap(): void {
         if(this.isEnabled()) {
             const map = this.getMap()?.getState().getLeafletMap();

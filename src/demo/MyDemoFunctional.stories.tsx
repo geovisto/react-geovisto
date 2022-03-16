@@ -67,6 +67,7 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
 
     const [enableToggle, setEnableToggle] = useState(true);
     const [stringToggle, setStringToggle] = useState("string111");
+    const [iconToggle, setIconToggle] = useState('<i class="fa fa-try" aria-hidden="true"></i>');
     const [basemapToggle, setBasemapToggle] = useState<IMapTilesModel>(basemap1);
     const [enableSidebarToggle, setEnableSidebarToggle] = useState(true);
     const [enableSidebarTabToggle, setEnableSidebarTabToggle] = useState(true);
@@ -208,9 +209,11 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
             <div className='btn-container'>
                 <button onClick={() => setEnableToggle(!enableToggle)}>{enableToggle ? "true" : "false"}</button>
                 <button onClick={() => setStringToggle(current => current == "string222" ? "string111" : "string222")}>{stringToggle}</button>
+                <button onClick={() => setIconToggle(current => current == '<i class="fa fa-ils" aria-hidden="true"></i>' ? '<i class="fa fa-try" aria-hidden="true"></i>' : '<i class="fa fa-ils" aria-hidden="true"></i>')}>{iconToggle == '<i class="fa fa-ils" aria-hidden="true"></i>' ? <i className="fa fa-ils" aria-hidden="true"></i> : <i className="fa fa-try" aria-hidden="true"></i>}</button>
                 <button onClick={() => setBasemapToggle(current => current.url == basemap1.url ? basemap2 : basemap1)}>{basemapToggle.url == basemap1.url ? "Seznam maps" : "Openstreet maps"}</button>
                 <button onClick={() => setEnableSidebarToggle(!enableSidebarToggle)}>{"Sidebar: " + (enableSidebarToggle ? "true" : "false")}</button>
                 <button onClick={() => setEnableSidebarTabToggle(!enableSidebarTabToggle)}>{"SidebarTab: " + (enableSidebarTabToggle ? "true" : "false")}</button>
+                
 
             </div>
 
@@ -232,7 +235,8 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                     
                 >
                     <ToolGroup>
-                        <SidebarTool id={SIDEBAR_ID} label="Super cool sidebar">
+                        {/*
+                        <SidebarTool id={SIDEBAR_ID} label={stringToggle} enabled={enableToggle}>
                             {/* <SidebarTab
                                 tool={THEMES_ID}
                                 enabled={true}
@@ -240,21 +244,22 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                                 icon='<i class="fa fa-btc"></i>'
                                 checkButton={false}
                             /> */}
-                            <SidebarTab
+                            {/* <SidebarTab
                                 tool={TILES_ID}
                                 enabled={enableSidebarTabToggle}
-                                name={stringToggle}
-                                icon='<i class="fa fa-eur"></i>'
+                                name="[My] Tiles layer"
+                                // icon='<i class="fa fa-eur"></i>'
+                                icon={iconToggle}
                                 checkButton={true}
-                            />
-                            {/* <SidebarTab
+                            /> 
+                            <SidebarTab
                                 tool={TILES_ID + "2"}
                                 enabled={true}
                                 name="[My] OpenStreetMap layer"
                                 icon='<i class="fa fa-won"></i>'
                                 checkButton={true}
-                            /> */}
-                            {/* {enableSidebarToggle &&
+                            />
+                            {enableSidebarToggle &&
 
                                 <SidebarTab
                                 tool={CHOROPLETH_ID}
@@ -263,14 +268,7 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                                 icon='<i class="fa fa-usd"></i>'
                                 checkButton={true}
                                 />
-                            } */}
-                                <SidebarTab
-                                tool={CHOROPLETH_ID}
-                                enabled={true}
-                                name="[My] Choropleth"
-                                icon='<i class="fa fa-usd"></i>'
-                                checkButton={true}
-                                />
+                            }
                             <SidebarTab
                                 tool={MARKER_ID}
                                 enabled={true}
@@ -278,11 +276,11 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                                 icon='<i class="fa fa-gbp"></i>'
                                 checkButton={true}
                             />
-                        </SidebarTool>
+                        </SidebarTool> */}
                         <TilesLayerTool 
                             id={TILES_ID}
-                            enabled={true}
-                            label={stringToggle}
+                            enabled={enableToggle}
+                            label="Awesome tiles layer label"
                             baseMap={basemapToggle}
                             // baseMap={{
                             //     url:'https://mapserver.mapy.cz/turist-m/{z}-{x}-{y}',
@@ -310,6 +308,7 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                             id={MARKER_ID}
                             enabled={enableToggle}
                         />
+                        <div>whatever</div>
                         {/* <ThemesTool
                             id={THEMES_ID}
                             manager={GeovistoThemesTool.createThemesManager([

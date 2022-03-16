@@ -18,13 +18,11 @@ export const SidebarTab = (props: ISidebarTabDataProps<ISidebarTabProps>) : JSX.
         props.checkButton
     ]);
 
-
     useDidUpdateEffect(() => {
         console.log('Enable change');
         props.onToolChange!(props, ENABLED_PROP);
     
-    }, [props.enabled
-    ]);
+    }, [props.enabled]);
     
     return <></>
 }

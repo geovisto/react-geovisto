@@ -1,7 +1,9 @@
 import React, { forwardRef, useEffect, useImperativeHandle } from 'react'
+import {SidebarTab as SidebarTabType}  from '.';
 import { ISidebarTab, ISidebarTabProps, ISidebarToolProps, SidebarTab } from '../..';
 import { useGeovistoContext } from '../context/GeovistoContext';
-import { IToolData, IToolDataProps } from './Types';
+import { useDidUpdateEffect } from './Hooks';
+import { ENABLED_PROP, IToolData, IToolDataProps } from './Types';
 
 // FIXME: remove export?
 // Exclude undesirable properties
@@ -27,20 +29,28 @@ export const SidebarTool = forwardRef<ISidebarToolHandle, ISidebarToolDataProps<
     
     }));
 
+    // Process all children elements 
     const processTabs = () => {
 
         let usedTabs: ISidebarTabs = [];    
         
-        React.Children.map(props.children, (child, index) => {
+        React.Children.forEach(props.children, (child, index) => {
         
-            if (!React.isValidElement(child)) 
+            if (!React.isValidElement(child) || child.type !== SidebarTabType) {
                 return;
+            }
 
             let tabProps = {...child.props};
             
             // export and delete additional property used to identify the tool
             let toolId = child.props.tool as string;
             delete tabProps.tool;
+
+            // Skip the tab if some tab for the same tool was already defined
+            if(usedTabs.some(tab => (tab[0] as string) === toolId)) {
+                console.error(`Duplicity: SidebarTab with id '${toolId}' is already defined`);
+                return;
+            }
 
             usedTabs.push([toolId, new SidebarTab(tabProps as ISidebarTabProps)]);
         });
@@ -54,15 +64,31 @@ export const SidebarTool = forwardRef<ISidebarToolHandle, ISidebarToolDataProps<
     };
 
 
+    // Run on component mount
     useEffect(() => {
+
        processTabs();
-    }, []);
+
+    }, [props.id,
+        props.icon,
+        props.label,]);
+
+    // Run on component update
+    useDidUpdateEffect(() => {
+        props.onToolChange!(props, ENABLED_PROP);
+
+    },[props.enabled]);
 
 
+    /**
+     * Validate all children and add onToolChange callback
+     */
     const childrenExtended = React.Children.map(props.children, (child, index) => {
     
-        if (!React.isValidElement(child)) 
+        // Only SidebarTab component is expected as a children
+        if (!React.isValidElement(child) || child.type !== SidebarTabType) {
             return; 
+        } 
 
         let newProps = {...child.props};
         newProps.onToolChange = handleToolChange
@@ -70,14 +96,6 @@ export const SidebarTool = forwardRef<ISidebarToolHandle, ISidebarToolDataProps<
         return React.cloneElement(child, newProps, child.props.children);
     });
 
-
-
-    // Run on component update
-    // useDidMountEffect(() => {
-    //     props.onToolChange!(props);
-
-    // },[props.children]);
-
-    
     return <>{childrenExtended}</>;
 });
+

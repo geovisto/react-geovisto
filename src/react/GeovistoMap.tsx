@@ -40,7 +40,7 @@ export const GeovistoMap = (props : IGeovistoMapProps) : JSX.Element => {
                 console.warn("--------------MAP DRAW--------------");
                 // console.log(mapProps);
                 
-                let mapObject = Geovisto.createMap(mapProps);
+                const mapObject = Geovisto.createMap(mapProps);
     
                 setMap(mapObject);
                 
@@ -75,7 +75,7 @@ export const GeovistoMap = (props : IGeovistoMapProps) : JSX.Element => {
         if (!React.isValidElement(child))
             return;
             
-        let newProps = {...child.props};
+        const newProps = {...child.props};
         newProps.onRenderChange = handleRenderCallback
 
         return React.cloneElement(child, newProps, child.props.children);
@@ -85,4 +85,4 @@ export const GeovistoMap = (props : IGeovistoMapProps) : JSX.Element => {
     return (
         <div id={props.id} className={props.className}>{childrenWithRenderCallback}</div>
     );
-}
+};

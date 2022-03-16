@@ -1,4 +1,4 @@
-import { ChoroplethLayerTool, MarkerLayerTool, SidebarTool, ThemesTool, TilesLayerTool } from "../tools";
+import { ChoroplethLayerTool, MarkerLayerTool, SidebarTool, ThemesTool, TilesLayerTool, ToolGroup } from "./components/index";
 
 export const TILES_ID = "geovisto-tool-layer-map";
 export const SIDEBAR_ID = "geovisto-tool-sidebar";
@@ -10,10 +10,11 @@ export const TIMELINE_ID = "geovisto-tool-timeline";
 export const SELECTION_ID = "geovisto-tool-selection";
 export const FILTERS_ID = "geovisto-tool-filters";
 
-export const supportedTypes = [
+export const supportedComponentTypes : any[] = [
     SidebarTool,
     TilesLayerTool,
     ChoroplethLayerTool,
     MarkerLayerTool,
-    ThemesTool
+    ThemesTool,
+    // TODO: Add Custom tool component (that implements ILayerTool);
 ]
