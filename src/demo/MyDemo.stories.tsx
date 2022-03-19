@@ -27,13 +27,13 @@ import { Geovisto } from '..';
 
 /* example of screen component with grid layout and card wrapper usage */
 
-const C_ID_select_data = "leaflet-combined-map-select-data";
-const C_ID_check_data = "leaflet-combined-map-check-data";
-const C_ID_input_data = "leaflet-combined-map-input-data";
-const C_ID_check_config = "leaflet-combined-map-check-config";
-const C_ID_input_config = "leaflet-combined-map-input-config";
-const C_ID_input_import = "leaflet-combined-map-input-import";
-const C_ID_input_export = "leaflet-combined-map-input-export";
+// const C_ID_select_data = "leaflet-combined-map-select-data";
+// const C_ID_check_data = "leaflet-combined-map-check-data";
+// const C_ID_input_data = "leaflet-combined-map-input-data";
+// const C_ID_check_config = "leaflet-combined-map-check-config";
+// const C_ID_input_config = "leaflet-combined-map-input-config";
+// const C_ID_input_import = "leaflet-combined-map-input-import";
+// const C_ID_input_export = "leaflet-combined-map-input-export";
 
 class MyDemo extends Component<Record<string, never>, { data: unknown, config: Record<string, unknown> }> {
     

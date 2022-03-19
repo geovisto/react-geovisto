@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react'
+import React from 'react';
 import { ISidebarTabProps } from '../..';
+import { ENABLED_PROP } from '../Constants';
 import { useDidUpdateEffect } from './Hooks';
-import { ENABLED_PROP, IToolDataProps } from './Types';
+import { IToolDataProps } from './Types';
 
+// TODO: Export somewhere?
 type ISidebarTabDataProps<T> =  IToolDataProps<T> & {
     tool: string
 }
@@ -10,8 +12,7 @@ type ISidebarTabDataProps<T> =  IToolDataProps<T> & {
 export const SidebarTab = (props: ISidebarTabDataProps<ISidebarTabProps>) : JSX.Element => {
 
     useDidUpdateEffect(() => {
-        console.log('change');
-        props.onToolChange!(props);
+        props.onToolChange?.(props);
     
     }, [props.name,
         props.icon,
@@ -19,10 +20,9 @@ export const SidebarTab = (props: ISidebarTabDataProps<ISidebarTabProps>) : JSX.
     ]);
 
     useDidUpdateEffect(() => {
-        console.log('Enable change');
-        props.onToolChange!(props, ENABLED_PROP);
+        props.onToolChange?.(props, ENABLED_PROP);
     
     }, [props.enabled]);
     
-    return <></>
-}
+    return <></>;
+};

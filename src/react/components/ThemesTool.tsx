@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
-import { IThemesToolProps, ITilesLayerToolProps } from '../..';
+import React, { useEffect } from 'react';
+import { IThemesToolProps } from '../..';
 import { IToolDataProps } from './Types';
 
 
@@ -7,8 +7,8 @@ export const ThemesTool = (props: IToolDataProps<IThemesToolProps>) : JSX.Elemen
 
     // Run on component mount
     useEffect(() => {
-    	props.onToolChange!(props);
+        props.onToolChange?.(props);
     }, []);
 
     return <></>;
-}
+};

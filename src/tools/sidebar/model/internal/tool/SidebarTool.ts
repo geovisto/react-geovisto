@@ -135,18 +135,6 @@ class SidebarTool extends MapTool implements ISidebarTool {
         }
     }
 
-
-    // TODO: This is not original code -> remove
-    public removeFromMap(): void {
-        if(this.isEnabled()) {
-            const map = this.getMap()?.getState().getLeafletMap();
-            if(map) {
-                let sidebar = this.getState().getSidebar()?.remove();
-                this.getState().setSidebar(sidebar!);
-            }
-        }
-    } 
-
     /**
      * It returns structure of sidebar defined with respect to the leaflet-sidebar-v2 plugin specification.
      *

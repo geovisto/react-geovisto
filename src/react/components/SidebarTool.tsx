@@ -1,8 +1,7 @@
-import React, { forwardRef, useEffect, useImperativeHandle } from 'react'
+import React, { forwardRef, useEffect, useImperativeHandle } from 'react';
 import {SidebarTab as SidebarTabType}  from '.';
 import { ISidebarTab, ISidebarTabProps, ISidebarToolProps, SidebarTab } from '../..';
-import { useDidUpdateEffect } from './Hooks';
-import { ENABLED_PROP, IToolData, IToolDataProps } from './Types';
+import { IToolData, IToolDataProps } from './Types';
 
 // FIXME: remove export?
 // Exclude undesirable properties
@@ -39,21 +38,22 @@ export const SidebarTool = forwardRef<ISidebarToolHandle, ISidebarToolDataProps<
             }
 
             const tabProps = {...child.props};
-            
+            tabProps.key = index;
+
             // export and delete additional property used to identify the tool
             const toolId = child.props.tool as string;
             delete tabProps.tool;
 
             // Skip the tab if some tab for the same tool was already defined
             if(usedTabs.some(tab => (tab[0] as string) === toolId)) {
-                console.error(`Duplicity: SidebarTab with id '${toolId}' is already defined`);
+                console.warn(`Duplicity: SidebarTab with id '${toolId}' is already defined and will be skipped`);
                 return;
             }
 
             usedTabs.push([toolId, new SidebarTab(tabProps as ISidebarTabProps)]);
         });
         
-        props.onToolChange!({...props, tabs: usedTabs});
+        props.onToolChange?.({...props, tabs: usedTabs});
     }; 
 
 
@@ -62,17 +62,14 @@ export const SidebarTool = forwardRef<ISidebarToolHandle, ISidebarToolDataProps<
         processTabs();
     };
 
-
-    // FIXME: Sidebar needs to be probably rerendered even when only enabled is changed,
-    // so is added here -> investigate
     // Run on component mount
     useEffect(() => {
-
-       processTabs();
-
+        processTabs();
+        
     }, [props.id,
         props.icon,
         props.label,
+        // Leaflet map needs to be re-rendered when sidebar enabled state is modified
         props.enabled]);
 
     // Run on component update
@@ -92,12 +89,12 @@ export const SidebarTool = forwardRef<ISidebarToolHandle, ISidebarToolDataProps<
             return; 
         } 
 
-        const newProps = {...child.props};
-        newProps.onToolChange = handleToolChange;
+        const tabProps = {...child.props};
+        tabProps.key = index;
+        tabProps.onToolChange = handleToolChange;
 
-        return React.cloneElement(child, newProps, child.props.children);
+        return React.cloneElement(child, tabProps, child.props.children);
     });
 
     return <>{childrenExtended}</>;
 });
-

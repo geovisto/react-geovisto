@@ -76,6 +76,8 @@ export const GeovistoMap = (props : IGeovistoMapProps) : JSX.Element => {
             return;
             
         const newProps = {...child.props};
+         
+        newProps.key = index;
         newProps.onRenderChange = handleRenderCallback;
 
         return React.cloneElement(child, newProps, child.props.children);

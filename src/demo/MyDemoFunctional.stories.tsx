@@ -13,35 +13,37 @@ import './Demo.scss';
 
 import { Geovisto, IMapTilesModel } from '..';
 
-import { CHOROPLETH_ID, MARKER_ID, SIDEBAR_ID, TILES_ID } from '../react/Constants'
+import { CHOROPLETH_ID, MARKER_ID, SIDEBAR_ID, TILES_ID } from '../react/Constants';
 
 import { ChoroplethLayerTool, MarkerLayerTool, SidebarTab, SidebarTool, TilesLayerTool, ToolGroup } from '../react/components/index';
 
 
 /* example of screen component with grid layout and card wrapper usage */
 
-const C_ID_select_data = "leaflet-combined-map-select-data";
-const C_ID_check_data = "leaflet-combined-map-check-data";
-const C_ID_input_data = "leaflet-combined-map-input-data";
-const C_ID_check_config = "leaflet-combined-map-check-config";
-const C_ID_input_config = "leaflet-combined-map-input-config";
-const C_ID_input_import = "leaflet-combined-map-input-import";
-const C_ID_input_export = "leaflet-combined-map-input-export";
+// const C_ID_select_data = "leaflet-combined-map-select-data";
+// const C_ID_check_data = "leaflet-combined-map-check-data";
+// const C_ID_input_data = "leaflet-combined-map-input-data";
+// const C_ID_check_config = "leaflet-combined-map-check-config";
+// const C_ID_input_config = "leaflet-combined-map-input-config";
+// const C_ID_input_import = "leaflet-combined-map-input-import";
+// const C_ID_input_export = "leaflet-combined-map-input-export";
+
+
+import polygons from '../../static/geo/country_polygons.json';
+import polygons2 from '../../static/geo/czech_districts_polygons.json';
+import centroids from '../../static/geo/country_centroids.json';
+import centroids2 from '../../static/geo/czech_districts_centroids.json';
+
+import demoData from '../../static/data/covidCzechDistricts.json';
+import demoConfig from '../../static/config/config.json';
 
 const MyDemoFunctional : React.FC<Record<string, never>> = () => {
 
-    let polygons = require("/static/geo/country_polygons.json");
-    let centroids = require("/static/geo/country_centroids.json");
-    let polygons2 = require("/static/geo/czech_districts_polygons.json");
-    let centroids2 = require("/static/geo/czech_districts_centroids.json");
-    // let map: React.RefObject<typeof GeovistoMap>;
-
     // implicit data
-    // const [data, setData] = useState<unknown>(require('/static/data/covidCzechDistricts.json'));
-    const [data] = useState<unknown>(require('/static/data/demo1.json'));
+    const [data] = useState<unknown>(demoData);
 
-    // imlipcit config
-    const [config] = useState<Record<string, unknown>>(require('/static/config/config.json'));
+    // implicit config
+    const [config] = useState<Record<string, unknown>>(demoConfig);
 
     const basemap1 = {
         url:'https://mapserver.mapy.cz/turist-m/{z}-{x}-{y}',
@@ -55,6 +57,7 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
 
     const [enableToggle, setEnableToggle] = useState(true);
     const [stringToggle, setStringToggle] = useState("string111");
+    const [idToggle, setIdToggle] = useState(TILES_ID);
     const [iconToggle, setIconToggle] = useState('<i class="fa fa-try" aria-hidden="true"></i>');
     const [basemapToggle, setBasemapToggle] = useState<IMapTilesModel>(basemap1);
     const [enableSidebarToggle, setEnableSidebarToggle] = useState(true);
@@ -201,6 +204,8 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                 <button onClick={() => setBasemapToggle(current => current.url == basemap1.url ? basemap2 : basemap1)}>{basemapToggle.url == basemap1.url ? "Seznam maps" : "Openstreet maps"}</button>
                 <button onClick={() => setEnableSidebarToggle(!enableSidebarToggle)}>{"Sidebar: " + (enableSidebarToggle ? "true" : "false")}</button>
                 <button onClick={() => setEnableSidebarTabToggle(!enableSidebarTabToggle)}>{"SidebarTab: " + (enableSidebarTabToggle ? "true" : "false")}</button>
+                <button onClick={() => setIdToggle(id => id == TILES_ID ? `${TILES_ID} - edited` : TILES_ID)}>{idToggle}</button>
+
                 
 
             </div>
@@ -266,7 +271,7 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                             />
                         </SidebarTool>
                         <TilesLayerTool 
-                            id={TILES_ID}
+                            id={idToggle}
                             enabled={enableToggle}
                             label="Awesome tiles layer label"
                             baseMap={basemapToggle}
@@ -290,13 +295,12 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                             id={CHOROPLETH_ID} 
                             icon="whatever"
                             label="label"
-                            enabled={enableToggle}
+                            enabled={true}
                         />
                         <MarkerLayerTool 
                             id={MARKER_ID}
-                            enabled={enableToggle}
+                            enabled={true}
                         />
-                        <div>whatever</div>
                         {/* <ThemesTool
                             id={THEMES_ID}
                             manager={GeovistoThemesTool.createThemesManager([
@@ -318,7 +322,7 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
             </div>
         </div>
     );
-}
+};
 
 export default {
     title: 'Maps',
