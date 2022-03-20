@@ -58,6 +58,9 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
     const [enableToggle, setEnableToggle] = useState(true);
     const [stringToggle, setStringToggle] = useState("string111");
     const [idToggle, setIdToggle] = useState(TILES_ID);
+    const [idToggle2, setIdToggle2] = useState(CHOROPLETH_ID);
+    const [idToggle3, setIdToggle3] = useState(SIDEBAR_ID);
+    const [idUndefinedToggle, setIdUndefinedToggle] = useState(TILES_ID + "2");
     const [iconToggle, setIconToggle] = useState('<i class="fa fa-try" aria-hidden="true"></i>');
     const [basemapToggle, setBasemapToggle] = useState<IMapTilesModel>(basemap1);
     const [enableSidebarToggle, setEnableSidebarToggle] = useState(true);
@@ -204,10 +207,10 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                 <button onClick={() => setBasemapToggle(current => current.url == basemap1.url ? basemap2 : basemap1)}>{basemapToggle.url == basemap1.url ? "Seznam maps" : "Openstreet maps"}</button>
                 <button onClick={() => setEnableSidebarToggle(!enableSidebarToggle)}>{"Sidebar: " + (enableSidebarToggle ? "true" : "false")}</button>
                 <button onClick={() => setEnableSidebarTabToggle(!enableSidebarTabToggle)}>{"SidebarTab: " + (enableSidebarTabToggle ? "true" : "false")}</button>
-                <button onClick={() => setIdToggle(id => id == TILES_ID ? `${TILES_ID} - edited` : TILES_ID)}>{idToggle}</button>
-
-                
-
+                <button onClick={() => setIdToggle(id => id == TILES_ID ? `${TILES_ID}-edited` : TILES_ID)}>{idToggle}</button>
+                <button onClick={() => setIdToggle2(id => id == CHOROPLETH_ID ? `${CHOROPLETH_ID}-edited` : CHOROPLETH_ID)}>{idToggle2}</button>
+                <button onClick={() => setIdToggle3(id => id == SIDEBAR_ID ? `${SIDEBAR_ID}-edited` : SIDEBAR_ID)}>{idToggle3}</button>
+                <button onClick={() => setIdUndefinedToggle(id => id === undefined ? TILES_ID + '2' : undefined)}>{idUndefinedToggle ? `id (${TILES_ID}2)`  : 'undefined'}</button>
             </div>
 
             <div className="demo-map">
@@ -229,7 +232,7 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                 >
                     <ToolGroup>
                         
-                        <SidebarTool id={SIDEBAR_ID} label="label" enabled={enableSidebarToggle}>
+                        <SidebarTool id={idToggle3} label="label" enabled={enableSidebarToggle}>
                             {/* <SidebarTab
                                 tool={THEMES_ID}
                                 enabled={true}
@@ -271,16 +274,26 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                             />
                         </SidebarTool>
                         <TilesLayerTool 
-                            id={idToggle}
-                            enabled={enableToggle}
+                                id={idToggle}
+                                enabled={enableToggle}
+                                label="Awesome tiles layer label"
+                                baseMap={basemapToggle}
+                                // baseMap={{
+                                //     url:'https://mapserver.mapy.cz/turist-m/{z}-{x}-{y}',
+                                //     maxZoom: 20,
+                                //     maxNativeZoom: 19
+                                // }}
+                            />
+                        {/* <TilesLayerTool 
+                            id={idUndefinedToggle}
+                            enabled={true}
                             label="Awesome tiles layer label"
-                            baseMap={basemapToggle}
                             // baseMap={{
                             //     url:'https://mapserver.mapy.cz/turist-m/{z}-{x}-{y}',
                             //     maxZoom: 20,
                             //     maxNativeZoom: 19
                             // }}
-                        />
+                        /> */}
                         {/* <TilesLayerTool 
                             id={TILES_ID + "2"}
                             enabled={false}
@@ -292,10 +305,10 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                             }}
                         /> */}
                         <ChoroplethLayerTool 
-                            id={CHOROPLETH_ID} 
+                            id={idToggle2} 
                             icon="whatever"
                             label="label"
-                            enabled={true}
+                            enabled={enableToggle}
                         />
                         <MarkerLayerTool 
                             id={MARKER_ID}

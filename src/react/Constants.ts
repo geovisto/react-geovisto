@@ -1,5 +1,5 @@
 import { ChoroplethLayerTool, MarkerLayerTool, SidebarTool, ThemesTool, TilesLayerTool } from "./components/index";
-import { ISupportedToolComponent } from "./components/Types";
+import { ISupportedToolComponent } from "./Types";
 
 export const TILES_ID = "geovisto-tool-layer-map";
 export const SIDEBAR_ID = "geovisto-tool-sidebar";

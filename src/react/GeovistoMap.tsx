@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Geovisto, IMap, IMapToolsManager } from '..';
-import { IGeovistoMapProps } from './components/Types';
+import { IGeovistoMapProps } from './Types';
 
 
 export const GeovistoMap = (props : IGeovistoMapProps) : JSX.Element => {
@@ -56,8 +56,7 @@ export const GeovistoMap = (props : IGeovistoMapProps) : JSX.Element => {
             else
             {
                 console.warn("--------------MAP RE-DRAW--------------");
-                // console.log(mapProps);
-                
+                console.log(mapProps);
                 // Redraw map with the updated properties
                 map.redraw(props.config ?? Geovisto.getMapConfigManagerFactory().default({}), mapProps);
                 console.log(map.getState());

@@ -1,8 +1,8 @@
 import React from 'react';
 import { ISidebarTabProps } from '../..';
 import { ENABLED_PROP } from '../Constants';
-import { useDidUpdateEffect } from './Hooks';
-import { IToolDataProps } from './Types';
+import { useDidUpdateEffect } from '../Hooks';
+import { IToolDataProps } from '../Types';
 
 // TODO: Export somewhere?
 type ISidebarTabDataProps<T> =  IToolDataProps<T> & {

@@ -1,5 +1,5 @@
 import { JSXElementConstructor } from "react";
-import { IMap, IMapConfigManager, IMapProps, IMapToolProps } from "../../index.core";
+import { IMap, IMapConfigManager, IMapProps, IMapToolProps } from "../index.core";
 
 export type IGeovistoMapProps = IMapProps & {
     // ref: RefObject<typeof MyGeovistoMap>,
@@ -23,7 +23,7 @@ export type IToolDataProps<T> = T & {
 export type IToolData = any;
 
 // Common type for component props
-type IToolComponentProps = IToolDataProps<IMapToolProps>;
+export type IToolComponentProps = IToolDataProps<IMapToolProps>;
 
 // Common type for all components 
 type IToolComponent = ((props: IToolComponentProps) => JSX.Element);

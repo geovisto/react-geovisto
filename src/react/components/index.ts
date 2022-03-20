@@ -1,4 +1,4 @@
-import { SidebarTool } from './SidebarTool'
+import { SidebarTool } from './SidebarTool';
 import { ToolGroup } from './ToolGroup';
 import { TilesLayerTool } from './TilesLayerTool';
 import { ChoroplethLayerTool } from './ChoroplethLayerTool';
@@ -14,4 +14,4 @@ export {
     ChoroplethLayerTool,
     MarkerLayerTool,
     ThemesTool
-}
+};

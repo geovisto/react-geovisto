@@ -185,14 +185,14 @@ class Demo extends Component<Record<string, never>, { data: unknown, config: Rec
         document.getElementById(C_ID_input_export).addEventListener('click', exportAction);
     }
 
-    readonly sidebarTabTiles = new SidebarTab({
+    public readonly sidebarTabTiles = new SidebarTab({
         enabled: true,
         name: "[CUSTOM] Map layer settings",
         icon: "<i class=\"fa fa-eur\"></i>",
         checkButton: false
     });
 
-    readonly sidebarTabChoropleth = new SidebarTab({
+    public readonly sidebarTabChoropleth = new SidebarTab({
         enabled: true,
         name: "[CUSTOM] Choropleth layer settings",
         icon: "<i class=\"fa fa-usd\"></i>",

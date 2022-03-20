@@ -1,45 +1,23 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { ITilesLayerToolProps } from '../..';
-import { ENABLED_PROP, ID_PROP } from '../Constants';
-import { useDidUpdateEffect } from './Hooks';
-import { IToolDataProps } from './Types';
+import { useDidToolEnabledUpdate, useDidToolIdUpdate, useToolEffect } from '../Hooks';
+import { IToolDataProps } from '../Types';
 
 
 export const TilesLayerTool = (props: IToolDataProps<ITilesLayerToolProps>) : JSX.Element => {
 
-    const {enabled, children, onToolChange, ...propsChanges} = props;
-    // console.error(propsChanges);
-
-    const [id, setId] = useState<string>();
-
-    // Run on component mount
-    useEffect(() => {
-        // console.log(props);
-        props.onToolChange?.(props);
-        setId(props.id);
-    
-    }, [props.name,
-        props.label,
+    // Run on component mount or any dependency update
+    useToolEffect(props, [
+        props.label, 
+        props.icon, 
+        props.name, 
         props.baseMap]);
-    // TODO: and others 
     
-    // Run on component update
-    useDidUpdateEffect(() => {
-        props.onToolChange?.(props, ENABLED_PROP);
+    // Run on 'enabled' property update
+    useDidToolEnabledUpdate(props, [props.enabled]);
 
-    },[props.enabled]);
-
-    // Run on component update
-    useDidUpdateEffect(() => {
-        console.log("ID CHANGED");
-        console.log(id);
-        console.log(props.id);
-
-        props.onToolChange?.({prevId: id, ...props}, ID_PROP);
-        
-        setId(props.id);
-
-    },[props.id]);
+    // Run on 'id' property update
+    useDidToolIdUpdate(props, [props.id]);
 
     return <></>;
 };
