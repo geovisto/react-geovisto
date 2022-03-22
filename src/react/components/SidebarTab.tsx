@@ -1,6 +1,5 @@
 import React from 'react';
 import { ISidebarTabProps } from '../..';
-import { ENABLED_PROP } from '../Constants';
 import { useDidUpdateEffect } from '../Hooks';
 import { IToolDataProps } from '../Types';
 
@@ -11,18 +10,18 @@ type ISidebarTabDataProps<T> =  IToolDataProps<T> & {
 
 export const SidebarTab = (props: ISidebarTabDataProps<ISidebarTabProps>) : JSX.Element => {
 
+    // Run on any dependency update
     useDidUpdateEffect(() => {
         props.onToolChange?.(props);
-    
-    }, [props.name,
+    }, [
+        props.id,
+        props.name,
         props.icon,
-        props.checkButton
+        props.enabled,
+        props.checkButton,
+        props.fragments,
+        props.tool
     ]);
 
-    useDidUpdateEffect(() => {
-        props.onToolChange?.(props, ENABLED_PROP);
-    
-    }, [props.enabled]);
-    
     return <></>;
 };

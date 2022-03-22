@@ -11,11 +11,11 @@ import { GeovistoMap } from "../react/GeovistoMap";
 
 import './Demo.scss';
 
-import { Geovisto, IMapTilesModel } from '..';
+import { Geovisto, GeovistoThemesTool, IMapTilesModel } from '..';
 
-import { CHOROPLETH_ID, MARKER_ID, SIDEBAR_ID, TILES_ID } from '../react/Constants';
+import { CHOROPLETH_ID, MARKER_ID, SIDEBAR_ID, THEMES_ID, TILES_ID } from '../react/Constants';
 
-import { ChoroplethLayerTool, MarkerLayerTool, SidebarTab, SidebarTool, TilesLayerTool, ToolGroup } from '../react/components/index';
+import { ChoroplethLayerTool, MarkerLayerTool, SidebarTab, SidebarTool, ThemesTool, TilesLayerTool, ToolGroup } from '../react/components/index';
 
 
 /* example of screen component with grid layout and card wrapper usage */
@@ -60,6 +60,7 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
     const [idToggle, setIdToggle] = useState(TILES_ID);
     const [idToggle2, setIdToggle2] = useState(CHOROPLETH_ID);
     const [idToggle3, setIdToggle3] = useState(SIDEBAR_ID);
+    const [idToggle4, setIdToggle4] = useState(THEMES_ID);
     const [idUndefinedToggle, setIdUndefinedToggle] = useState(TILES_ID + "2");
     const [iconToggle, setIconToggle] = useState('<i class="fa fa-try" aria-hidden="true"></i>');
     const [basemapToggle, setBasemapToggle] = useState<IMapTilesModel>(basemap1);
@@ -210,6 +211,7 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                 <button onClick={() => setIdToggle(id => id == TILES_ID ? `${TILES_ID}-edited` : TILES_ID)}>{idToggle}</button>
                 <button onClick={() => setIdToggle2(id => id == CHOROPLETH_ID ? `${CHOROPLETH_ID}-edited` : CHOROPLETH_ID)}>{idToggle2}</button>
                 <button onClick={() => setIdToggle3(id => id == SIDEBAR_ID ? `${SIDEBAR_ID}-edited` : SIDEBAR_ID)}>{idToggle3}</button>
+                <button onClick={() => setIdToggle4(id => id == THEMES_ID ? `${THEMES_ID}-edited` : THEMES_ID)}>{idToggle4}</button>
                 <button onClick={() => setIdUndefinedToggle(id => id === undefined ? TILES_ID + '2' : undefined)}>{idUndefinedToggle ? `id (${TILES_ID}2)`  : 'undefined'}</button>
             </div>
 
@@ -233,13 +235,13 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                     <ToolGroup>
                         
                         <SidebarTool id={idToggle3} label="label" enabled={enableSidebarToggle}>
-                            {/* <SidebarTab
+                            <SidebarTab
                                 tool={THEMES_ID}
                                 enabled={true}
                                 name="[My] Themes"
                                 icon='<i class="fa fa-btc"></i>'
                                 checkButton={false}
-                            /> */}
+                            />
                             <SidebarTab
                                 tool={TILES_ID}
                                 enabled={enableSidebarTabToggle}
@@ -255,16 +257,13 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                                 icon='<i class="fa fa-won"></i>'
                                 checkButton={true}
                             />
-                            {enableSidebarToggle &&
-
-                                <SidebarTab
-                                tool={CHOROPLETH_ID}
-                                enabled={true}
-                                name="[My] Choropleth"
-                                icon='<i class="fa fa-usd"></i>'
-                                checkButton={true}
-                                />
-                            }
+                            <SidebarTab
+                            tool={CHOROPLETH_ID}
+                            enabled={true}
+                            name="[My] Choropleth"
+                            icon='<i class="fa fa-usd"></i>'
+                            checkButton={true}
+                            />
                             <SidebarTab
                                 tool={MARKER_ID}
                                 enabled={true}
@@ -308,14 +307,15 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                             id={idToggle2} 
                             icon="whatever"
                             label="label"
-                            enabled={enableToggle}
+                            enabled={true}
                         />
                         <MarkerLayerTool 
                             id={MARKER_ID}
                             enabled={true}
                         />
-                        {/* <ThemesTool
-                            id={THEMES_ID}
+                        <ThemesTool
+                            id={idToggle4}
+
                             manager={GeovistoThemesTool.createThemesManager([
                                     // style themes
                                     GeovistoThemesTool.createThemeLight1(),
@@ -327,8 +327,8 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                                     GeovistoThemesTool.createThemeBasic()
                                 ])
                             } 
-                            enabled={true}
-                        /> */}
+                            enabled={false}
+                        />
                     </ToolGroup>
                     
                 </GeovistoMap>

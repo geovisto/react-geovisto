@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { ENABLED_PROP, ID_PROP } from "./Constants";
 import { validateId } from "./Helpers";
 import { IToolComponentProps } from "./Types";
-
+import deepEqual from "deep-equal";
 
 /**
  * Reacts to dependencies change once the component is mounted
@@ -27,7 +27,7 @@ export const useDidUpdateEffect = (func: () => void, dependencies?: React.Depend
  * Default behavior for component properties
  * Emits onToolChange callback on component mount or any dependency update
  */
-export const useToolEffect = (props: IToolComponentProps, dependencies? : React.DependencyList) : void => {
+export const useToolEffect = <TProps extends IToolComponentProps>(props: TProps, dependencies? : React.DependencyList) : void => {
     
     useEffect(() => {
 
@@ -39,7 +39,7 @@ export const useToolEffect = (props: IToolComponentProps, dependencies? : React.
 /**
  * Reacts to 'enabled' property changes
  */
-export const useDidToolEnabledUpdate = (props: IToolComponentProps, dependencies? : React.DependencyList): void => {
+export const useDidToolEnabledUpdate = <TProps extends IToolComponentProps = IToolComponentProps>(props: TProps, dependencies? : React.DependencyList): void => {
     
     useDidUpdateEffect(() => {
 
@@ -51,7 +51,7 @@ export const useDidToolEnabledUpdate = (props: IToolComponentProps, dependencies
 /**
  * Reacts to tool identificator changes while providing validation and keeping the previous value
  */
-export const useDidToolIdUpdate = (props: IToolComponentProps, dependencies? : React.DependencyList): void => {
+export const useDidToolIdUpdate = <TProps extends IToolComponentProps = IToolComponentProps>(props: TProps, dependencies? : React.DependencyList): void => {
     
     // Keep previous id so the obsolete tool can be removed once the id changes
     const [id, setId] = useState<string>();
@@ -67,6 +67,27 @@ export const useDidToolIdUpdate = (props: IToolComponentProps, dependencies? : R
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         setId(props.id!);
+
+    }, dependencies ?? []);
+};
+
+/**
+ * Reacts to tool identificator changes while providing validation and keeping the previous value
+ */
+ export const useDidToolManagerUpdate = <TManager, TProps extends IToolComponentProps & {manager?: TManager} = IToolComponentProps>(props: TProps, dependencies? : React.DependencyList): void => {
+    
+    const [manager, setManager] = useState<TManager>();
+    
+    useEffect(() => {
+        
+        if(manager !== undefined) {
+
+            // Emit callback only if previous and current version of the manager differs
+            if(!deepEqual(manager, props.manager)) {
+                props.onToolChange?.(props);               
+            }            
+        }
+        setManager(props.manager);
 
     }, dependencies ?? []);
 };

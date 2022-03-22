@@ -47,6 +47,7 @@ export const SidebarTool = forwardRef<ISidebarToolHandle, ISidebarToolDataProps<
             processedTabs.push([toolId, new SidebarTab(tabProps as ISidebarTabProps)]);
         });
         
+        // setTabs(processedTabs);
         return processedTabs;
     }; 
 
@@ -71,9 +72,10 @@ export const SidebarTool = forwardRef<ISidebarToolHandle, ISidebarToolDataProps<
         getTabs : () => props.onToolChange?.(sidebarProps)
     }));
 
-
-    const handleToolChange = (toolData: IToolData, property: string) => {
-        // TODO: When SidebarTab is Changed
+    /**
+     * Reacts to changes in any of the sidebar tabs
+     */
+    const handleToolChange = (toolData: IToolData, property?: string) => {
         props.onToolChange?.(sidebarProps);
     };
 

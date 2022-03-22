@@ -1,13 +1,12 @@
 import React, { useRef, useState } from 'react';
-import { ChoroplethLayerTool, MarkerLayerTool, SidebarTool, ThemesTool, TilesLayerTool } from '.';
-import { GeovistoChoroplethLayerTool, GeovistoMarkerLayerTool, GeovistoSidebarTool, 
-         GeovistoThemesTool, GeovistoTilesLayerTool, IMapTool, IMapToolsManager, ISidebarTool, ISidebarToolProps, SidebarToolDefaults, } from '../..';
+import { SidebarTool } from '.';
+import { IMapTool, IMapToolsManager,
+         ISidebarTool, SidebarToolDefaults, } from '../..';
 import { Geovisto, ILayerTool } from '../../index.core';
-import { CustomTool } from './CustomTool';
 import { ISidebarToolHandle } from './SidebarTool';
-import { IReactElement, IToolData, IToolGroupProps } from '../Types';
-import { IChoroplethLayerToolProps, IMarkerLayerToolProps, IThemesToolProps, ITilesLayerToolProps } from '../../tools';
+import { IToolData, IToolGroupProps } from '../Types';
 import { ENABLED_PROP, ID_PROP, supportedComponentTypes } from '../Constants';
+import { isLayerTool, processTool } from '../Helpers';
 
 
 export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
@@ -68,33 +67,6 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
                 // Reset the dirty bit flags, because all tools were re-rendered
                 setToolDirtyBitArray(arr => arr.map(tool => [tool[0], false]));
             }
-        }
-    };
-
-    /**
-     * Returns tool in a Geovisto library representation
-     */
-    const processTool = (toolType: IReactElement, toolData: IToolData): IMapTool => {
-
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { children, onToolChange, ...toolProps } = toolData;
-
-        switch (toolType) {
-            case SidebarTool:
-                return GeovistoSidebarTool.createTool(toolProps as ISidebarToolProps);
-            case TilesLayerTool:
-                return GeovistoTilesLayerTool.createTool(toolProps as ITilesLayerToolProps);
-            case ChoroplethLayerTool:
-                return GeovistoChoroplethLayerTool.createTool(toolProps as IChoroplethLayerToolProps);
-            case MarkerLayerTool:
-                return GeovistoMarkerLayerTool.createTool(toolProps as IMarkerLayerToolProps);    
-            case ThemesTool:
-                return GeovistoThemesTool.createTool(toolProps as IThemesToolProps);
-            case CustomTool:
-                //TODO: Change this to return some function
-                throw new Error('Not implemented');
-            default:
-                throw new Error('Error: Unknown type of the tool. Component is not valid.');
         }
     };
 
@@ -182,10 +154,19 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
                     const toolId = property === ID_PROP ? toolData.prevId : toolData.id;  
 
                     // TODO: [Filters] Maybe IMapTool and add '?.' to hidelayeritems?
-                    const currentTool = manager.getById(toolId) as ILayerTool;
+                    const currentTool = manager.getById(toolId) as IMapTool;
                     
                     // Remove current tool from manager
-                    currentTool.hideLayerItems();
+                    console.log(currentTool);
+                    
+                    // TODO: Nějak rozuměji odlišit tooly s 'enable' přístupem jako k jiným properties
+                    /// Možná jim přidat taky useDidEnabledUpdate a rozlišovat to až tu, jestli je to layer tool
+                    const toolIsLayerTool = isLayerTool(currentTool);
+                    
+                    if(toolIsLayerTool) {
+                        (currentTool as ILayerTool).hideLayerItems();
+                    }
+
                     manager.removeById(toolId);
                     
                     // Add tool with changed properties
@@ -197,7 +178,8 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
 
                     // Sidebar tool is present in configuration and tool is enabled (visible)
                     // or the 'id' property changed -> therefore sidebar tabs must be re-rendered
-                    const rerenderTool = toolData.enabled || property === ID_PROP;
+                    // or tool is not layer tool, so 'enabled' property change requires re-render as well
+                    const rerenderTool = toolData.enabled || property === ID_PROP || !toolIsLayerTool;
 
                     if(sidebarTool !== undefined && sidebarTool.isEnabled() && rerenderTool) {
 
@@ -211,10 +193,11 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
                         console.warn('Sidebar is not present, rerender the tool immiediately');
                         
                         // Re-render the map only if the tool is enabled (might be visible)
-                        if(toolData.enabled) {
+                        if(rerenderTool) {
                             emitRerender();
                         }
                         else {
+                            console.warn('setting dirty bit');
                             setDirtyBit(toolData.id, true);
                         }
 
