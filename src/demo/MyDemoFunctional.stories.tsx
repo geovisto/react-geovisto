@@ -11,11 +11,12 @@ import { GeovistoMap } from "../react/GeovistoMap";
 
 import './Demo.scss';
 
-import { Geovisto, GeovistoThemesTool, IMapTilesModel } from '..';
+import { Geovisto, IMapTilesModel } from '..';
 
 import { CHOROPLETH_ID, MARKER_ID, SIDEBAR_ID, THEMES_ID, TILES_ID } from '../react/Constants';
 
-import { ChoroplethLayerTool, MarkerLayerTool, SidebarTab, SidebarTool, ThemesTool, TilesLayerTool, ToolGroup } from '../react/components/index';
+import { ChoroplethLayerTool, MarkerLayerTool, SidebarTab, 
+         SidebarTool, TilesLayerTool, ToolGroup } from '../react/components/index';
 
 
 /* example of screen component with grid layout and card wrapper usage */
@@ -36,6 +37,8 @@ import centroids2 from '../../static/geo/czech_districts_centroids.json';
 
 import demoData from '../../static/data/covidCzechDistricts.json';
 import demoConfig from '../../static/config/config.json';
+import { CustomTool } from '../react/components/CustomTool';
+import { BlueSkyLayerTool, GeovistoBlueSkyLayerTool, IBlueSkyLayerToolProps } from '../tools/layers/bluesky';
 
 const MyDemoFunctional : React.FC<Record<string, never>> = () => {
 
@@ -56,6 +59,7 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
     };
 
     const [enableToggle, setEnableToggle] = useState(true);
+    const [enableCustomToolToggle, setEnableCustomToolToggle] = useState(true);
     const [stringToggle, setStringToggle] = useState("string111");
     const [idToggle, setIdToggle] = useState(TILES_ID);
     const [idToggle2, setIdToggle2] = useState(CHOROPLETH_ID);
@@ -213,6 +217,7 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                 <button onClick={() => setIdToggle3(id => id == SIDEBAR_ID ? `${SIDEBAR_ID}-edited` : SIDEBAR_ID)}>{idToggle3}</button>
                 <button onClick={() => setIdToggle4(id => id == THEMES_ID ? `${THEMES_ID}-edited` : THEMES_ID)}>{idToggle4}</button>
                 <button onClick={() => setIdUndefinedToggle(id => id === undefined ? TILES_ID + '2' : undefined)}>{idUndefinedToggle ? `id (${TILES_ID}2)`  : 'undefined'}</button>
+                <button onClick={() => setEnableCustomToolToggle(!enableCustomToolToggle)}>Custom tool: {enableCustomToolToggle ? "true" : "false"}</button>
             </div>
 
             <div className="demo-map">
@@ -271,6 +276,13 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                                 icon='<i class="fa fa-gbp"></i>'
                                 checkButton={true}
                             />
+                            <SidebarTab
+                            tool={'my-bluesky-tool'}
+                            enabled={true}
+                            name="[My] Blue sky tool"
+                            icon='<i class="fa fa-image"></i>'
+                            checkButton={true}
+                            />
                         </SidebarTool>
                         <TilesLayerTool 
                                 id={idToggle}
@@ -313,7 +325,14 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                             id={MARKER_ID}
                             enabled={true}
                         />
-                        <ThemesTool
+                        <CustomTool 
+                            id='my-bluesky-tool'
+                            enabled={enableCustomToolToggle}
+                            // createTool={(props: unknown) => new BlueSkyLayerTool(props)}
+                            createTool={(props: IBlueSkyLayerToolProps) => new BlueSkyLayerTool(props)}
+                            // createTool={(props: IBlueSkyLayerToolProps) => GeovistoBlueSkyLayerTool.createTool(props)}
+                        />
+                        {/* <ThemesTool
                             id={idToggle4}
 
                             manager={GeovistoThemesTool.createThemesManager([
@@ -328,7 +347,7 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                                 ])
                             } 
                             enabled={false}
-                        />
+                        /> */}
                     </ToolGroup>
                     
                 </GeovistoMap>

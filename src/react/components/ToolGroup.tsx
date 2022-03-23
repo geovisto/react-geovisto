@@ -7,6 +7,7 @@ import { ISidebarToolHandle } from './SidebarTool';
 import { IToolData, IToolGroupProps } from '../Types';
 import { ENABLED_PROP, ID_PROP, supportedComponentTypes } from '../Constants';
 import { isLayerTool, processTool } from '../Helpers';
+import { BlueSkyLayerTool } from '../../tools/layers/bluesky';
 
 
 export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
@@ -156,9 +157,6 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
                     // TODO: [Filters] Maybe IMapTool and add '?.' to hidelayeritems?
                     const currentTool = manager.getById(toolId) as IMapTool;
                     
-                    // Remove current tool from manager
-                    console.log(currentTool);
-                    
                     // TODO: Nějak rozuměji odlišit tooly s 'enable' přístupem jako k jiným properties
                     /// Možná jim přidat taky useDidEnabledUpdate a rozlišovat to až tu, jestli je to layer tool
                     const toolIsLayerTool = isLayerTool(currentTool);
@@ -166,7 +164,8 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
                     if(toolIsLayerTool) {
                         (currentTool as ILayerTool).hideLayerItems();
                     }
-
+                    
+                    // Remove current tool from manager
                     manager.removeById(toolId);
                     
                     // Add tool with changed properties

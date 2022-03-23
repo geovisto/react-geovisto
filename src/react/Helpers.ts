@@ -6,6 +6,7 @@ import { IChoroplethLayerToolProps, IMarkerLayerToolProps, IThemesToolProps,
 import { CustomTool } from './components/CustomTool';
 import { ChoroplethLayerTool, MarkerLayerTool, SidebarTool, ThemesTool, TilesLayerTool } from './components';
 import { ILayerTool } from '../index.core';
+import { BlueSkyLayerTool, IBlueSkyLayerToolProps } from '../tools/layers/bluesky';
 
 
 /**
@@ -37,8 +38,7 @@ export const processTool = (toolType: IReactElement, toolData: IToolData): IMapT
         case ThemesTool:
             return GeovistoThemesTool.createTool(toolProps as IThemesToolProps);
         case CustomTool:
-            //TODO: Change this to return some function
-            throw new Error('Not implemented');
+            return toolData.createTool(toolProps);
         default:
             throw new Error('Error: Unknown type of the tool. Component is not valid.');
     }

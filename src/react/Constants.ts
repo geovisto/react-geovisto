@@ -1,3 +1,4 @@
+import { CustomTool } from "./components/CustomTool";
 import { ChoroplethLayerTool, MarkerLayerTool, SidebarTool, ThemesTool, TilesLayerTool } from "./components/index";
 import { ISupportedToolComponent } from "./Types";
 
@@ -20,5 +21,6 @@ export const supportedComponentTypes : ISupportedToolComponent[] = [
     ChoroplethLayerTool,
     MarkerLayerTool,
     ThemesTool,
+    CustomTool
     // TODO: Add Custom tool component (that implements ILayerTool);
 ];

@@ -280,6 +280,7 @@ class GeovistoMap extends MapObject implements IMap {
     protected createTools(): IMapTool[] {
         // create tools
         const tools: IMapTool[] = this.getState().getTools().getAll();
+        console.log(tools);
         for(let i = 0; i < tools.length; i++) {
             // create tool
             tools[i].create();
