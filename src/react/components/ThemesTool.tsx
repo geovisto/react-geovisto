@@ -12,10 +12,11 @@ export const ThemesTool = (props: IToolDataProps<IThemesToolProps>) : JSX.Elemen
         props.label, 
         props.icon,
         props.enabled,
+        props.manager,
         props.theme]);
 
     // Run on 'manager' property update
-    useDidToolManagerUpdate<IMapThemesManager>(props, [props.manager]);
+    // useDidToolManagerUpdate<IMapThemesManager>(props, [props.manager]);
     
     // Run on 'id' property update
     useDidToolIdUpdate(props, [props.id]);

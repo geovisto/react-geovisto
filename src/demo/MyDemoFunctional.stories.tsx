@@ -5,18 +5,18 @@ import {
 } from '@storybook/react/types-6-0';
 
 // React
-import React, { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 
 import { GeovistoMap } from "../react/GeovistoMap";
 
 import './Demo.scss';
 
-import { Geovisto, IMapTilesModel } from '..';
+import { Geovisto, GeovistoThemesTool, IMapThemesManager, IMapTilesModel } from '..';
 
 import { CHOROPLETH_ID, MARKER_ID, SIDEBAR_ID, THEMES_ID, TILES_ID } from '../react/Constants';
 
 import { ChoroplethLayerTool, MarkerLayerTool, SidebarTab, 
-         SidebarTool, TilesLayerTool, ToolGroup } from '../react/components/index';
+         SidebarTool, ThemesTool, TilesLayerTool, ToolGroup } from '../react/components/index';
 
 
 /* example of screen component with grid layout and card wrapper usage */
@@ -65,6 +65,7 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
     const [idToggle2, setIdToggle2] = useState(CHOROPLETH_ID);
     const [idToggle3, setIdToggle3] = useState(SIDEBAR_ID);
     const [idToggle4, setIdToggle4] = useState(THEMES_ID);
+    const [idToggle5, setIdToggle5] = useState(CHOROPLETH_ID);
     const [idUndefinedToggle, setIdUndefinedToggle] = useState(TILES_ID + "2");
     const [iconToggle, setIconToggle] = useState('<i class="fa fa-try" aria-hidden="true"></i>');
     const [basemapToggle, setBasemapToggle] = useState<IMapTilesModel>(basemap1);
@@ -201,6 +202,31 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
     // };
     // document.getElementById(C_ID_input_export).addEventListener('click', exportAction);
 
+    const getThemes = useMemo(() : IMapThemesManager => {
+       return GeovistoThemesTool.createThemesManager([
+            // style themes
+            GeovistoThemesTool.createThemeLight1(),
+            GeovistoThemesTool.createThemeLight2(),
+            GeovistoThemesTool.createThemeLight3(),
+            GeovistoThemesTool.createThemeDark1(),
+            GeovistoThemesTool.createThemeDark2(),
+            GeovistoThemesTool.createThemeDark3(),
+            GeovistoThemesTool.createThemeBasic()
+        ]);
+    }, []); 
+
+    // const getThemes = useCallback(() : IMapThemesManager => {
+    //     return GeovistoThemesTool.createThemesManager([
+    //          // style themes
+    //          GeovistoThemesTool.createThemeLight1(),
+    //          GeovistoThemesTool.createThemeLight2(),
+    //          GeovistoThemesTool.createThemeLight3(),
+    //          GeovistoThemesTool.createThemeDark1(),
+    //          GeovistoThemesTool.createThemeDark2(),
+    //          GeovistoThemesTool.createThemeDark3(),
+    //          GeovistoThemesTool.createThemeBasic()
+    //      ]);
+    //  }, []); 
 
     return (
         <div className="demo-container">
@@ -216,6 +242,7 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                 <button onClick={() => setIdToggle2(id => id == CHOROPLETH_ID ? `${CHOROPLETH_ID}-edited` : CHOROPLETH_ID)}>{idToggle2}</button>
                 <button onClick={() => setIdToggle3(id => id == SIDEBAR_ID ? `${SIDEBAR_ID}-edited` : SIDEBAR_ID)}>{idToggle3}</button>
                 <button onClick={() => setIdToggle4(id => id == THEMES_ID ? `${THEMES_ID}-edited` : THEMES_ID)}>{idToggle4}</button>
+                <button onClick={() => setIdToggle5(id => id == CHOROPLETH_ID ? `${CHOROPLETH_ID}-edited` : CHOROPLETH_ID)}>{idToggle5}</button>
                 <button onClick={() => setIdUndefinedToggle(id => id === undefined ? TILES_ID + '2' : undefined)}>{idUndefinedToggle ? `id (${TILES_ID}2)`  : 'undefined'}</button>
                 <button onClick={() => setEnableCustomToolToggle(!enableCustomToolToggle)}>Custom tool: {enableCustomToolToggle ? "true" : "false"}</button>
             </div>
@@ -255,15 +282,15 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                                 icon={iconToggle}
                                 checkButton={true}
                             /> 
-                            <SidebarTab
+                            {/* <SidebarTab
                                 tool={TILES_ID + "2"}
                                 enabled={true}
                                 name="[My] OpenStreetMap layer"
                                 icon='<i class="fa fa-won"></i>'
                                 checkButton={true}
-                            />
+                            /> */}
                             <SidebarTab
-                            tool={CHOROPLETH_ID}
+                            tool={idToggle2}
                             enabled={true}
                             name="[My] Choropleth"
                             icon='<i class="fa fa-usd"></i>'
@@ -286,7 +313,8 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                         </SidebarTool>
                         <TilesLayerTool 
                                 id={idToggle}
-                                enabled={enableToggle}
+                                // enabled={enableToggle}
+                                enabled={true}
                                 label="Awesome tiles layer label"
                                 baseMap={basemapToggle}
                                 // baseMap={{
@@ -316,6 +344,7 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                             }}
                         /> */}
                         <ChoroplethLayerTool 
+                            // id={idToggle2} 
                             id={idToggle2} 
                             icon="whatever"
                             label="label"
@@ -328,26 +357,18 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                         <CustomTool 
                             id='my-bluesky-tool'
                             enabled={enableCustomToolToggle}
+                            url="something"
+                            whateverElse = {true}
                             // createTool={(props: unknown) => new BlueSkyLayerTool(props)}
                             createTool={(props: IBlueSkyLayerToolProps) => new BlueSkyLayerTool(props)}
                             // createTool={(props: IBlueSkyLayerToolProps) => GeovistoBlueSkyLayerTool.createTool(props)}
                         />
-                        {/* <ThemesTool
+                        <ThemesTool
                             id={idToggle4}
 
-                            manager={GeovistoThemesTool.createThemesManager([
-                                    // style themes
-                                    GeovistoThemesTool.createThemeLight1(),
-                                    GeovistoThemesTool.createThemeLight2(),
-                                    GeovistoThemesTool.createThemeLight3(),
-                                    GeovistoThemesTool.createThemeDark1(),
-                                    GeovistoThemesTool.createThemeDark2(),
-                                    GeovistoThemesTool.createThemeDark3(),
-                                    GeovistoThemesTool.createThemeBasic()
-                                ])
-                            } 
-                            enabled={false}
-                        /> */}
+                            manager={getThemes}
+                            enabled={enableToggle}
+                        />
                     </ToolGroup>
                     
                 </GeovistoMap>

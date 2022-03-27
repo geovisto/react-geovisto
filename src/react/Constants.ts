@@ -12,9 +12,15 @@ export const TIMELINE_ID = "geovisto-tool-timeline";
 export const SELECTION_ID = "geovisto-tool-selection";
 export const FILTERS_ID = "geovisto-tool-filters";
 
+/**
+ * Constants optionally passed as parameter in onToolChange callback
+ */
 export const ENABLED_PROP = 'enabled';
 export const ID_PROP = 'id';
 
+/**
+ * Set of supported components 
+ */
 export const supportedComponentTypes : ISupportedToolComponent[] = [
     SidebarTool,
     TilesLayerTool,
@@ -22,5 +28,4 @@ export const supportedComponentTypes : ISupportedToolComponent[] = [
     MarkerLayerTool,
     ThemesTool,
     CustomTool
-    // TODO: Add Custom tool component (that implements ILayerTool);
 ];

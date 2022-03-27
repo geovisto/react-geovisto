@@ -51,33 +51,34 @@ export const SidebarTool = forwardRef<ISidebarToolHandle, ISidebarToolDataProps<
         return processedTabs;
     }; 
 
-    const sidebarProps = {...props, tabs: getProcessedTabs()} as IToolDataProps<ISidebarToolProps>; 
-
+    /**
+     * Get current formed sidebar props 
+     */
+    const formSidebarProps = () : IToolDataProps<ISidebarToolProps> => {
+        return {...props, tabs: getProcessedTabs()};
+    }; 
+    
+    /**
+     * Reacts to changes in any of the sidebar tabs
+     */
+    const handleToolChange = async (toolData: IToolData, property?: string) => {
+        props.onToolChange?.(formSidebarProps());
+    };
+    
     // Run on component mount or any dependency update
-    useToolEffect(sidebarProps, [
+    useToolEffect(formSidebarProps(), [
         props.icon,
         props.label,
         // Leaflet map needs to be re-rendered when sidebar enabled state is modified
         props.enabled]);
 
     // Run on 'id' property update
-    useDidToolIdUpdate(sidebarProps, [props.id]);
-        
+    useDidToolIdUpdate(formSidebarProps(), [props.id]);
+
     // Emitter from parent component to process all tabs 
     useImperativeHandle(ref, () => ({
-        // getTabs() {
-        //     props.onToolChange?.(sidebarProps);
-        // }
-
-        getTabs : () => props.onToolChange?.(sidebarProps)
+        getTabs : () => props.onToolChange?.(formSidebarProps())
     }));
-
-    /**
-     * Reacts to changes in any of the sidebar tabs
-     */
-    const handleToolChange = (toolData: IToolData, property?: string) => {
-        props.onToolChange?.(sidebarProps);
-    };
 
     /**
      * Validate all children and add 'onToolChange' callback

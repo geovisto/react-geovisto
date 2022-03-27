@@ -126,6 +126,7 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
                 
                 // Added tool were the latest to process, map is ready to render
                 if(manager.getAll().length === childrenCount) {
+                    console.log('Here');
                     emitRerender();
                 }
                 
@@ -180,16 +181,18 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
                     // or tool is not layer tool, so 'enabled' property change requires re-render as well
                     const rerenderTool = toolData.enabled || property === ID_PROP || !toolIsLayerTool;
 
-                    if(sidebarTool !== undefined && sidebarTool.isEnabled() && rerenderTool) {
+                    if(sidebarTool !== undefined && /*sidebarTool.isEnabled()*/sidebarTool.getProps().enabled && rerenderTool) {
+
+                        console.warn('Sidebar is present, call the ref on sidebar tool');
 
                         // Process all the sidebar tabs so the tool tab reflects changes in tool properties
                         // Ref call will result in calling 'handleToolChange' method directly from Sidebar 
                         // component with updated data
                         sidebarRef.current?.getTabs();                            
                     }
-                    // Sidebar component is not present, re-render the tool immiediately
+                    // Sidebar component is not present, re-render the tool immediately
                     else {
-                        console.warn('Sidebar is not present, rerender the tool immiediately');
+                        console.warn('Sidebar is not present, rerender the tool immediately');
                         
                         // Re-render the map only if the tool is enabled (might be visible)
                         if(rerenderTool) {
@@ -205,12 +208,12 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
                 }
                 else if(toolElement.type == SidebarTool) {
 
-                    // TODO: What if id of sidebar changes
                     const toolId = property === ID_PROP ? toolData.prevId : toolData.id;  
                     const currentTool = manager.getById(toolId) as ISidebarTool;
 
                     // Remove sidebar elements from the leaflet map
-                    if(currentTool.isEnabled()) {
+                    // TODO: Not sure about this -- delete whole if?
+                    if(/*currentTool.isEnabled()*/currentTool.getProps().enabled) {
                         const sidebar = currentTool.getState().getSidebar()?.remove();
 
                         if(sidebar) {   
@@ -219,9 +222,9 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
                     }
                     
                     manager.removeById(toolId);
-
+                    
                     // Add tool with changed properties
-                    const  processedTool = processTool(toolElement.type, toolData);
+                    const  processedTool = processTool(toolElement.type, toolData) as ISidebarTool;
                     manager.add(processedTool);
 
                     //TODO: setManager(manager) ???????
@@ -229,6 +232,7 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
                     // FIXME: Tento if byl přidán a nevím jestli je úplně legit
                     // Re-render only when the tool is enabled
                     if(toolData.enabled) {
+                        console.warn('Re-rending sidebar');
                         emitRerender();
                     }
                 }
@@ -251,6 +255,9 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
     //     }
     // }, [tools])
 
+    /**
+     * Validate and process all children elements and add additional props
+     */
     const childrenExtended = React.Children.map(props.children, (child, index) => {
     
         // Ignore components that are not supported (= provided by this library)
@@ -267,7 +274,7 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
         toolProps.onToolChange = handleToolChange;
 
         // Add ref to SidebarTool
-        if(child.type == SidebarTool) {
+        if(child.type === SidebarTool) {
             toolProps.ref = sidebarRef;
         }
 

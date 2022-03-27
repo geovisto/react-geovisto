@@ -76,18 +76,27 @@ export const useDidToolIdUpdate = <TProps extends IToolComponentProps = IToolCom
  */
  export const useDidToolManagerUpdate = <TManager, TProps extends IToolComponentProps & {manager?: TManager} = IToolComponentProps>(props: TProps, dependencies? : React.DependencyList): void => {
     
-    const [manager, setManager] = useState<TManager>();
+    useDidUpdateEffect(() => {
+
+        console.log("Hook: changing manager");
+        props.onToolChange?.(props);
+
+    }, dependencies);
+
+    // const [manager, setManager] = useState<TManager>();
     
-    useEffect(() => {
+    // useEffect(() => {
+
+    //     props.onToolChange?.(props);
         
-        if(manager !== undefined) {
+    //     if(manager !== undefined) {
 
-            // Emit callback only if previous and current version of the manager differs
-            if(!deepEqual(manager, props.manager)) {
-                props.onToolChange?.(props);               
-            }            
-        }
-        setManager(props.manager);
+    //         // Emit callback only if the previous and current version of the manager differs
+    //         if(!deepEqual(manager, props.manager)) {
+    //             props.onToolChange?.(props);               
+    //         }            
+    //     }
+    //     setManager(props.manager);
 
-    }, dependencies ?? []);
+    // }, dependencies ?? []);
 };

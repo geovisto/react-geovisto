@@ -45,9 +45,7 @@ export const GeovistoMap = (props : IGeovistoMapProps) : JSX.Element => {
                 setMap(mapObject);
                 
                 // Draw map with the current config
-                mapObject.draw(props.config ?? Geovisto.getMapConfigManagerFactory().default({}));
-                
-                console.log(mapObject);
+                mapObject.draw(props.config ?? Geovisto.getMapConfigManagerFactory().default({}));                
                 console.log(mapObject.getState());
 
                 // return mapObject.getState().getTools();
@@ -56,7 +54,7 @@ export const GeovistoMap = (props : IGeovistoMapProps) : JSX.Element => {
             else
             {
                 console.warn("--------------MAP RE-DRAW--------------");
-                console.log(mapProps);
+                
                 // Redraw map with the updated properties
                 map.redraw(props.config ?? Geovisto.getMapConfigManagerFactory().default({}), mapProps);
                 console.log(map.getState());
