@@ -1,7 +1,7 @@
 import React from 'react';
 import { IThemesToolProps } from '../..';
 import { useDidToolIdUpdate, useToolEffect } from '../Hooks';
-import { IToolDataProps } from '../Types';
+import { IToolDataProps } from '../types/IComponentTool';
 
 
 export const ThemesTool = (props: IToolDataProps<IThemesToolProps>) : JSX.Element => {

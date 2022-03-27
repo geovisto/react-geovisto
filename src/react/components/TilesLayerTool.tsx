@@ -1,7 +1,7 @@
 import React from 'react';
 import { ITilesLayerToolProps } from '../..';
 import { useDidToolEnabledUpdate, useDidToolIdUpdate, useToolEffect } from '../Hooks';
-import { IToolDataProps } from '../Types';
+import { IToolDataProps } from '../types/IComponentTool';
 
 
 export const TilesLayerTool = (props: IToolDataProps<ITilesLayerToolProps>) : JSX.Element => {

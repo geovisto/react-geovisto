@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ENABLED_PROP, ID_PROP } from "./Constants";
 import { validateId } from "./Helpers";
-import { IToolComponentProps } from "./Types";
+import { IToolComponentProps } from "./types/IComponentTool";
 
 /**
  * Reacts to dependencies change once the component is mounted

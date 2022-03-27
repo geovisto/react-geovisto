@@ -301,4 +301,4 @@ export default {
     component: Demo,
 } as Meta;
 
-export const GeovistoMap: Story = () => <Demo />;
+export const GeovistoMapOld: Story = () => <Demo />;

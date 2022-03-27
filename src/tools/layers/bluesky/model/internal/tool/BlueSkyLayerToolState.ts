@@ -9,6 +9,7 @@ import IBlueSkyLayerTool from "../../types/tool/IBlueSkyLayerTool";
 import IBlueSkyLayerToolProps from "../../types/tool/IBlueSkyLayerToolProps";
 import IBlueSkyLayerToolDefaults from "../../types/tool/IBlueSkyLayerToolDefaults";
 import IBlueSkyLayerToolConfig from "../../types/tool/IBlueSkyLayerToolConfig";
+import { LatLngBoundsLiteral } from "leaflet";
 
 /**
  * This class provide functions for using the state of the tiles layer tool.
@@ -18,6 +19,7 @@ import IBlueSkyLayerToolConfig from "../../types/tool/IBlueSkyLayerToolConfig";
 class BlueSkyLayerToolState extends LayerToolState implements IBlueSkyLayerToolState {
     
     private url!: string;
+    private bounds!: LatLngBoundsLiteral;
     private layer?: L.ImageOverlay;
 
     /**
@@ -35,6 +37,7 @@ class BlueSkyLayerToolState extends LayerToolState implements IBlueSkyLayerToolS
         // this.setBaseMap(props.baseMap == undefined ? defaults.getBaseMap() : props.baseMap);
 
         this.setUrl(props.url == undefined ? 'https://cdn.mos.cms.futurecdn.net/mZb3Q79jgPAXAcag7CutLW-970-80.jpg.webp' : props.url);
+        this.setBounds(props.bounds == undefined ? [[-81.00145417371247, -66.30666147868511], [-36.863192079346526, 50.1016129498304]] : props.bounds);
 
         // set super props
         super.initialize(defaults, props, initProps);
@@ -80,6 +83,22 @@ class BlueSkyLayerToolState extends LayerToolState implements IBlueSkyLayerToolS
      */
     public setUrl(url: string): void {
         this.url = url;
+    }
+
+    /**
+     * It returns a base map ID.
+     */
+    public getBounds(): LatLngBoundsLiteral {
+        return this.bounds;
+    }
+    
+    /**
+     * It sets a base map ID.
+     * 
+     * @param baseMap
+     */
+    public setBounds(bounds: LatLngBoundsLiteral): void {
+        this.bounds = bounds;
     }
 
     /**

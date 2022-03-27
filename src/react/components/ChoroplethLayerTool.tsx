@@ -1,7 +1,8 @@
 import React from 'react';
 import { IChoroplethLayerToolProps } from '../..';
 import { useDidToolEnabledUpdate, useDidToolIdUpdate, useToolEffect } from '../Hooks';
-import { IToolDataProps } from '../Types';
+import { IToolDataProps } from '../types/IComponentTool';
+
 
 export const ChoroplethLayerTool = (props: IToolDataProps<IChoroplethLayerToolProps>) : JSX.Element => {
 

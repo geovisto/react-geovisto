@@ -1,16 +1,5 @@
 import { JSXElementConstructor } from "react";
-import { IMap, IMapConfigManager, IMapProps, IMapToolProps } from "../index.core";
-
-export type IGeovistoMapProps = IMapProps & {
-    children?: React.ReactNode;
-    config?: IMapConfigManager;
-    className: string;
-}
-
-export interface IToolGroupProps {
-    children?: React.ReactNode;
-    onRenderChange?: (data: unknown) => IMap;
-}
+import { IMapToolProps } from "../../index.core";
 
 export type IToolDataProps<T> = T & {
     children?: React.ReactNode;

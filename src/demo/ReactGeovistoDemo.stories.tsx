@@ -7,7 +7,7 @@ import {
 // React
 import React, { useMemo, useState } from "react";
 
-import { GeovistoMap } from "../react/GeovistoMap";
+import { GeovistoMap } from "../react/components/GeovistoMap";
 
 import './Demo.scss';
 
@@ -40,7 +40,7 @@ import demoConfig from '../../static/config/config.json';
 import { CustomTool } from '../react/components/CustomTool';
 import { BlueSkyLayerTool, IBlueSkyLayerToolProps } from '../tools/layers/bluesky';
 
-const MyDemoFunctional : React.FC<Record<string, never>> = () => {
+const ReactGeovistoDemo : React.FC<Record<string, never>> = () => {
 
     // implicit data
     const [data] = useState<unknown>(demoData);
@@ -71,7 +71,7 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
     const [basemapToggle, setBasemapToggle] = useState<IMapTilesModel>(basemap1);
     const [enableSidebarToggle, setEnableSidebarToggle] = useState(true);
     const [enableSidebarTabToggle, setEnableSidebarTabToggle] = useState(true);
-    const [imageToggle, setImageToggle] = useState('https://nova-ott-images.ssl.cdn.cra.cz/r640x360n/e460c05d-7b53-44db-8271-35e0a0a435e7');
+    const [imageToggle, setImageToggle] = useState('https://cdn.xsd.cz/resize/6bbae9c4cff83ba7a9bdc895ed37caac_resize=900,525_.jpg?hash=ca48d5243fd1f8f2e2285f33d02e2b9b');
 
 
 
@@ -216,19 +216,6 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
         ]);
     }, []); 
 
-    // const getThemes = useCallback(() : IMapThemesManager => {
-    //     return GeovistoThemesTool.createThemesManager([
-    //          // style themes
-    //          GeovistoThemesTool.createThemeLight1(),
-    //          GeovistoThemesTool.createThemeLight2(),
-    //          GeovistoThemesTool.createThemeLight3(),
-    //          GeovistoThemesTool.createThemeDark1(),
-    //          GeovistoThemesTool.createThemeDark2(),
-    //          GeovistoThemesTool.createThemeDark3(),
-    //          GeovistoThemesTool.createThemeBasic()
-    //      ]);
-    //  }, []); 
-
     return (
         <div className="demo-container">
             
@@ -246,11 +233,11 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                 <button onClick={() => setIdUndefinedToggle(id => id === undefined ? TILES_ID + '2' : undefined)}>{idUndefinedToggle ? `id (${TILES_ID}2)`  : 'undefined'}</button>
                 <button onClick={() => setEnableCustomToolToggle(!enableCustomToolToggle)}>Custom tool: {enableCustomToolToggle ? "true" : "false"}</button>
                 <button onClick={() => setEnableThemesToolToggle(!enableThemesToolToggle)}>Themes tool: {enableThemesToolToggle ? "true" : "false"}</button>
-                <button onClick={() => setImageToggle(img => img == 'https://nova-ott-images.ssl.cdn.cra.cz/r640x360n/e460c05d-7b53-44db-8271-35e0a0a435e7'
-                                                                    ? 'https://cdn.xsd.cz/resize/6bbae9c4cff83ba7a9bdc895ed37caac_resize=900,525_.jpg?hash=ca48d5243fd1f8f2e2285f33d02e2b9b'
-                                                                    : 'https://nova-ott-images.ssl.cdn.cra.cz/r640x360n/e460c05d-7b53-44db-8271-35e0a0a435e7')}>
-                                                                        {imageToggle == 'https://nova-ott-images.ssl.cdn.cra.cz/r640x360n/e460c05d-7b53-44db-8271-35e0a0a435e7' ? 
-                                                                        'Harry' : 'Tom Riddle'}</button>
+                <button onClick={() => setImageToggle(img => img == 'https://cdn.xsd.cz/resize/6bbae9c4cff83ba7a9bdc895ed37caac_resize=900,525_.jpg?hash=ca48d5243fd1f8f2e2285f33d02e2b9b'
+                                                                    ? 'https://assets.mugglenet.com/wp-content/uploads/2015/12/Lord-Voldemort-with-wand.jpg'
+                                                                    : 'https://cdn.xsd.cz/resize/6bbae9c4cff83ba7a9bdc895ed37caac_resize=900,525_.jpg?hash=ca48d5243fd1f8f2e2285f33d02e2b9b')}>
+                                                                        {imageToggle == 'https://cdn.xsd.cz/resize/6bbae9c4cff83ba7a9bdc895ed37caac_resize=900,525_.jpg?hash=ca48d5243fd1f8f2e2285f33d02e2b9b' ? 
+                                                                        'Tom Riddle: War' : 'Tom Riddle: Calm'}</button>
             </div>
 
             <div className="demo-map">
@@ -360,6 +347,14 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                             id='my-bluesky-tool'
                             enabled={enableCustomToolToggle}
                             url={imageToggle}
+                            bounds={[[51.56780513284899, 34.91589171866554], [75.35329470271482, 134.69164254727792]]}
+                            createTool={(props: IBlueSkyLayerToolProps) => new BlueSkyLayerTool(props)}
+                        />
+                        <CustomTool 
+                            id='my-bluesky-tool-2'
+                            enabled={enableCustomToolToggle}
+                            url={'https://i.imgur.com/px5ppBp.jpeg'}
+                            bounds={[[37.33745868636446, -5.501782667654866], [57.44847414902792, 47.54821100010345]]}
                             createTool={(props: IBlueSkyLayerToolProps) => new BlueSkyLayerTool(props)}
                         />
                         <ThemesTool
@@ -378,7 +373,7 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
 
 export default {
     title: 'Maps',
-    component: MyDemoFunctional,
+    component: ReactGeovistoDemo,
 } as Meta;
 
-export const OwnGeovistoMapFunctional: Story = () => <MyDemoFunctional />;
+export const ReactGeovistoMap: Story = () => <ReactGeovistoDemo />;

@@ -1,19 +1,9 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
 import { SidebarTab as SidebarTabType }  from '.';
-import { ISidebarTab, ISidebarTabProps, ISidebarToolProps, SidebarTab } from '../..';
+import { ISidebarTabProps, ISidebarToolProps, SidebarTab } from '../..';
 import { useDidToolIdUpdate, useToolEffect } from '../Hooks';
-import { IToolData, IToolDataProps } from '../Types';
-
-// FIXME: remove export?
-// Exclude undesirable properties
-export type  ISidebarToolDataProps<T> = IToolDataProps<Omit<T, "tabs">>;
-
-// Handle ref calls from parent
-export type ISidebarToolHandle =  {
-    getTabs: () => void;
-}
-
-type ISidebarTabs = [ string | undefined, ISidebarTab ][];
+import { ISidebarTabs, ISidebarToolDataProps, ISidebarToolHandle } from '../types';
+import { IToolData, IToolDataProps } from '../types/IComponentTool';
 
 
 export const SidebarTool = forwardRef<ISidebarToolHandle, ISidebarToolDataProps<ISidebarToolProps>>((props, ref) : JSX.Element => {

@@ -1,4 +1,5 @@
 // Geovisto core
+import { LatLngBoundsLiteral } from "leaflet";
 import {
     ILayerToolProps
 } from "../../../../../../index.core";
@@ -10,5 +11,6 @@ import {
  */
 type IBlueSkyLayerToolProps = ILayerToolProps & {
     url?: string;
+    bounds: LatLngBoundsLiteral;
 }
 export default IBlueSkyLayerToolProps;

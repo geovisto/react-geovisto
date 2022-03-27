@@ -135,7 +135,7 @@ class BlueSkyLayerTool extends AbstractLayerTool implements IBlueSkyLayerTool, I
      */
     protected createLayerItems(): L.Layer[] {
         // create a tile layer
-        const layer: L.ImageOverlay = this.createTileLayer(this.getState().getUrl());
+        const layer: L.ImageOverlay = this.createTileLayer(this.getState().getUrl(), this.getState().getBounds());
 
         // update state
         this.getState().setTileLayer(layer);
@@ -148,15 +148,15 @@ class BlueSkyLayerTool extends AbstractLayerTool implements IBlueSkyLayerTool, I
      * 
      * @param tilesModel 
      */
-    protected createTileLayer(url: string): L.ImageOverlay {
+    protected createTileLayer(url: string, bounds : LatLngBoundsLiteral): L.ImageOverlay {
 
         const map: L.Map | undefined = this.getMap()?.getState().getLeafletMap();
         
         // const imageUrl = 'https://wallpaper.dog/large/20467117.jpg';
         // const imageUrl = 'https://cdn.mos.cms.futurecdn.net/mZb3Q79jgPAXAcag7CutLW-970-80.jpg.webp';
-        const imageBounds = [[48.53354938782338, 30.981159911978207], [78.40767963203979, 175.82490922080703]];
+        // const imageBounds = [[48.53354938782338, 30.981159911978207], [78.40767963203979, 175.82490922080703]];
         
-        const layer: L.ImageOverlay = L.imageOverlay(url, imageBounds as LatLngBoundsLiteral).addTo(map!);
+        const layer: L.ImageOverlay = L.imageOverlay(url, bounds).addTo(map!);
         return layer;
     }
 
@@ -188,7 +188,7 @@ class BlueSkyLayerTool extends AbstractLayerTool implements IBlueSkyLayerTool, I
                 leafltMap.removeLayer(layer);
 
                 // create a new tile layer
-                layer = this.createTileLayer(this.getState().getUrl());
+                layer = this.createTileLayer(this.getState().getUrl(), this.getState().getBounds());
 
                 // update state
                 this.getState().setTileLayer(layer);

@@ -1,12 +1,8 @@
 import React from 'react';
 import { ISidebarTabProps } from '../..';
 import { useDidUpdateEffect } from '../Hooks';
-import { IToolDataProps } from '../Types';
+import { ISidebarTabDataProps } from '../types';
 
-// TODO: Export somewhere?
-type ISidebarTabDataProps<T> =  IToolDataProps<T> & {
-    tool: string
-}
 
 export const SidebarTab = (props: ISidebarTabDataProps<ISidebarTabProps>) : JSX.Element => {
 

@@ -5,13 +5,17 @@ import { ChoroplethLayerTool } from './ChoroplethLayerTool';
 import { SidebarTab } from './SidebarTab';
 import { MarkerLayerTool } from './MarkerLayerTool';
 import { ThemesTool } from './ThemesTool';
+import { GeovistoMap } from './GeovistoMap';
+import { CustomTool } from './CustomTool';
 
 export {
-    SidebarTool,
-    SidebarTab,
-    ToolGroup,
-    TilesLayerTool,
+    GeovistoMap,
     ChoroplethLayerTool,
+    CustomTool,
     MarkerLayerTool,
-    ThemesTool
+    SidebarTab,
+    SidebarTool,
+    ThemesTool,
+    TilesLayerTool,
+    ToolGroup
 };

@@ -1,6 +1,6 @@
 import { GeovistoChoroplethLayerTool, GeovistoMarkerLayerTool, GeovistoSidebarTool, 
          GeovistoThemesTool, GeovistoTilesLayerTool, IMapTool, ISidebarToolProps, } from '../';
-import { IReactElement, IToolData } from './Types';
+import { IReactElement, IToolData } from './types/IComponentTool';
 import { IChoroplethLayerToolProps, IMarkerLayerToolProps, IThemesToolProps,
         ITilesLayerToolProps } from '../tools';
 import { CustomTool } from './components/CustomTool';

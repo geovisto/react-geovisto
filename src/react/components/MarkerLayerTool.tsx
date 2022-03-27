@@ -1,7 +1,7 @@
 import React from 'react';
 import { IMarkerLayerToolProps } from '../..';
 import { useDidToolEnabledUpdate, useDidToolIdUpdate, useToolEffect } from '../Hooks';
-import { IToolDataProps } from '../Types';
+import { IToolDataProps } from '../types/IComponentTool';
 
 export const MarkerLayerTool = (props: IToolDataProps<IMarkerLayerToolProps>) : JSX.Element => {
     

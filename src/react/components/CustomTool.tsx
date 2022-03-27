@@ -1,16 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
+
 import { IMapToolProps } from '../../model/types/tool/IMapToolProps';
+
 import { useDidToolEnabledUpdate, useDidToolIdUpdate } from '../Hooks';
-import { IToolDataProps } from '../Types';
+import { ICustomToolProps, ICustomToolPropsValues } from '../types';
+
 import deepEqual from "deep-equal";
-
-// TODO: Export somewhere?
-type ICustomToolProps<T> = IToolDataProps<T> & any & {
-    createTool: (props: unknown) => unknown
-};
-
-type ICustomToolPropsValues = Omit<ICustomToolProps<IMapToolProps>, 
-        'id' | 'enabled' | 'createTool'|'onToolChange'|'children'>;
 
 
 export const CustomTool = (props: ICustomToolProps<IMapToolProps>) : JSX.Element => {

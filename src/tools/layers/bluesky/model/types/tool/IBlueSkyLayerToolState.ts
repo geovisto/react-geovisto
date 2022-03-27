@@ -1,4 +1,5 @@
 // Geovisto core
+import { LatLngBoundsLiteral } from "leaflet";
 import {
     ILayerToolDimensions,
     ILayerToolDimensionsConfig,
@@ -34,6 +35,20 @@ interface IBlueSkyLayerToolState<
      */
     setUrl(url: string): void;
 
+
+    /**
+     * It returns a base map ID.
+     */
+    getBounds(): LatLngBoundsLiteral;
+
+    /**
+     * It sets a base map ID.
+     * 
+     * @param bounds
+     */
+    setBounds(bounds: LatLngBoundsLiteral): void;
+
+        
     /**
      * It returns a Leaflet tile layer.
      */

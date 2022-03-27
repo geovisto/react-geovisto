@@ -1,7 +1,8 @@
-import { CustomTool } from "./components/CustomTool";
-import { ChoroplethLayerTool, MarkerLayerTool, SidebarTool, ThemesTool, TilesLayerTool } from "./components/index";
-import { ISupportedToolComponent } from "./Types";
+import { ChoroplethLayerTool, CustomTool, MarkerLayerTool, SidebarTool,
+         ThemesTool, TilesLayerTool } from "./components/index";
+import { ISupportedToolComponent } from "./types";
 
+// TODO: Delete
 export const TILES_ID = "geovisto-tool-layer-map";
 export const SIDEBAR_ID = "geovisto-tool-sidebar";
 export const CHOROPLETH_ID = "geovisto-tool-layer-choropleth";
@@ -18,6 +19,7 @@ export const FILTERS_ID = "geovisto-tool-filters";
 export const ENABLED_PROP = 'enabled';
 export const ID_PROP = 'id';
 
+// TODO: All in caps?
 /**
  * Set of supported components 
  */

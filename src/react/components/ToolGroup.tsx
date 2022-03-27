@@ -1,13 +1,12 @@
 import React, { useRef, useState } from 'react';
-import { SidebarTool } from '.';
-import { IMapTool, IMapToolsManager,
-         ISidebarTool, SidebarToolDefaults, } from '../..';
+
+import { IMapTool, IMapToolsManager, ISidebarTool, SidebarToolDefaults, } from '../..';
 import { Geovisto, ILayerTool } from '../../index.core';
-import { ISidebarToolHandle } from './SidebarTool';
-import { IToolData, IToolGroupProps } from '../Types';
+
+import { SidebarTool } from '.';
 import { ENABLED_PROP, ID_PROP, supportedComponentTypes } from '../Constants';
 import { isLayerTool, processTool } from '../Helpers';
-import { BlueSkyLayerTool } from '../../tools/layers/bluesky';
+import { ISidebarToolHandle, IToolData, IToolGroupProps } from '../types';
 
 
 export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
