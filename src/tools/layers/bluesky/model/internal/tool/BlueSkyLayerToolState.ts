@@ -2,7 +2,6 @@
 import {
     LayerToolState,
     IMapToolInitProps,
-    IMapTilesModel
 } from "../../../../../../index.core";
 
 import IBlueSkyLayerToolState from "../../types/tool/IBlueSkyLayerToolState";
@@ -18,7 +17,7 @@ import IBlueSkyLayerToolConfig from "../../types/tool/IBlueSkyLayerToolConfig";
  */
 class BlueSkyLayerToolState extends LayerToolState implements IBlueSkyLayerToolState {
     
-    private tilesModel!: IMapTilesModel;
+    private url!: string;
     private layer?: L.ImageOverlay;
 
     /**
@@ -34,6 +33,8 @@ class BlueSkyLayerToolState extends LayerToolState implements IBlueSkyLayerToolS
     public initialize(defaults: IBlueSkyLayerToolDefaults, props: IBlueSkyLayerToolProps, initProps: IMapToolInitProps<IBlueSkyLayerToolConfig>): void {
         // the map layer tool properties
         // this.setBaseMap(props.baseMap == undefined ? defaults.getBaseMap() : props.baseMap);
+
+        this.setUrl(props.url == undefined ? 'https://cdn.mos.cms.futurecdn.net/mZb3Q79jgPAXAcag7CutLW-970-80.jpg.webp' : props.url);
 
         // set super props
         super.initialize(defaults, props, initProps);
@@ -63,6 +64,22 @@ class BlueSkyLayerToolState extends LayerToolState implements IBlueSkyLayerToolS
         // TODO
 
         return config;
+    }
+
+     /**
+     * It returns a base map ID.
+     */
+      public getUrl(): string {
+        return this.url;
+    }
+
+    /**
+     * It sets a base map ID.
+     * 
+     * @param baseMap
+     */
+    public setUrl(url: string): void {
+        this.url = url;
     }
 
     /**

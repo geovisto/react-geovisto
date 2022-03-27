@@ -2,7 +2,6 @@ import { JSXElementConstructor } from "react";
 import { IMap, IMapConfigManager, IMapProps, IMapToolProps } from "../index.core";
 
 export type IGeovistoMapProps = IMapProps & {
-    // ref: RefObject<typeof MyGeovistoMap>,
     children?: React.ReactNode;
     config?: IMapConfigManager;
     className: string;

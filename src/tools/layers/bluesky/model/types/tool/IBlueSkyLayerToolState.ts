@@ -2,8 +2,7 @@
 import {
     ILayerToolDimensions,
     ILayerToolDimensionsConfig,
-    ILayerToolState,
-    IMapTilesModel
+    ILayerToolState
 } from "../../../../../../index.core";
 
 import IBlueSkyLayerToolConfig from "./IBlueSkyLayerToolConfig";
@@ -22,6 +21,18 @@ interface IBlueSkyLayerToolState<
     TDimensionsConfig extends ILayerToolDimensionsConfig = ILayerToolDimensionsConfig,
     TDimensions extends ILayerToolDimensions = ILayerToolDimensions
 > extends ILayerToolState<TProps, TDefaults, TConfig, TDimensionsConfig, TDimensions> {
+
+    /**
+     * It returns a base map ID.
+     */
+    getUrl(): string;
+
+    /**
+     * It sets a base map ID.
+     * 
+     * @param url
+     */
+    setUrl(url: string): void;
 
     /**
      * It returns a Leaflet tile layer.

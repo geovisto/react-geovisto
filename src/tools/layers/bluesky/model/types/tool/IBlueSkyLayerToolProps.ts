@@ -1,7 +1,6 @@
 // Geovisto core
 import {
-    ILayerToolProps,
-    IMapTilesModel
+    ILayerToolProps
 } from "../../../../../../index.core";
 
 /**

@@ -71,6 +71,7 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
     const [basemapToggle, setBasemapToggle] = useState<IMapTilesModel>(basemap1);
     const [enableSidebarToggle, setEnableSidebarToggle] = useState(true);
     const [enableSidebarTabToggle, setEnableSidebarTabToggle] = useState(true);
+    const [imageToggle, setImageToggle] = useState('https://nova-ott-images.ssl.cdn.cra.cz/r640x360n/e460c05d-7b53-44db-8271-35e0a0a435e7');
 
 
 
@@ -245,7 +246,11 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                 <button onClick={() => setIdUndefinedToggle(id => id === undefined ? TILES_ID + '2' : undefined)}>{idUndefinedToggle ? `id (${TILES_ID}2)`  : 'undefined'}</button>
                 <button onClick={() => setEnableCustomToolToggle(!enableCustomToolToggle)}>Custom tool: {enableCustomToolToggle ? "true" : "false"}</button>
                 <button onClick={() => setEnableThemesToolToggle(!enableThemesToolToggle)}>Themes tool: {enableThemesToolToggle ? "true" : "false"}</button>
-
+                <button onClick={() => setImageToggle(img => img == 'https://nova-ott-images.ssl.cdn.cra.cz/r640x360n/e460c05d-7b53-44db-8271-35e0a0a435e7'
+                                                                    ? 'https://cdn.xsd.cz/resize/6bbae9c4cff83ba7a9bdc895ed37caac_resize=900,525_.jpg?hash=ca48d5243fd1f8f2e2285f33d02e2b9b'
+                                                                    : 'https://nova-ott-images.ssl.cdn.cra.cz/r640x360n/e460c05d-7b53-44db-8271-35e0a0a435e7')}>
+                                                                        {imageToggle == 'https://nova-ott-images.ssl.cdn.cra.cz/r640x360n/e460c05d-7b53-44db-8271-35e0a0a435e7' ? 
+                                                                        'Harry' : 'Tom Riddle'}</button>
             </div>
 
             <div className="demo-map">
@@ -302,11 +307,11 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                                 checkButton={true}
                             />
                             <SidebarTab
-                            tool={'my-bluesky-tool'}
-                            enabled={true}
-                            name="[My] Blue sky tool"
-                            icon='<i class="fa fa-image"></i>'
-                            checkButton={true}
+                                tool='my-bluesky-tool'
+                                enabled={true}
+                                name="[My] Blue sky tool"
+                                icon='<i class="fa fa-image"></i>'
+                                checkButton={true}
                             />
                         </SidebarTool>
                         <TilesLayerTool 
@@ -323,7 +328,7 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                             />
                         <TilesLayerTool 
                             id={idUndefinedToggle}
-                            enabled={true}
+                            enabled={false}
                             label="Awesome tiles layer label"
                             // baseMap={{
                             //     url:'https://mapserver.mapy.cz/turist-m/{z}-{x}-{y}',
@@ -354,8 +359,7 @@ const MyDemoFunctional : React.FC<Record<string, never>> = () => {
                         <CustomTool 
                             id='my-bluesky-tool'
                             enabled={enableCustomToolToggle}
-                            url="something"
-                            whateverElse = {true}
+                            url={imageToggle}
                             createTool={(props: IBlueSkyLayerToolProps) => new BlueSkyLayerTool(props)}
                         />
                         <ThemesTool

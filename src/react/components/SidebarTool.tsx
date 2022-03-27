@@ -61,7 +61,7 @@ export const SidebarTool = forwardRef<ISidebarToolHandle, ISidebarToolDataProps<
     /**
      * Reacts to changes in any of the sidebar tabs
      */
-    const handleToolChange = async (toolData: IToolData, property?: string) => {
+    const handleToolChange = (toolData: IToolData, property?: string) => {
         props.onToolChange?.(formSidebarProps());
     };
     
