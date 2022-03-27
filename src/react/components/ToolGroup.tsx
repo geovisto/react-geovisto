@@ -126,7 +126,6 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
                 
                 // Added tool were the latest to process, map is ready to render
                 if(manager.getAll().length === childrenCount) {
-                    console.log('Here');
                     emitRerender();
                 }
                 
@@ -250,7 +249,6 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
     //     // Added tool were the latest to process, map is ready to render
     //     if(tools.length === React.Children.count(childrenExtended))
     //     {
-    //         console.log(tools)
     //         props.onRenderChange!(Geovisto.createMapToolsManager(tools));
     //     }
     // }, [tools])

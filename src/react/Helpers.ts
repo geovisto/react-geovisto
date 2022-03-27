@@ -6,7 +6,6 @@ import { IChoroplethLayerToolProps, IMarkerLayerToolProps, IThemesToolProps,
 import { CustomTool } from './components/CustomTool';
 import { ChoroplethLayerTool, MarkerLayerTool, SidebarTool, ThemesTool, TilesLayerTool } from './components';
 import { ILayerTool } from '../index.core';
-import { BlueSkyLayerTool, IBlueSkyLayerToolProps } from '../tools/layers/bluesky';
 
 
 /**

@@ -27,9 +27,7 @@ export const GeovistoThemesTool: IThemesToolAPI & {
     createThemeDark3: () => IMapTheme
 } = { ...ThemesToolAPI,
     createTool: (props) => new ThemesTool(props),
-    createThemesManager: (themes) => {
-        console.error("Change");
-        return new MapThemesManager(themes)},
+    createThemesManager: (themes) => new MapThemesManager(themes),
     createThemeBasic: () => new BasicTheme(),
     createThemeLight1: () => new Light1Theme(),
     createThemeLight2: () => new Light2Theme(),

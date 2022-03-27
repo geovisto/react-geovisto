@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { ENABLED_PROP, ID_PROP } from "./Constants";
 import { validateId } from "./Helpers";
 import { IToolComponentProps } from "./Types";
-import deepEqual from "deep-equal";
 
 /**
  * Reacts to dependencies change once the component is mounted
@@ -69,34 +68,4 @@ export const useDidToolIdUpdate = <TProps extends IToolComponentProps = IToolCom
         setId(props.id!);
 
     }, dependencies ?? []);
-};
-
-/**
- * Reacts to tool identificator changes while providing validation and keeping the previous value
- */
- export const useDidToolManagerUpdate = <TManager, TProps extends IToolComponentProps & {manager?: TManager} = IToolComponentProps>(props: TProps, dependencies? : React.DependencyList): void => {
-    
-    useDidUpdateEffect(() => {
-
-        console.log("Hook: changing manager");
-        props.onToolChange?.(props);
-
-    }, dependencies);
-
-    // const [manager, setManager] = useState<TManager>();
-    
-    // useEffect(() => {
-
-    //     props.onToolChange?.(props);
-        
-    //     if(manager !== undefined) {
-
-    //         // Emit callback only if the previous and current version of the manager differs
-    //         if(!deepEqual(manager, props.manager)) {
-    //             props.onToolChange?.(props);               
-    //         }            
-    //     }
-    //     setManager(props.manager);
-
-    // }, dependencies ?? []);
 };

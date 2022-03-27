@@ -27,12 +27,10 @@ export const GeovistoMap = (props : IGeovistoMapProps) : JSX.Element => {
 
         if(toolsManager !== undefined)
         {
-            
             const mapProps = {...props, tools: toolsManager};
             
             // TODO: Maybe?
             // delete props.children;
-
             
             // TODO: Possibly map == null should cover both - null & undefined  
             if(map === undefined)
