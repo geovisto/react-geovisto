@@ -19,7 +19,6 @@ export const FILTERS_ID = "geovisto-tool-filters";
 export const ENABLED_PROP = 'enabled';
 export const ID_PROP = 'id';
 
-// TODO: All in caps?
 /**
  * Set of supported components 
  */

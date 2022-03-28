@@ -1,6 +1,6 @@
 import React from 'react';
 import { IThemesToolProps } from '../..';
-import { useDidToolIdUpdate, useToolEffect } from '../Hooks';
+import { useDidToolEnabledUpdate, useDidToolIdUpdate, useToolEffect } from '../Hooks';
 import { IToolDataProps } from '../types/IComponentTool';
 
 
@@ -10,9 +10,11 @@ export const ThemesTool = (props: IToolDataProps<IThemesToolProps>) : JSX.Elemen
     useToolEffect(props, [
         props.label, 
         props.icon,
-        props.enabled,
         props.manager,
         props.theme]);
+
+    // Run on 'enabled' property update
+    useDidToolEnabledUpdate(props, [props.enabled]);
 
     // Run on 'id' property update
     useDidToolIdUpdate(props, [props.id]);

@@ -1,10 +1,9 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
+
 import { SidebarTab as SidebarTabType }  from '.';
 import { ISidebarTabProps, ISidebarToolProps, SidebarTab } from '../..';
-import { useDidToolIdUpdate, useToolEffect } from '../Hooks';
-import { ISidebarTabs, ISidebarToolDataProps, ISidebarToolHandle } from '../types';
-import { IToolData, IToolDataProps } from '../types/IComponentTool';
-
+import { useDidToolEnabledUpdate, useDidToolIdUpdate, useToolEffect } from '../Hooks';
+import { ISidebarTabs, ISidebarToolDataProps, ISidebarToolHandle, IToolData, IToolDataProps } from '../types';
 
 export const SidebarTool = forwardRef<ISidebarToolHandle, ISidebarToolDataProps<ISidebarToolProps>>((props, ref) : JSX.Element => {
     
@@ -37,7 +36,6 @@ export const SidebarTool = forwardRef<ISidebarToolHandle, ISidebarToolDataProps<
             processedTabs.push([toolId, new SidebarTab(tabProps as ISidebarTabProps)]);
         });
         
-        // setTabs(processedTabs);
         return processedTabs;
     }; 
 
@@ -58,9 +56,11 @@ export const SidebarTool = forwardRef<ISidebarToolHandle, ISidebarToolDataProps<
     // Run on component mount or any dependency update
     useToolEffect(formSidebarProps(), [
         props.icon,
-        props.label,
-        // Leaflet map needs to be re-rendered when sidebar enabled state is modified
-        props.enabled]);
+        props.label
+    ]);
+
+    // Run on 'enabled' property update
+    useDidToolEnabledUpdate(formSidebarProps(), [props.enabled]);
 
     // Run on 'id' property update
     useDidToolIdUpdate(formSidebarProps(), [props.id]);

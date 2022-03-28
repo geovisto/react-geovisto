@@ -6,15 +6,6 @@ import { IGeovistoMapProps } from '../types';
 export const GeovistoMap = (props : IGeovistoMapProps) : JSX.Element => {
 
     const [map, setMap] = useState<IMap>();
-    // let context = useGeovistoContext();
-
-    // let map:IMap;
-
-    // let ownProps: IMyGeovistoMapProps;
-    //  React.forwardRef((props, ref)
-    // useImperativeHandle(ref, () => ({
-    //     getMap: () => {return map}
-    //   }));
 
     /*
      * Handles callback from children elements to render the map with current properties
@@ -24,8 +15,7 @@ export const GeovistoMap = (props : IGeovistoMapProps) : JSX.Element => {
         if(toolsManager !== undefined)
         {
             const mapProps = {...props, tools: toolsManager};
-            
-            // TODO: Possibly map == null should cover both - null & undefined  
+             
             if(map === undefined)
             {
                 console.warn("--------------MAP DRAW--------------");
