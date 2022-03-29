@@ -139,22 +139,36 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
                 // Decides whether tool implements ILayerTool or IMapTool interface
                 const toolIsLayerTool = isLayerTool(currentTool);
 
-                // Replace the id of the tool in the dirty bit array 
-                if(property === ID_PROP) {
-                    replaceIdInDirtyBitArray(toolData.prevId, toolData.id);
+                if(currentTool === undefined) {
+                    throw Error ('Updated tool is not present in the tools manager');
                 }
 
-                // Updating: 'enabled' property of a layer tool has changed
-                else if(property === ENABLED_PROP && toolIsLayerTool && currentTool !== undefined)
-                {
-                    console.error('Enabled prop handler was called from: ' + toolData.id);
-                    toolSetChecked(toolData);
-                    return;
-                }
-                
                 // Updating: Standard way of processing props changes - recreate the tool
                 if(manager.getAll().length === childrenCount)
                 {        
+                    // switch (property) {
+                    //     case ID_PROP:
+                    //         replaceIdInDirtyBitArray(toolData.prevId, toolData.id);    
+                    //         break;
+                    
+                    //     default:
+                    //         break;
+                    // }
+
+                    // Replace the id of the tool in the dirty bit array 
+                    if(property === ID_PROP) {
+                        replaceIdInDirtyBitArray(toolData.prevId, toolData.id);
+                    }
+    
+                    // Updating: 'enabled' property of a layer tool has changed
+                    else if(property === ENABLED_PROP && toolIsLayerTool)
+                    {
+                        console.error('Enabled prop handler was called from: ' + toolData.id);
+                        toolSetChecked(toolData);
+                        return;
+                    }
+                
+                    
                     console.warn('----- Updating - Edited tool: ' + toolData.id + ' ----------');
                     
                     // Manage updating of a SidebarTool component props 
@@ -232,6 +246,7 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
                         }
 
                     }
+
                     else {
                         throw Error(`Error while providing update - Tool is not supported.`);
                     }   
