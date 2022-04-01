@@ -11,7 +11,8 @@ export const TilesLayerTool = (props: IToolDataProps<ITilesLayerToolProps>) : JS
         props.label, 
         props.icon, 
         props.name, 
-        props.baseMap]);
+        props.baseMap
+    ]);
     
     // Run on 'enabled' property update
     useDidToolEnabledUpdate(props, [props.enabled]);

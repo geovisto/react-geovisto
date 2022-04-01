@@ -11,12 +11,12 @@ import { GeovistoMap } from "../react/components/GeovistoMap";
 
 import './Demo.scss';
 
-import { Geovisto, GeovistoThemesTool, IMapThemesManager, IMapTilesModel } from '..';
+import { Geovisto, GeovistoThemesTool, IMapTheme, IMapThemesManager, IMapTilesModel, ISidebarFragment, SidebarFragment } from '..';
 
-import { CHOROPLETH_ID, MARKER_ID, SIDEBAR_ID, THEMES_ID, TILES_ID } from '../react/Constants';
+import { CHOROPLETH_ID, CONNECTION_ID, FILTERS_ID, MARKER_ID, SELECTION_ID, SIDEBAR_ID, THEMES_ID, TILES_ID } from '../react/Constants';
 
-import { ChoroplethLayerTool, MarkerLayerTool, SidebarTab, 
-         SidebarTool, ThemesTool, TilesLayerTool, ToolGroup } from '../react/components/index';
+import { ConnectionLayerTool, ChoroplethLayerTool, MarkerLayerTool, SidebarTab, 
+         SidebarTool, ThemesTool, TilesLayerTool, ToolGroup, SelectionTool, FiltersTool } from '../react/components/index';
 
 
 /* example of screen component with grid layout and card wrapper usage */
@@ -216,6 +216,10 @@ const ReactGeovistoDemo : React.FC<Record<string, never>> = () => {
         ]);
     }, []); 
 
+    const theme = useMemo(() : IMapTheme => {
+        return GeovistoThemesTool.createThemeDark3();
+     }, []); 
+
     return (
         <div className="demo-container">
             
@@ -259,12 +263,25 @@ const ReactGeovistoDemo : React.FC<Record<string, never>> = () => {
                     <ToolGroup>
                         <SidebarTool id={idToggle3} label="label" enabled={enableSidebarToggle}>
                             <SidebarTab
+                                enabled={true}
+                                name="General settings"
+                                icon='<i class="fa fa-gear"></i>'
+                                checkButton={false}
+                                fragments={[
+                                [ "geovisto-tool-themes",
+                                    new SidebarFragment({ enabled:true })
+                                ],
+                                [ "geovisto-tool-selection",
+                                    new SidebarFragment({ enabled:true })
+                                ]]}
+                            />
+                            {/* <SidebarTab
                                 tool={THEMES_ID}
                                 enabled={true}
                                 name="[My] Themes"
                                 icon='<i class="fa fa-btc"></i>'
                                 checkButton={false}
-                            />
+                            /> */}
                             <SidebarTab
                                 tool={TILES_ID}
                                 enabled={enableSidebarTabToggle}
@@ -298,6 +315,20 @@ const ReactGeovistoDemo : React.FC<Record<string, never>> = () => {
                                 enabled={true}
                                 name="[My] Blue sky tool"
                                 icon='<i class="fa fa-image"></i>'
+                                checkButton={true}
+                            />
+                            <SidebarTab
+                                tool={CONNECTION_ID}
+                                enabled={true}
+                                name="[My] Connection layer"
+                                icon='<i class="fa fa-inr"></i>'
+                                checkButton={true}
+                            />
+                            <SidebarTab
+                                tool={FILTERS_ID}
+                                enabled={true}
+                                name="[My] Filter tool"
+                                icon='<i class="fa fa-filter"></i>'
                                 checkButton={true}
                             />
                         </SidebarTool>
@@ -343,6 +374,16 @@ const ReactGeovistoDemo : React.FC<Record<string, never>> = () => {
                             id={MARKER_ID}
                             enabled={true}
                         />
+                        <ConnectionLayerTool
+                            id={CONNECTION_ID}
+                            enabled={true}
+                        />
+                        <SelectionTool
+                            id={SELECTION_ID}
+                        />
+                        <FiltersTool
+                            id={FILTERS_ID}
+                        />
                         <CustomTool 
                             id='my-bluesky-tool'
                             enabled={enableCustomToolToggle}
@@ -361,7 +402,7 @@ const ReactGeovistoDemo : React.FC<Record<string, never>> = () => {
                             id={idToggle4}
                             manager={themesManager}
                             enabled={enableThemesToolToggle}
-                            // enabled={enableToggle}
+                            theme={theme}
                         />
                     </ToolGroup>
                     

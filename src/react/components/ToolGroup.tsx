@@ -90,12 +90,17 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
             tab?.setChecked(toolData.enabled);    
         }
         
+
+        console.log(toolData.enabled + "&&" + getDirtyBit(toolData.id));
+
         if(toolData.enabled && getDirtyBit(toolData.id)) {
+            console.warn("NEED TO RERENDER");
             // Reset the dirty bit and proceed the tool to process         
             setDirtyBit(toolData.id, false);
             handleToolChange(toolData);
         }
         else {
+            console.warn("JUST SET");
             // Enable or disable the tool
             tool.setEnabled(toolData.enabled);
             tool.getProps().enabled = toolData.enabled;            
@@ -136,16 +141,17 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
 
                 const toolId = property === ID_PROP ? toolData.prevId : toolData.id;  
                 const currentTool = manager.getById(toolId) as IMapTool;
-                // Decides whether tool implements ILayerTool or IMapTool interface
-                const toolIsLayerTool = isLayerTool(currentTool);
-
+                
                 if(currentTool === undefined) {
-                    throw Error ('Updated tool is not present in the tools manager');
+                    throw Error ('Updated tool is not present in the tools manager.');
                 }
-
+                
                 // Updating: Standard way of processing props changes - recreate the tool
                 if(manager.getAll().length === childrenCount)
                 {        
+                    // Decides whether tool implements ILayerTool or IMapTool interface
+                    const toolIsLayerTool = isLayerTool(currentTool);
+                    
                     // switch (property) {
                     //     case ID_PROP:
                     //         replaceIdInDirtyBitArray(toolData.prevId, toolData.id);    
@@ -157,6 +163,7 @@ export const ToolGroup = (props: IToolGroupProps) : JSX.Element => {
 
                     // Replace the id of the tool in the dirty bit array 
                     if(property === ID_PROP) {
+                        console.error('Changing id for: ' + toolData.id);
                         replaceIdInDirtyBitArray(toolData.prevId, toolData.id);
                     }
     

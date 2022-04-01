@@ -1,18 +1,18 @@
 import React from 'react';
-import { IChoroplethLayerToolProps } from '../..';
+import { IFiltersToolProps } from '../..';
 import { useDidToolEnabledUpdate, useDidToolIdUpdate, useToolEffect } from '../Hooks';
 import { IToolDataProps } from '../types';
 
 
-export const ChoroplethLayerTool = (props: IToolDataProps<IChoroplethLayerToolProps>) : JSX.Element => {
+export const FiltersTool = (props: IToolDataProps<IFiltersToolProps>) : JSX.Element => {
 
     // Run on component mount or any dependency update
     useToolEffect(props, [
         props.icon,
-        props.name,
         props.label,
-        props.dimensions,
-        props.geoData]);
+        props.rules,
+        props.manager
+    ]);
         
     // Run on 'enabled' property update
     useDidToolEnabledUpdate(props, [props.enabled]);

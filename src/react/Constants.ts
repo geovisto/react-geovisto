@@ -1,5 +1,6 @@
-import { ChoroplethLayerTool, CustomTool, MarkerLayerTool, SidebarTool,
-         ThemesTool, TilesLayerTool } from "./components/index";
+import { ChoroplethLayerTool, ConnectionLayerTool, CustomTool, FiltersTool, 
+         MarkerLayerTool, SidebarTool, ThemesTool, TilesLayerTool } from "./components/index";
+import { SelectionTool } from "./components/SelectionTool";
 import { ISupportedToolComponent } from "./types";
 
 // TODO: Delete
@@ -23,10 +24,13 @@ export const ID_PROP = 'id';
  * Set of supported components 
  */
 export const supportedComponentTypes : ISupportedToolComponent[] = [
-    SidebarTool,
-    TilesLayerTool,
     ChoroplethLayerTool,
+    ConnectionLayerTool,
+    CustomTool,
+    FiltersTool,
     MarkerLayerTool,
+    SelectionTool,
+    SidebarTool,
     ThemesTool,
-    CustomTool
+    TilesLayerTool,
 ];

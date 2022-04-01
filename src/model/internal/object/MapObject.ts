@@ -35,7 +35,6 @@ class MapObject implements IMapObject {
     /**
      * It updates the props.
      */
-    //FIXME: Changed
     protected setProps(props: IMapObjectProps): void {
         this.props = props;
     }

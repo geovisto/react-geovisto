@@ -8,6 +8,7 @@ export const SidebarTab = (props: ISidebarTabDataProps<ISidebarTabProps>) : JSX.
 
     // Run on any dependency update
     useDidUpdateEffect(() => {
+        console.log("Change");
         props.onToolChange?.(props);
     }, [
         props.id,

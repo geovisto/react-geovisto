@@ -1,11 +1,13 @@
 import { GeovistoChoroplethLayerTool, GeovistoMarkerLayerTool, GeovistoSidebarTool, 
-         GeovistoThemesTool, GeovistoTilesLayerTool, IMapTool, ISidebarToolProps, } from '../';
-import { IReactElement, IToolData } from './types/IComponentTool';
-import { IChoroplethLayerToolProps, IMarkerLayerToolProps, IThemesToolProps,
-        ITilesLayerToolProps } from '../tools';
-import { CustomTool } from './components/CustomTool';
-import { ChoroplethLayerTool, MarkerLayerTool, SidebarTool, ThemesTool, TilesLayerTool } from './components';
+         GeovistoThemesTool, GeovistoTilesLayerTool, IMapTool, ISidebarToolProps } from '../';
+import { ChoroplethLayerTool, ConnectionLayerTool, CustomTool, FiltersTool, MarkerLayerTool, 
+         SelectionTool, 
+         SidebarTool, ThemesTool, TilesLayerTool } from './components';
+import { IReactElement, IToolData } from './types';
+
 import { ILayerTool } from '../index.core';
+import { GeovistoConnectionLayerTool, GeovistoFiltersTool, GeovistoSelectionTool, IChoroplethLayerToolProps, IConnectionLayerToolProps, IFiltersToolProps, IMarkerLayerToolProps, ISelectionToolProps, IThemesToolProps,
+        ITilesLayerToolProps } from '../tools';
 
 
 /**
@@ -28,18 +30,24 @@ export const processTool = (toolType: IReactElement, toolData: IToolData): IMapT
     switch (toolType) {
         case SidebarTool:
             return GeovistoSidebarTool.createTool(toolProps as ISidebarToolProps);
-        case TilesLayerTool:
-            return GeovistoTilesLayerTool.createTool(toolProps as ITilesLayerToolProps);
         case ChoroplethLayerTool:
             return GeovistoChoroplethLayerTool.createTool(toolProps as IChoroplethLayerToolProps);
+        case ConnectionLayerTool:
+            return GeovistoConnectionLayerTool.createTool(toolProps as IConnectionLayerToolProps);
+        case FiltersTool:
+            return GeovistoFiltersTool.createTool(toolProps as IFiltersToolProps);
         case MarkerLayerTool:
-            return GeovistoMarkerLayerTool.createTool(toolProps as IMarkerLayerToolProps);    
+            return GeovistoMarkerLayerTool.createTool(toolProps as IMarkerLayerToolProps);
+        case SelectionTool:
+            return GeovistoSelectionTool.createTool(toolProps as ISelectionToolProps);
         case ThemesTool:
             return GeovistoThemesTool.createTool(toolProps as IThemesToolProps);
+        case TilesLayerTool:
+            return GeovistoTilesLayerTool.createTool(toolProps as ITilesLayerToolProps);
         case CustomTool:
             return toolData.createTool(toolProps);
         default:
-            throw new Error('Error: Unknown type of the tool. Component is not valid.');
+            throw new Error('Unknown component type to process. Please add constructor of the tool instance.');
     }
 };
 

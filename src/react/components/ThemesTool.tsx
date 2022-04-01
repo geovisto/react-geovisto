@@ -11,7 +11,8 @@ export const ThemesTool = (props: IToolDataProps<IThemesToolProps>) : JSX.Elemen
         props.label, 
         props.icon,
         props.manager,
-        props.theme]);
+        props.theme
+    ]);
 
     // Run on 'enabled' property update
     useDidToolEnabledUpdate(props, [props.enabled]);

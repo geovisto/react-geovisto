@@ -11,7 +11,8 @@ export const MarkerLayerTool = (props: IToolDataProps<IMarkerLayerToolProps>) : 
         props.icon, 
         props.name, 
         props.dimensions,
-        props.geoData]);
+        props.geoData
+    ]);
     
     // Run on 'enabled' property update
     useDidToolEnabledUpdate(props, [props.enabled]);
