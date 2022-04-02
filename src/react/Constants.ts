@@ -1,7 +1,7 @@
 import { ChoroplethLayerTool, ConnectionLayerTool, CustomTool, FiltersTool, 
-         MarkerLayerTool, SidebarTool, ThemesTool, TilesLayerTool } from "./components/index";
+         MarkerLayerTool, SidebarTool, ThemesTool, TilesLayerTool, ToolGroup } from "./components/index";
 import { SelectionTool } from "./components/SelectionTool";
-import { ISupportedToolComponent } from "./types";
+import { ISupportedToolComponent, ISupportedTopLevelComponent } from "./types";
 
 // TODO: Delete
 export const TILES_ID = "geovisto-tool-layer-map";
@@ -33,4 +33,11 @@ export const supportedComponentTypes : ISupportedToolComponent[] = [
     SidebarTool,
     ThemesTool,
     TilesLayerTool,
+];
+
+/**
+ * Set of supported components 
+ */
+ export const supportedTopLevelComponentTypes : ISupportedTopLevelComponent[] = [
+    ToolGroup
 ];

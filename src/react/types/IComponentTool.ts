@@ -22,5 +22,8 @@ type IToolRefComponent = React.ForwardRefExoticComponent<IToolComponentProps>
 // All supported types of components
 export type ISupportedToolComponent = IToolComponent | IToolRefComponent | IReactElement;
 
+// All supported types of components
+export type ISupportedTopLevelComponent = React.ForwardRefExoticComponent<any> | IReactElement;
+
 // Default type for React Element (Needed for the comparision with supported components)
 export type IReactElement = string | JSXElementConstructor<unknown>;

@@ -22,7 +22,7 @@ export const validateId = (id: string | undefined) : void => {
 /**
  * Returns tool in a Geovisto library representation
  */
-export const processTool = (toolType: IReactElement, toolData: IToolData): IMapTool => {
+export const getToolInstance = (toolType: IReactElement, toolData: IToolData): IMapTool => {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { children, onToolChange, ...toolProps } = toolData;

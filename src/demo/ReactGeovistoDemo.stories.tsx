@@ -5,13 +5,13 @@ import {
 } from '@storybook/react/types-6-0';
 
 // React
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import { GeovistoMap } from "../react/components/GeovistoMap";
 
 import './Demo.scss';
 
-import { Geovisto, GeovistoThemesTool, IMapTheme, IMapThemesManager, IMapTilesModel, ISidebarFragment, SidebarFragment } from '..';
+import { Geovisto, GeovistoThemesTool, IGeoDataManager, IMapDataManager, IMapTheme, IMapThemesManager, IMapTilesModel, ISidebarFragment, SidebarFragment } from '..';
 
 import { CHOROPLETH_ID, CONNECTION_ID, FILTERS_ID, MARKER_ID, SELECTION_ID, SIDEBAR_ID, THEMES_ID, TILES_ID } from '../react/Constants';
 
@@ -19,34 +19,28 @@ import { ConnectionLayerTool, ChoroplethLayerTool, MarkerLayerTool, SidebarTab,
          SidebarTool, ThemesTool, TilesLayerTool, ToolGroup, SelectionTool, FiltersTool } from '../react/components/index';
 
 
-/* example of screen component with grid layout and card wrapper usage */
-
-// const C_ID_select_data = "leaflet-combined-map-select-data";
-// const C_ID_check_data = "leaflet-combined-map-check-data";
-// const C_ID_input_data = "leaflet-combined-map-input-data";
-// const C_ID_check_config = "leaflet-combined-map-check-config";
-// const C_ID_input_config = "leaflet-combined-map-input-config";
-// const C_ID_input_import = "leaflet-combined-map-input-import";
-// const C_ID_input_export = "leaflet-combined-map-input-export";
-
 
 import polygons from '../../static/geo/country_polygons.json';
 import polygons2 from '../../static/geo/czech_districts_polygons.json';
 import centroids from '../../static/geo/country_centroids.json';
 import centroids2 from '../../static/geo/czech_districts_centroids.json';
 
-import demoData from '../../static/data/covidCzechDistricts.json';
+// import demoData from '../../static/data/covidCzechDistricts.json';
+import demoData from '../../static/data/demo1.json';
 import demoConfig from '../../static/config/config.json';
 import { CustomTool } from '../react/components/CustomTool';
 import { BlueSkyLayerTool, IBlueSkyLayerToolProps } from '../tools/layers/bluesky';
+import { IGeovistoMapHandle } from '../react/types';
 
-const ReactGeovistoDemo : React.FC<Record<string, never>> = () => {
+const ReactGeovistoDemo = () : JSX.Element => {
 
     // implicit data
-    const [data] = useState<unknown>(demoData);
+    const [data, setData] = useState<unknown>(demoData);
 
     // implicit config
-    const [config] = useState<Record<string, unknown>>(demoConfig);
+    const [config, setConfig] = useState<Record<string, unknown>>(demoConfig);
+
+    const map = useRef<IGeovistoMapHandle>(null);
 
     const basemap1 = {
         url:'https://mapserver.mapy.cz/turist-m/{z}-{x}-{y}',
@@ -73,139 +67,155 @@ const ReactGeovistoDemo : React.FC<Record<string, never>> = () => {
     const [enableSidebarTabToggle, setEnableSidebarTabToggle] = useState(true);
     const [imageToggle, setImageToggle] = useState('https://cdn.xsd.cz/resize/6bbae9c4cff83ba7a9bdc895ed37caac_resize=900,525_.jpg?hash=ca48d5243fd1f8f2e2285f33d02e2b9b');
 
+    const C_ID_select_data = "leaflet-combined-map-select-data";
+    const C_ID_check_data = "leaflet-combined-map-check-data";
+    const C_ID_input_data = "leaflet-combined-map-input-data";
+    const C_ID_check_config = "leaflet-combined-map-check-config";
+    const C_ID_input_config = "leaflet-combined-map-input-config";
+    const C_ID_input_import = "leaflet-combined-map-input-import";
+    const C_ID_input_export = "leaflet-combined-map-input-export";
 
-
-    // useEffect(() => {
-    //   console.log(basemapToggle);
+    useEffect(() => {
+        // map.current.getMap().redraw(map.current.getMap().getProps(), )
+    }, [data, config]);
     
-    // }, [basemapToggle])
-    
 
-    // useEffect(() => {
-
-    //     map = React.createRef();
-
+    useEffect(() => {
         
-    // }, []);
+        // ------ enable check boxes ------ //
 
-    // // ------ enable check boxes ------ //
+        const enableInput = function(checked: boolean, id: string) {
+            if(checked) {
+                document.getElementById(id).removeAttribute("disabled");
+            } else {
+                document.getElementById(id).setAttribute("disabled", "disabled");
+            }
+        };
 
-    // const enableInput = function(checked: boolean, id: string) {
-    //     if(checked) {
-    //         document.getElementById(id).removeAttribute("disabled");
-    //     } else {
-    //         document.getElementById(id).setAttribute("disabled", "disabled");
-    //     }
-    // };
+        // enable data check box
+        const enableDataInput = function(e: Event) {
+            enableInput((e.target as HTMLInputElement).checked, C_ID_input_data);
+        };
+        document.getElementById(C_ID_input_data).setAttribute("disabled", "disabled");
+        document.getElementById(C_ID_check_data).onchange = enableDataInput;
 
-    // // enable data check box
-    // const enableDataInput = function(e: Event) {
-    //     enableInput((e.target as HTMLInputElement).checked, C_ID_input_data);
-    // };
-    // document.getElementById(C_ID_input_data).setAttribute("disabled", "disabled");
-    // document.getElementById(C_ID_check_data).onchange = enableDataInput;
+        // enable config check box
+        const enableConfigInput = function(e: Event) {
+            enableInput((e.target as HTMLInputElement).checked, C_ID_input_config);
+        };
+        document.getElementById(C_ID_input_config).setAttribute("disabled", "disabled");
+        document.getElementById(C_ID_check_config).onchange = enableConfigInput;
 
-    // // enable config check box
-    // const enableConfigInput = function(e: Event) {
-    //     enableInput((e.target as HTMLInputElement).checked, C_ID_input_config);
-    // };
-    // document.getElementById(C_ID_input_config).setAttribute("disabled", "disabled");
-    // document.getElementById(C_ID_check_config).onchange = enableConfigInput;
+        // ------ process files ------ //
 
-    // // ------ process files ------ //
+        // process path
+        const pathSubmitted = function(file: File, result: { json: unknown | undefined }) {
+            const reader = new FileReader();
+            const onLoadAction = function(e: ProgressEvent<FileReader>) {
+                try {
+                    console.log(e);
+                    //console.log(reader.result);
+                    if(typeof reader.result == "string") {
+                        result.json = JSON.parse(reader.result);
+                    }
+                } catch(ex) {
+                    console.log("unable to read file");
+                    console.log(ex);
+                    // TODO: notify user
+                }
+            };
+            reader.onload = onLoadAction;
+            reader.readAsText(file);
+        };
 
-    // // process path
-    // const pathSubmitted = function(file: File, result: { json: unknown | undefined }) {
-    //     const reader = new FileReader();
-    //     const onLoadAction = function(e: ProgressEvent<FileReader>) {
-    //         try {
-    //             console.log(e);
-    //             //console.log(reader.result);
-    //             if(typeof reader.result == "string") {
-    //                 result.json = JSON.parse(reader.result);
-    //             }
-    //         } catch(ex) {
-    //             console.log("unable to read file");
-    //             console.log(ex);
-    //             // TODO: notify user
-    //         }
-    //     };
-    //     reader.onload = onLoadAction;
-    //     reader.readAsText(file);
-    // };
+        // process data path
+        const inputData = {
+            json: undefined
+        };
+        const dataPathSubmitted = function(this: HTMLInputElement) {
+            console.log(this.files);
+            pathSubmitted(this.files[0], inputData);
+        };
+        document.getElementById(C_ID_input_data).addEventListener('change', dataPathSubmitted, false);
+        
+        // process config path
+        const inputConfig = {
+            json: undefined
+        };
+        const configPathSubmitted = function(this: HTMLInputElement) {
+            console.log(this.files);
+            pathSubmitted(this.files[0], inputConfig);
+        };
+        document.getElementById(C_ID_input_config).addEventListener('change', configPathSubmitted, false);
 
-    // // process data path
-    // const data = {
-    //     json: undefined
-    // };
-    // const dataPathSubmitted = function(this: HTMLInputElement) {
-    //     console.log(this.files);
-    //     pathSubmitted(this.files[0], data);
-    // };
-    // document.getElementById(C_ID_input_data).addEventListener('change', dataPathSubmitted, false);
+        // ------ import ------ //
 
-    // // process config path
-    // const config = {
-    //     json: undefined
-    // };
-    // const configPathSubmitted = function(this: HTMLInputElement) {
-    //     console.log(this.files);
-    //     pathSubmitted(this.files[0], config);
-    // };
-    // document.getElementById(C_ID_input_config).addEventListener('change', configPathSubmitted, false);
+        // import action
+        const importAction = (e: MouseEvent) => {
 
-    // // ------ import ------ //
+            console.log(e);
+            console.log("data: ", data);
+            console.log("config: ", config);
 
-    // // import action
-    // const importAction = (e: MouseEvent) => {
+            // process data json
+            if(!(document.getElementById(C_ID_check_data) as HTMLInputElement).checked || inputData.json == undefined) {
+                const fileName = (document.getElementById(C_ID_select_data) as HTMLInputElement).value;
+                console.log(fileName);
+                inputData.json = require('/static/data/' + fileName);
+            }
+            
+            // process config json
+            if(!(document.getElementById(C_ID_check_config) as HTMLInputElement).checked || inputConfig.json == undefined) {
+                inputConfig.json = require('/static/config/config.json');
+            }
 
-    //     console.log(e);
-    //     console.log("data: ", data);
-    //     console.log("config: ", config);
+            // update state
+            setData(inputData.json);
+            setConfig(inputConfig.json);
+        };
 
-    //     // process data json
-    //     if(!(document.getElementById(C_ID_check_data) as HTMLInputElement).checked || data.json == undefined) {
-    //         const fileName = (document.getElementById(C_ID_select_data) as HTMLInputElement).value;
-    //         console.log(fileName);
-    //         data.json = require('/static/data/' + fileName);
-    //     }
+        document.getElementById(C_ID_input_import).addEventListener('click', importAction);
 
-    //     // process config json
-    //     if(!(document.getElementById(C_ID_check_config) as HTMLInputElement).checked || config.json == undefined) {
-    //         config.json = require('/static/config/config.json');
-    //     }
+        // ------ export ------ //
+        
+        // export action
+        const exportAction = (e: MouseEvent) => {
+            console.log(e);
+            
+            // expert map configuration
+            const config = JSON.stringify(map!.current.getMap().export(), null, 2);
+            
+            // download file
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(config));
+            element.setAttribute('download', "config.json");
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
 
-    //     // update state
-    //     setData(data.json);
-    //     setConfig(config.json);
-    // };
-    // document.getElementById(C_ID_input_import).addEventListener('click', importAction);
+            console.log("rendered map:", );
+        };
+        document.getElementById(C_ID_input_export).addEventListener('click', exportAction);
 
-    // ------ export ------ //
+    }, []);
+    
 
-    // export action
-    // const exportAction = (e: MouseEvent) => {
-    //     console.log(e);
+    const dataManager = useMemo((): IMapDataManager => {
+        return Geovisto.getMapDataManagerFactory().json(data);
+     }, [data]); 
 
-    //     // expert map configuration
-    //     const config = JSON.stringify(this.map.current.getMap().export(), null, 2);
+     const geoDataManager = useMemo((): IGeoDataManager => {
+        return Geovisto.getGeoDataManager([
+            Geovisto.getGeoDataFactory().geojson("world polygons", polygons),
+            Geovisto.getGeoDataFactory().geojson("world centroids", centroids),
+            Geovisto.getGeoDataFactory().geojson("czech polygons", polygons2),
+            Geovisto.getGeoDataFactory().geojson("czech centroids", centroids2)
+        ]);
+     }, [data]); 
 
-    //     // download file
-    //     const element = document.createElement('a');
-    //     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(config));
-    //     element.setAttribute('download', "config.json");
-    //     element.style.display = 'none';
-    //     document.body.appendChild(element);
-    //     element.click();
-    //     document.body.removeChild(element);
-
-    //     console.log("rendered map:", );
-    // };
-    // document.getElementById(C_ID_input_export).addEventListener('click', exportAction);
-
-    const themesManager = useMemo(() : IMapThemesManager => {
+    const themesManager = useMemo((): IMapThemesManager => {
        return GeovistoThemesTool.createThemesManager([
-            // style themes
             GeovistoThemesTool.createThemeLight1(),
             GeovistoThemesTool.createThemeLight2(),
             GeovistoThemesTool.createThemeLight3(),
@@ -215,14 +225,37 @@ const ReactGeovistoDemo : React.FC<Record<string, never>> = () => {
             GeovistoThemesTool.createThemeBasic()
         ]);
     }, []); 
-
+    
     const theme = useMemo(() : IMapTheme => {
         return GeovistoThemesTool.createThemeDark3();
-     }, []); 
+     }, []);  
 
-    return (
-        <div className="demo-container">
+     return (
+         <div className="demo-container">
             
+            <div className="demo-toolbar">
+                <span>Data file: </span>
+                <select id={C_ID_select_data}>
+                    <option value="timeData.json">timeData.json</option>
+                    <option value="demo1.json">demo1.json</option>
+                    <option value="demo2.json">demo2.json</option>
+                    <option value="covidCzechDistricts.json">covid czech districts</option>
+                    <option value="covidCzechDistrictsCumulative.json">covid czech districts (cumulative)</option>
+                    <option value="covidCzechDistrictsCategoric.json">covid czech districts (categoric)</option>
+                    <option disabled></option>
+                </select>
+
+                <span> or <input id={C_ID_check_data} type="checkbox"/> custom file: </span>
+                <input id={C_ID_input_data} type="file" accept=".json" size={3}/>
+
+                <input id={C_ID_check_config} type="checkbox"/>
+                <span> Configuration file: </span>
+                <input id={C_ID_input_config} type="file" accept=".json" size={3}/>
+
+                <input id={C_ID_input_import} type="submit" value="import"/>
+                <input id={C_ID_input_export} type="submit" value="export"/>
+            </div>
+
             <div className='btn-container'>
                 <button onClick={() => setEnableToggle(!enableToggle)}>{enableToggle ? "true" : "false"}</button>
                 <button onClick={() => setStringToggle(current => current == "string222" ? "string111" : "string222")}>{stringToggle}</button>
@@ -246,16 +279,11 @@ const ReactGeovistoDemo : React.FC<Record<string, never>> = () => {
 
             <div className="demo-map">
                 <GeovistoMap
-                    // ref={map}
+                    ref={map}
                     id="my-new-geovisto-map"
                     className="geovisto-map"
-                    data={Geovisto.getMapDataManagerFactory().json(data)}
-                    geoData={Geovisto.getGeoDataManager([
-                        Geovisto.getGeoDataFactory().geojson("world polygons", polygons),
-                        Geovisto.getGeoDataFactory().geojson("world centroids", centroids),
-                        Geovisto.getGeoDataFactory().geojson("czech polygons", polygons2),
-                        Geovisto.getGeoDataFactory().geojson("czech centroids", centroids2)
-                    ])}
+                    data={dataManager}
+                    geoData={geoDataManager}
                     // config={Geovisto.getMapConfigManagerFactory().default(config)}
                     globals={undefined}
                     templates={undefined}
@@ -267,13 +295,13 @@ const ReactGeovistoDemo : React.FC<Record<string, never>> = () => {
                                 name="General settings"
                                 icon='<i class="fa fa-gear"></i>'
                                 checkButton={false}
-                                fragments={[
-                                [ "geovisto-tool-themes",
-                                    new SidebarFragment({ enabled:true })
-                                ],
-                                [ "geovisto-tool-selection",
-                                    new SidebarFragment({ enabled:true })
-                                ]]}
+                                // fragments={[
+                                // [ "geovisto-tool-themes",
+                                //     new SidebarFragment({ enabled:true })
+                                // ],
+                                // [ "geovisto-tool-selection",
+                                //     new SidebarFragment({ enabled:true })
+                                // ]]}
                             />
                             {/* <SidebarTab
                                 tool={THEMES_ID}
@@ -336,7 +364,7 @@ const ReactGeovistoDemo : React.FC<Record<string, never>> = () => {
                                 id={idToggle}
                                 enabled={enableToggle}
                                 // enabled={true}
-                                label="Awesome tiles layer label"
+                                label={"Awesome tiles layer label"}
                                 baseMap={basemapToggle}
                                 // baseMap={{
                                 //     url:'https://mapserver.mapy.cz/turist-m/{z}-{x}-{y}',
