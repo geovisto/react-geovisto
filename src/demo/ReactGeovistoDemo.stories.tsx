@@ -295,13 +295,13 @@ const ReactGeovistoDemo = () : JSX.Element => {
                                 name="General settings"
                                 icon='<i class="fa fa-gear"></i>'
                                 checkButton={false}
-                                // fragments={[
-                                // [ "geovisto-tool-themes",
-                                //     new SidebarFragment({ enabled:true })
-                                // ],
-                                // [ "geovisto-tool-selection",
-                                //     new SidebarFragment({ enabled:true })
-                                // ]]}
+                                fragments={[
+                                [ "geovisto-tool-themes",
+                                    new SidebarFragment({ enabled:true })
+                                ],
+                                [ "geovisto-tool-selection",
+                                    new SidebarFragment({ enabled:true })
+                                ]]}
                             />
                             {/* <SidebarTab
                                 tool={THEMES_ID}

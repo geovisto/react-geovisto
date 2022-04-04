@@ -49,9 +49,7 @@ export const GeovistoMap = forwardRef<IGeovistoMapHandle, IGeovistoMapProps>((pr
      */
     const handleRenderCallback = (toolsManager? : IMapToolsManager) : IMap | undefined => {
 
-        console.log(map?.getProps().tools);
-  
-        const mapProps = {...props, tools: toolsManager ?? map?.getProps().tools};
+        const mapProps = {...props, tools: toolsManager};
             
         if(map === undefined)
         {

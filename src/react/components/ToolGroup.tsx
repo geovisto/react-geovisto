@@ -1,10 +1,10 @@
-import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 import { IMapTool, IMapToolsManager, ISidebarTool, SidebarToolDefaults, } from '../..';
 import { Geovisto, ILayerTool } from '../../index.core';
 
 import { SidebarTool } from '.';
-import { ENABLED_PROP, ID_PROP, supportedComponentTypes } from '../Constants';
+import { ENABLED_PROP, ID_PROP, supportedComponentTypes, TILES_ID } from '../Constants';
 import { isLayerTool, getToolInstance } from '../Helpers';
 import { IReactElement, ISidebarToolHandle, IToolData, IToolGroupHandle, IToolGroupProps } from '../types';
 
@@ -30,6 +30,12 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
             }
         }
     }));
+
+    // useEffect(() => {
+    //   console.log("Manager has changed");
+
+    // }, [manager])
+    
 
     /**
      * Sets dirty bit if tool properties was changed while not enabled
@@ -68,7 +74,18 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
      */
     const emitRerender = () => {
 
+
+        // console.log("EMIT: --------------------------------")
+        // console.log(manager.getById(TILES_ID)?.getProps().enabled);
+        // console.log(manager.getById(TILES_ID)?.getState().isEnabled());
+        // console.log("--------------------------------")
+
         const map = props.onRenderChange?.(manager);
+
+        // const layers: any[] = [];
+        // map?.getState().getLeafletMap()?.eachLayer(l => layers.push(l));
+        // console.log(JSON.stringify(layers[0]));
+
 
         if(map !== undefined) {
             const mapToolsManager = map.getState().getTools();
@@ -103,14 +120,32 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
         }
         
         if(toolData.enabled && getDirtyBit(toolData.id)) {
+
             // Reset the dirty bit and proceed the tool to process         
             setDirtyBit(toolData.id, false);
             handleToolChange(toolData);
         }
         else {
             // Enable or disable the tool
-            tool.setEnabled(toolData.enabled);
-            tool.getProps().enabled = toolData.enabled;            
+            console.log("tool state: " + manager.getById(TILES_ID)?.getState().isEnabled());
+            console.log("tool props: " + JSON.stringify(manager.getById(TILES_ID)?.getProps().enabled));
+            console.log("toolData enabled: " + toolData.enabled);
+
+            // keep
+            (manager.getById(toolData.id) as IMapTool).setEnabled(toolData.enabled);
+
+            (manager.getById(toolData.id) as IMapTool).getMap()?.getState().getLeafletMap();
+            console.log("setEnabled was called");
+
+            // keep
+            tool.getProps().enabled = toolData.enabled;
+    
+            console.log('--------------------------------------------');
+            console.log("tool state: " + manager.getById(TILES_ID)?.getState().isEnabled());
+            console.log("tool props: " + JSON.stringify(manager.getById(TILES_ID)?.getProps().enabled));
+            console.log("toolData enabled: " + toolData.enabled);
+
+            sidebarRef.current?.getTabs();
         }
     };
 
@@ -178,7 +213,6 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
      */
     const processSidebarUpdate = (toolData: IToolData, type: IReactElement, currentTool: Record<string, any>) => {
 
-        console.error('Called');
         const tool = currentTool.data as ISidebarTool;
 
         // Remove sidebar elements from the leaflet map
@@ -216,6 +250,8 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
         // Get count of all tools configured by user
         const childrenCount = React.Children.count(childrenExtended);
 
+        console.error('hadnleToolChange called from: ' + toolData.id);
+
         if(React.isValidElement(toolElement))
         {
             // Initialization: All tools were not initialized yet
@@ -228,8 +264,7 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
             // Updating: All tools were loaded, handler was triggered by updating tool's properties
             else {
 
-                const toolId = property === ID_PROP ? toolData.prevId : toolData.id;  
-                manager.getAll().forEach(el => console.log(el.getId()));
+                const toolId = property === ID_PROP ? toolData.prevId : toolData.id;
                 const currentTool = manager.getById(toolId) as IMapTool;
 
                 // If some parameters are functions as parameters, functions are causing rerender everytime some tool changes
@@ -264,7 +299,6 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
                     // Manage updating of a SidebarTool component props 
                     if(toolElement.type === SidebarTool) {
   
-                        console.log("Here");
                         processSidebarUpdate(toolData, toolElement.type, {
                             id: toolId,
                             data: currentTool,
