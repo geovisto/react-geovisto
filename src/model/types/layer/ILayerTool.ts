@@ -31,16 +31,6 @@ interface ILayerTool<
     getLayerItems(): L.Layer[];
 
     /**
-     * TODO: description
-     */
-    hideLayerItems(): void;
-
-    /**
-     * TODO: description
-     */
-    showLayerItems(): void;
-
-    /**
      * It reloads data and redraw the layer with respect to the type.
      * 
      * By default it works with LayerRedrawType

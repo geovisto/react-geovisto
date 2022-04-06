@@ -430,6 +430,16 @@ const ReactGeovistoDemo = () : JSX.Element => {
                             id={idToggle4}
                             manager={themesManager}
                             enabled={enableThemesToolToggle}
+                            // manager={GeovistoThemesTool.createThemesManager([
+                            //     GeovistoThemesTool.createThemeLight1(),
+                            //     GeovistoThemesTool.createThemeLight2(),
+                            //     GeovistoThemesTool.createThemeLight3(),
+                            //     GeovistoThemesTool.createThemeDark1(),
+                            //     GeovistoThemesTool.createThemeDark2(),
+                            //     GeovistoThemesTool.createThemeDark3(),
+                            //     GeovistoThemesTool.createThemeBasic()
+                            // ])}
+                            // enabled={true}
                             theme={theme}
                         />
                     </ToolGroup>

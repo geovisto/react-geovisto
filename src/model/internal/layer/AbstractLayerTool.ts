@@ -115,7 +115,7 @@ abstract class AbstractLayerTool extends MapTool implements ILayerTool {
      * 
      * This function is meant to be private.
      */
-    public showLayerItems(): void {
+    protected showLayerItems(): void {
         const leafletMap = this.getMap()?.getState().getLeafletMap();
         if(leafletMap) {
             // get/create items
@@ -136,7 +136,7 @@ abstract class AbstractLayerTool extends MapTool implements ILayerTool {
      * 
      * This function is meant to be private.
      */
-    public hideLayerItems(): void {
+     protected hideLayerItems(): void {
         const leafletMap = this.getMap()?.getState().getLeafletMap();
 
         // render/remove items
