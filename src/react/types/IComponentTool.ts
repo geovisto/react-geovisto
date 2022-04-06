@@ -7,7 +7,6 @@ export type IToolDataProps<T> = T & {
 }
 
 // Configuration of the tool component
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type IToolData = any;
 
 // Common type for component props

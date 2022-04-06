@@ -60,7 +60,6 @@ export const GeovistoMap = forwardRef<IGeovistoMapHandle, IGeovistoMapProps>((pr
             
             // Draw map with the current config
             mapObject.draw(props.config ?? Geovisto.getMapConfigManagerFactory().default({}));                
-            console.log(mapObject.getState());
 
             return mapObject as IMap;
         }
@@ -70,7 +69,6 @@ export const GeovistoMap = forwardRef<IGeovistoMapHandle, IGeovistoMapProps>((pr
         
             // Redraw map with the updated properties
             map.redraw(props.config ?? Geovisto.getMapConfigManagerFactory().default({}), mapProps);
-            console.log(map.getState());
 
             return map;
         }

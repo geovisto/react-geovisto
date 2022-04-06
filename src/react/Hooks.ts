@@ -59,8 +59,6 @@ export const useDidToolIdUpdate = <TProps extends IToolComponentProps = IToolCom
         validateId(props.id);
         
         if(id !== undefined) {
-            
-            console.error(`Previous id: ${id}\nNew id: ${props.id}`);
             props.onToolChange?.({prevId: id, ...props}, ID_PROP);        
         }
 

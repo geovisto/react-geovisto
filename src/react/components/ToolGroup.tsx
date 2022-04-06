@@ -6,7 +6,7 @@ import { Geovisto } from '../../index.core';
 import { SidebarTool } from '.';
 import { ENABLED_PROP, ID_PROP, supportedComponentTypes } from '../Constants';
 import { isLayerTool, getToolInstance } from '../Helpers';
-import { IReactElement, ISidebarToolHandle, IToolData, IToolGroupHandle, IToolGroupProps } from '../types';
+import { IReactElement, ISidebarToolHandle, IToolData, IToolGroupHandle, IToolGroupProps, IToolInfo } from '../types';
 
 
 export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, ref) : JSX.Element => {
@@ -17,13 +17,13 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
     // but is not visible, so it needs to be re-rendered once is visible again
     const [toolDirtyBitArray, setToolDirtyBitArray] = useState<[string, boolean][]>([]);
 
-    // TODO: description
-    const [enabledToolBuffer, setEnabledToolBuffer] = useState<[string, boolean][]>([]);
+    // Queue for storing tools enable/disable operation ka 
+    const [enabledToolQueue, setEnabledToolQueue] = useState<[string, boolean][]>([]);
 
     const sidebarRef = useRef<ISidebarToolHandle>(null);
     
-    let managerLocked = false;
-    const setLock = (value: boolean) => managerLocked = value;
+    let updatingManagerLock = false;
+    const setLock = (value: boolean) => updatingManagerLock = value;
 
     // Expose method to process and re-render the tools
     useImperativeHandle(ref, () => ({
@@ -37,13 +37,13 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
         }
     }));
 
-    // TODO: description
+    // After the updated manager was set, run the queued enable/disable tool tasks
     useEffect(() => {
       setLock(false);
 
-      if(enabledToolBuffer.length != 0)
+      if(enabledToolQueue.length != 0)
       {
-          enabledToolBuffer.forEach(toolData => {
+          enabledToolQueue.forEach(toolData => {
             const id = toolData[0] as string;
             const enabled = toolData[1] as boolean; 
             const tool = manager.getById(id) as IMapTool;
@@ -52,7 +52,7 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
             tool.getProps().enabled = enabled;    
           });
 
-          setEnabledToolBuffer([]);
+          setEnabledToolQueue([]);
       }
     }, [manager]);
     
@@ -93,6 +93,7 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
      */
     const emitRerender = () => {
 
+        console.log(manager);
         const map = props.onRenderChange?.(manager);
         
         if(map !== undefined) {
@@ -136,8 +137,8 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
         }
         else {
             
-            if(managerLocked) {
-                setEnabledToolBuffer(buffer => [...buffer, [toolData.id, toolData.enabled]]);
+            if(updatingManagerLock) {
+                setEnabledToolQueue(queue => [...queue, [toolData.id, toolData.enabled]]);
             }
             else {
                 tool.setEnabled(toolData.enabled);
@@ -165,7 +166,7 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
     /**
      * Removes old tool from the manager and adds new instance with new properties
      */
-    const processToolUpdate = (toolData: IToolData, type: IReactElement, currentTool: Record<string, any>, property?: string) => {
+    const processToolUpdate = (toolData: IToolData, type: IReactElement, currentTool: IToolInfo, property?: string) => {
         
         // Remove current tool from manager
         manager.removeById(currentTool.id);
@@ -180,13 +181,12 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
         // - the sidebar tool is present in configuration and tool is enabled (visible)
         // - the 'id' property changed -> therefore sidebar tabs must be re-rendered
         // - the tool is not layer tool, so 'enabled' property change requires re-render
-        const rerenderTool = (toolData.enabled && !currentTool.toolIsLayerTool)|| property === ID_PROP;
+        const rerenderTool = toolData.enabled || property === ID_PROP || !currentTool.isLayerTool;
 
         if(sidebarTool !== undefined && sidebarTool.getProps().enabled && rerenderTool) {
 
             // Process all the sidebar tabs so the tool tab reflects changes in tool properties
-            // Ref call will result in calling 'handleToolChange' method directly from Sidebar 
-            // component with updated data
+            // Ref call will result in calling 'handleToolChange' method directly from Sidebar component with updated data
             sidebarRef.current?.getTabs();                            
         }
         else {
@@ -205,40 +205,35 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
      * Removes old sidebar from the manager and adds new with new properties
      */
     const processSidebarUpdate = (toolData: IToolData, type: IReactElement, currentTool: Record<string, any>) => {
-
+        
         const tool = currentTool.data as ISidebarTool;
-
-        // Remove sidebar elements from the leaflet map
-        // TODO: Not sure about this -- delete whole if?
-        if(tool.getProps().enabled) {
-            const sidebar = tool.getState().getSidebar()?.remove();
-
-            if(sidebar) {   
-                tool.getState().setSidebar(sidebar);
-            }
-        }
 
         // Remove current tool from manager
         manager.removeById(currentTool.id);
         
         // Add tool with changed properties
         const processedTool = getToolInstance(type, toolData);
-        manager.add(processedTool);
-
+        manager.add(processedTool);        
+        
         // Re-render only when the sidebar tool is supposed to be enabled
         if(toolData.enabled) {
             emitRerender();
         }
+        // Remove sidebar elements from the leaflet map if sidebar has been disabled (no need for rerender)
+        else if(tool.isEnabled() !== toolData.enabled) {
+            const sidebar = tool.getState().getSidebar()?.remove();
 
+            if(sidebar) {   
+                tool.getState().setSidebar(sidebar);
+            }
+        }
     };
 
     /**
      * Handler for the ontToolChange() callback
+     * Resolves tool manager initialization and tool components updates
      */
     const handleToolChange = (toolData: IToolData, property?: string) => {
-
-        // FIXME: 
-        // console.error('handleToolChange called from: ' + toolData.id);
 
         // Get original react element of the tool
         const toolElement = childrenExtended?.find(el => el.props.id === toolData.id);
@@ -261,11 +256,11 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
                 const toolId = property === ID_PROP ? toolData.prevId : toolData.id;
                 const currentTool = manager.getById(toolId) as IMapTool;
 
-                // If some parameters are functions as parameters, functions are causing rerender everytime some tool changes
-                // so the tool might be missing in the manager at this time 
+                // If tool is missing in the manager, it means that is being processed (removed and added new) by different 
+                // process and will be re-rendered with the current props, therefore this call can be cancelled
+                // Multiple unnecessary calls are caused by using functions as props values
                 if(currentTool === undefined) {
                     return;
-                    // TODO: throw Error ('Updated tool is not present in the tools manager.');
                 }
                 
                 // Updating: Standard way of processing props changes - recreate the tool
@@ -304,7 +299,7 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
 
                     // Manage updating of all others tool component props 
                     else if(supportedComponentTypes.includes(toolElement.type)) {
-                        
+
                         processToolUpdate(toolData, toolElement.type, {
                             id: toolId,
                             data: currentTool,

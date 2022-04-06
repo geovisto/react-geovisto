@@ -54,6 +54,6 @@ export const getToolInstance = (toolType: IReactElement, toolData: IToolData): I
 /**
  * Returns if object implements ILayerTool interface
  */
-export const isLayerTool = (tool: any): tool is ILayerTool => {
+export const isLayerTool = (tool: IMapTool): tool is ILayerTool => {
     return 'getLayerItems' in tool;
 };

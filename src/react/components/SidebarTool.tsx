@@ -3,7 +3,7 @@ import React, { forwardRef, useImperativeHandle } from 'react';
 import { SidebarTab as SidebarTabType }  from '.';
 import { ISidebarTabProps, ISidebarToolProps, SidebarTab } from '../..';
 import { useDidToolEnabledUpdate, useDidToolIdUpdate, useToolEffect } from '../Hooks';
-import { ISidebarTabs, ISidebarToolDataProps, ISidebarToolHandle, IToolData, IToolDataProps } from '../types';
+import { ISidebarTabs, ISidebarToolDataProps, ISidebarToolHandle, IToolDataProps } from '../types';
 
 export const SidebarTool = forwardRef<ISidebarToolHandle, ISidebarToolDataProps<ISidebarToolProps>>((props, ref) : JSX.Element => {
     
@@ -49,7 +49,7 @@ export const SidebarTool = forwardRef<ISidebarToolHandle, ISidebarToolDataProps<
     /**
      * Reacts to changes in any of the sidebar tabs
      */
-    const handleToolChange = (toolData: IToolData, property?: string) => {
+    const handleToolChange = () => {
         props.onToolChange?.(formSidebarProps());
     };
     

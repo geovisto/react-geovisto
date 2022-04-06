@@ -54,7 +54,7 @@ const ReactGeovistoDemo = () : JSX.Element => {
 
     const [enableToggle, setEnableToggle] = useState(true);
     const [enableCustomToolToggle, setEnableCustomToolToggle] = useState(true);
-    const [enableThemesToolToggle, setEnableThemesToolToggle] = useState(false);
+    const [enableThemesToolToggle, setEnableThemesToolToggle] = useState(true);
     const [stringToggle, setStringToggle] = useState("string111");
     const [idToggle, setIdToggle] = useState(TILES_ID);
     const [idToggle2, setIdToggle2] = useState(CHOROPLETH_ID);
@@ -267,7 +267,7 @@ const ReactGeovistoDemo = () : JSX.Element => {
                 <button onClick={() => setIdToggle2(id => id == CHOROPLETH_ID ? `${CHOROPLETH_ID}-edited` : CHOROPLETH_ID)}>{idToggle2}</button>
                 <button onClick={() => setIdToggle3(id => id == SIDEBAR_ID ? `${SIDEBAR_ID}-edited` : SIDEBAR_ID)}>{idToggle3}</button>
                 <button onClick={() => setIdToggle4(id => id == THEMES_ID ? `${THEMES_ID}-edited` : THEMES_ID)}>{idToggle4}</button>
-                <button onClick={() => setIdUndefinedToggle(id => id === undefined ? TILES_ID + '2' : undefined)}>{idUndefinedToggle ? `id (${TILES_ID}2)`  : 'undefined'}</button>
+                {/* <button onClick={() => setIdUndefinedToggle(id => id === undefined ? TILES_ID + '2' : undefined)}>{idUndefinedToggle ? `id (${TILES_ID}2)`  : 'undefined'}</button> */}
                 <button onClick={() => setEnableCustomToolToggle(!enableCustomToolToggle)}>Custom tool: {enableCustomToolToggle ? "true" : "false"}</button>
                 <button onClick={() => setEnableThemesToolToggle(!enableThemesToolToggle)}>Themes tool: {enableThemesToolToggle ? "true" : "false"}</button>
                 <button onClick={() => setImageToggle(img => img == 'https://cdn.xsd.cz/resize/6bbae9c4cff83ba7a9bdc895ed37caac_resize=900,525_.jpg?hash=ca48d5243fd1f8f2e2285f33d02e2b9b'
@@ -374,7 +374,7 @@ const ReactGeovistoDemo = () : JSX.Element => {
                             />
                         <TilesLayerTool 
                             id={idUndefinedToggle}
-                            enabled={false}
+                            enabled={enableCustomToolToggle}
                             label="Awesome tiles layer label"
                             // baseMap={{
                             //     url:'https://mapserver.mapy.cz/turist-m/{z}-{x}-{y}',

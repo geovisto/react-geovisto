@@ -1,5 +1,6 @@
 import { IToolDataProps } from "./IComponentTool";
 
-export type ISidebarTabDataProps<T> =  IToolDataProps<T> & {
+// Sidebar tab data props extended of tool id
+export type ISidebarTabDataProps<T> = IToolDataProps<T> & {
     tool?: string
 }
