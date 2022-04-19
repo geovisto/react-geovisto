@@ -34,21 +34,21 @@ export const getToolInstance = (toolType: IReactElement, toolData: IToolData): I
 
     switch (toolType) {
         case SidebarTool:
-            return GeovistoSidebarTool.createTool(toolProps as ISidebarToolProps);
+            return GeovistoSidebarTool?.createTool(toolProps as ISidebarToolProps);
         case ChoroplethLayerTool:
-            return GeovistoChoroplethLayerTool.createTool(toolProps as IChoroplethLayerToolProps);
+            return GeovistoChoroplethLayerTool?.createTool(toolProps as IChoroplethLayerToolProps);
         case ConnectionLayerTool:
-            return GeovistoConnectionLayerTool.createTool(toolProps as IConnectionLayerToolProps);
+            return GeovistoConnectionLayerTool?.createTool(toolProps as IConnectionLayerToolProps);
         case FiltersTool:
-            return GeovistoFiltersTool.createTool(toolProps as IFiltersToolProps);
+            return GeovistoFiltersTool?.createTool(toolProps as IFiltersToolProps);
         case MarkerLayerTool:
-            return GeovistoMarkerLayerTool.createTool(toolProps as IMarkerLayerToolProps);
+            return GeovistoMarkerLayerTool?.createTool(toolProps as IMarkerLayerToolProps);
         case SelectionTool:
-            return GeovistoSelectionTool.createTool(toolProps as ISelectionToolProps);
+            return GeovistoSelectionTool?.createTool(toolProps as ISelectionToolProps);
         case ThemesTool:
-            return GeovistoThemesTool.createTool(toolProps as IThemesToolProps);
+            return GeovistoThemesTool?.createTool(toolProps as IThemesToolProps);
         case TilesLayerTool:
-            return GeovistoTilesLayerTool.createTool(toolProps as ITilesLayerToolProps);
+            return GeovistoTilesLayerTool?.createTool(toolProps as ITilesLayerToolProps);
         case CustomTool:
             return toolData.createTool(toolProps);
         default:

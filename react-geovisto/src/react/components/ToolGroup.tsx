@@ -183,7 +183,7 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
         // - the tool is not layer tool, so 'enabled' property change requires re-render
         const rerenderTool = toolData.enabled || property === ID_PROP || !currentTool.isLayerTool;
 
-        if(sidebarTool !== undefined && sidebarTool.getProps().enabled && rerenderTool) {
+        if(sidebarTool !== undefined && sidebarTool.isEnabled() && rerenderTool) {
 
             // Process all the sidebar tabs so the tool tab reflects changes in tool properties
             // Ref call will result in calling 'handleToolChange' method directly from Sidebar component with updated data

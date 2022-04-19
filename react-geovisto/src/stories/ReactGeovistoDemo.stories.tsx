@@ -9,6 +9,8 @@ import { CHOROPLETH_ID, CONNECTION_ID, FILTERS_ID, MARKER_ID, SELECTION_ID, SIDE
 
 
 import './Demo.scss';
+import '../styles/common.scss';
+
 import { ConnectionLayerTool, ChoroplethLayerTool, MarkerLayerTool, SidebarTab, GeovistoMap,
          SidebarTool, ThemesTool, TilesLayerTool, ToolGroup, SelectionTool, FiltersTool } from '../react/components/';
 
@@ -27,7 +29,7 @@ import { CustomTool } from '../react/components/CustomTool';
 import { IGeovistoMapHandle } from '../react/types';
 import { GeovistoThemesTool, IMapTheme, IMapThemesManager } from 'geovisto-themes';
 import { Geovisto, IGeoDataManager, IMapDataManager, IMapTilesModel } from 'geovisto';
-import { SidebarFragment } from 'geovisto-sidebar';
+// import { SidebarFragment } from 'geovisto-sidebar';
 
 const ReactGeovistoDemo = () : JSX.Element => {
 
@@ -287,19 +289,19 @@ const ReactGeovistoDemo = () : JSX.Element => {
                 >
                     <ToolGroup>
                         <SidebarTool id={idToggle3} label="label" enabled={enableSidebarToggle}>
-                            <SidebarTab
+                            {/* <SidebarTab
                                 enabled={true}
                                 name="General settings"
                                 icon='<i class="fa fa-gear"></i>'
                                 checkButton={false}
-                                fragments={[
-                                [ "geovisto-tool-themes",
-                                    new SidebarFragment({ enabled:true })
-                                ],
-                                [ "geovisto-tool-selection",
-                                    new SidebarFragment({ enabled:true })
-                                ]]}
-                            />
+                                // fragments={[
+                                // [ "geovisto-tool-themes",
+                                //     new SidebarFragment({ enabled:true })
+                                // ],
+                                // [ "geovisto-tool-selection",
+                                //     new SidebarFragment({ enabled:true })
+                                // ]]}
+                            /> */}
                             {/* <SidebarTab
                                 tool={THEMES_ID}
                                 enabled={true}

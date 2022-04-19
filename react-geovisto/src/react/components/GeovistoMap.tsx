@@ -19,7 +19,8 @@ export const GeovistoMap = forwardRef<IGeovistoMapHandle, IGeovistoMapProps>((pr
 
     useEffect(() => {
         // ToolGroup is not specified -> render map with basic props only 
-        if(!childrenWithRenderCallback?.some((el : any) => el.type == ToolGroup)) {
+        // TODO: check if working
+        if(!childrenWithRenderCallback?.some((el : any) => supportedTopLevelComponentTypes.includes(el.type))) {
             handleRenderCallback();
         }
     }, []);

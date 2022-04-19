@@ -9,5 +9,5 @@ export type ICustomToolProps<T> = IToolDataProps<T> & any & {
 
 // User-specified props changes that should component react to
 export type ICustomToolPropsValues = Omit<ICustomToolProps<IMapToolProps>, 
-        'id' | 'enabled' | 'createTool'|'onToolChange'|'children'>;
+        'id' | 'enabled' | 'createTool' | 'onToolChange' | 'children' >;
 
