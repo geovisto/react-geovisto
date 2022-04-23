@@ -1,6 +1,6 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
-import { Geovisto, IMapTool, IMapToolsManager } from 'geovisto';
+import { Geovisto, ILayerTool, IMapTool, IMapToolsManager } from 'geovisto';
 import { ISidebarTool, SidebarToolDefaults } from 'geovisto-sidebar';
 
 import { SidebarTool } from '.';
@@ -47,6 +47,7 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
             const id = toolData[0] as string;
             const enabled = toolData[1] as boolean; 
             const tool = manager.getById(id) as IMapTool;
+            // TODO: can tool became undefined here?
 
             tool.setEnabled(enabled);
             tool.getProps().enabled = enabled;    
@@ -112,12 +113,13 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
     /**
      * Sets tool and its sidebar tab as enabled/disabled
      */
-    const toolSetChecked = (toolData: IToolData) => {
+    const toolSetEnabled = (toolData: IToolData) => {
 
-        const tool = manager.getById(toolData.id) as IMapTool;
+        const tool = manager.getById(toolData.id) as ILayerTool;
         const sidebarTool = manager.getByType(SidebarToolDefaults.TYPE)[0];
 
         // Disable also checkbox on the tab when the tool is disabled
+        // TODO: smazat tool !== sidebarTool (skrze ILayertool by se sem neměl dostat)
         if(sidebarTool !== undefined && tool !== sidebarTool) {
 
             const tabs = (sidebarTool as ISidebarTool).getTabs();
@@ -135,16 +137,14 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
             setDirtyBit(toolData.id, false);
             handleToolChange(toolData);
         }
-        else {
-            
-            if(updatingManagerLock) {
-                setEnabledToolQueue(queue => [...queue, [toolData.id, toolData.enabled]]);
-            }
-            else {
-                tool.setEnabled(toolData.enabled);
-                tool.getProps().enabled = toolData.enabled;
-            }
+        else if(updatingManagerLock) {
+            setEnabledToolQueue(queue => [...queue, [toolData.id, toolData.enabled]]);
         }
+        else {
+            tool.setEnabled(toolData.enabled);
+            tool.getProps().enabled = toolData.enabled;
+        }
+        
     };
 
     /**
@@ -276,7 +276,7 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
 
                         case ENABLED_PROP:
                             if(toolIsLayerTool) {
-                                toolSetChecked(toolData);        
+                                toolSetEnabled(toolData);        
                                 return;
                             }
                             break;
