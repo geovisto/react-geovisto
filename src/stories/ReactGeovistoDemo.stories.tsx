@@ -11,8 +11,21 @@ import { CHOROPLETH_ID, CONNECTION_ID, FILTERS_ID, MARKER_ID, SELECTION_ID, SIDE
 import './Demo.scss';
 import '../styles/common.scss';
 
+import 'font-awesome/css/font-awesome.min.css';
+
+import "geovisto/dist/index.css";
+import "geovisto-sidebar/dist/index.css";
+import "geovisto-filters/dist/index.css";
+
+import 'leaflet';
+import 'leaflet-sidebar-v2';
+import "leaflet/dist/leaflet.css";
+import 'leaflet.markercluster';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+
 import { ConnectionLayerTool, ChoroplethLayerTool, MarkerLayerTool, SidebarTab, GeovistoMap,
-         SidebarTool, ThemesTool, TilesLayerTool, ToolGroup, SelectionTool, FiltersTool } from '../react/components/';
+         SidebarTool, ThemesTool, TilesLayerTool, ToolGroup, SelectionTool, FiltersTool, CustomTool } from '../react/components/';
 
 
 
@@ -24,7 +37,6 @@ import centroids2 from '../../static/geo/czech_districts_centroids.json';
 // import demoData from '../../static/data/covidCzechDistricts.json';
 import demoData from '../../static/data/demo1.json';
 import demoConfig from '../../static/config/config.json';
-import { CustomTool } from '../react/components/CustomTool';
 // import { BlueSkyLayerTool, IBlueSkyLayerToolProps } from '../tools/layers/bluesky';
 import { IGeovistoMapHandle } from '../react/types';
 import { GeovistoThemesTool, IMapTheme, IMapThemesManager } from 'geovisto-themes';
@@ -204,6 +216,7 @@ const ReactGeovistoDemo = () : JSX.Element => {
         return Geovisto.getMapDataManagerFactory().json(data);
      }, [data]); 
 
+     // TODO: závislost na data?
      const geoDataManager = useMemo((): IGeoDataManager => {
         return Geovisto.getGeoDataManager([
             Geovisto.getGeoDataFactory().geojson("world polygons", polygons),

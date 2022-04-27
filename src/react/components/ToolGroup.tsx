@@ -14,7 +14,7 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
     const [manager, setManager] = useState<IMapToolsManager>(Geovisto.createMapToolsManager([]));
 
     // Array to keep flag for every tool signalizing if the tool has been changed
-    // but is not visible, so it needs to be re-rendered once is visible again
+    // but is not visible, so it needs to be re-initialized once is visible again
     const [toolDirtyBitArray, setToolDirtyBitArray] = useState<[string, boolean][]>([]);
 
     // Queue for storing tools enable/disable operation ka 
@@ -125,6 +125,7 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
             const tabs = (sidebarTool as ISidebarTool).getTabs();
             
             // Find the sidebar tab corresponding to the tool
+            // TODO: Maybe getById
             const tab = tabs.find(tab => tab.getTool().getProps().id === toolData.id);
             
             // Enable or disable the tool tab
