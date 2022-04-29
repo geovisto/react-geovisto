@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { forwardRef, ReactElement, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 import { Geovisto, IMap, IMapToolsManager } from 'geovisto';
 
@@ -19,8 +19,7 @@ export const GeovistoMap = forwardRef<IGeovistoMapHandle, IGeovistoMapProps>((pr
 
     useEffect(() => {
         // ToolGroup is not specified -> render map with basic props only 
-        // TODO: check if working
-        if(!childrenWithRenderCallback?.some((el : any) => supportedTopLevelComponentTypes.includes(el.type))) {
+        if(!childrenWithRenderCallback?.some((el : ReactElement) => supportedTopLevelComponentTypes.includes(el.type))) {
             handleRenderCallback();
         }
     }, []);
@@ -28,7 +27,7 @@ export const GeovistoMap = forwardRef<IGeovistoMapHandle, IGeovistoMapProps>((pr
     useDidUpdateEffect(() => {
         
         // ToolGroup is not specified -> render map with basic props only 
-        const toolGroupPresent = childrenWithRenderCallback?.some((el : any) => el.type == ToolGroup);
+        const toolGroupPresent = childrenWithRenderCallback?.some((el : ReactElement) => el.type == ToolGroup);
 
         if(toolGroupPresent) {
             // re-render the map through the tools (sidebar may be needed to re-render)
@@ -50,7 +49,7 @@ export const GeovistoMap = forwardRef<IGeovistoMapHandle, IGeovistoMapProps>((pr
      */
     const handleRenderCallback = (toolsManager? : IMapToolsManager) : IMap | undefined => {
 
-        const mapProps = {...props, tools: toolsManager};
+        const mapProps = toolsManager ? {...props, tools: toolsManager} : {...props};
             
         if(map === undefined)
         {

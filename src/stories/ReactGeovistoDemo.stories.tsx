@@ -4,6 +4,7 @@ import { Story, Meta } from '@storybook/react/types-6-0';
 // React
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
+// TODO: Delete
 import { CHOROPLETH_ID, CONNECTION_ID, FILTERS_ID, MARKER_ID, SELECTION_ID, SIDEBAR_ID, THEMES_ID, TILES_ID } from '../react/Constants';
 
 // Geovisto
@@ -15,6 +16,7 @@ import { Geovisto, IGeoDataManager, IMapDataManager, IMapTilesModel } from 'geov
 import { ConnectionLayerTool, ChoroplethLayerTool, MarkerLayerTool, SidebarTab, GeovistoMap,
     SidebarTool, ThemesTool, TilesLayerTool, ToolGroup, SelectionTool, FiltersTool, CustomTool } from '../react/components/';
 import { IGeovistoMapHandle } from '../react/types';
+    
 
 
 // Styles
@@ -26,6 +28,9 @@ import 'font-awesome/css/font-awesome.min.css';
 import "geovisto/dist/index.css";
 import "geovisto-sidebar/dist/index.css";
 import "geovisto-filters/dist/index.css";
+import 'geovisto-layer-choropleth/dist/index.css';
+import 'geovisto-layer-marker/dist/index.css';
+import 'geovisto-layer-connection/dist/index.css';
 
 import 'leaflet';
 import 'leaflet-sidebar-v2';
@@ -44,7 +49,6 @@ import polygons from '../../static/geo/country_polygons.json';
 import polygons2 from '../../static/geo/czech_districts_polygons.json';
 import centroids from '../../static/geo/country_centroids.json';
 import centroids2 from '../../static/geo/czech_districts_centroids.json';
-
 
 const ReactGeovistoDemo = () : JSX.Element => {
 
@@ -65,6 +69,7 @@ const ReactGeovistoDemo = () : JSX.Element => {
     const basemap2 = {
         url:'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     };
+
 
     const [enableToggle, setEnableToggle] = useState(true);
     const [enableCustomToolToggle, setEnableCustomToolToggle] = useState(true);
@@ -135,7 +140,6 @@ const ReactGeovistoDemo = () : JSX.Element => {
     //             } catch(ex) {
     //                 console.log("unable to read file");
     //                 console.log(ex);
-    //                 // TODO: notify user
     //             }
     //         };
     //         reader.onload = onLoadAction;
@@ -214,12 +218,10 @@ const ReactGeovistoDemo = () : JSX.Element => {
 
     // }, []);
     
-
     const dataManager = useMemo((): IMapDataManager => {
         return Geovisto.getMapDataManagerFactory().json(data);
      }, [data]); 
 
-     // TODO: závislost na data?
      const geoDataManager = useMemo((): IGeoDataManager => {
         return Geovisto.getGeoDataManager([
             Geovisto.getGeoDataFactory().geojson("world polygons", polygons),
@@ -227,7 +229,7 @@ const ReactGeovistoDemo = () : JSX.Element => {
             Geovisto.getGeoDataFactory().geojson("czech polygons", polygons2),
             Geovisto.getGeoDataFactory().geojson("czech centroids", centroids2)
         ]);
-     }, [data]); 
+     }, []); 
 
     const themesManager = useMemo((): IMapThemesManager => {
        return GeovistoThemesTool.createThemesManager([
@@ -299,7 +301,7 @@ const ReactGeovistoDemo = () : JSX.Element => {
                     className="geovisto-map"
                     data={dataManager}
                     geoData={geoDataManager}
-                    // config={Geovisto.getMapConfigManagerFactory().default(config)}
+                    config={Geovisto.getMapConfigManagerFactory().default(config)}
                     globals={undefined}
                     templates={undefined}
                 >
@@ -387,7 +389,7 @@ const ReactGeovistoDemo = () : JSX.Element => {
                                 //     maxNativeZoom: 19
                                 // }}
                             />
-                        <TilesLayerTool 
+                        {/* <TilesLayerTool 
                             id={idUndefinedToggle}
                             enabled={enableCustomToolToggle}
                             label="Awesome tiles layer label"
@@ -396,7 +398,7 @@ const ReactGeovistoDemo = () : JSX.Element => {
                             //     maxZoom: 20,
                             //     maxNativeZoom: 19
                             // }}
-                        />
+                        /> */}
                         {/* <TilesLayerTool 
                             id={TILES_ID + "2"}
                             enabled={false}
@@ -407,12 +409,12 @@ const ReactGeovistoDemo = () : JSX.Element => {
                                 // maxNativeZoom: 19
                             }}
                         /> */}
-                        <ChoroplethLayerTool 
+                        {/* <ChoroplethLayerTool 
                             id={idToggle2} 
                             icon="whatever"
                             label="label"
                             enabled={true}
-                        />
+                        /> */}
                         <MarkerLayerTool 
                             id={MARKER_ID}
                             enabled={true}
@@ -441,7 +443,7 @@ const ReactGeovistoDemo = () : JSX.Element => {
                             bounds={[[37.33745868636446, -5.501782667654866], [57.44847414902792, 47.54821100010345]]}
                             createTool={(props: IBlueSkyLayerToolProps) => new BlueSkyLayerTool(props)}
                         /> */}
-                        <ThemesTool
+                        {/* <ThemesTool
                             id={idToggle4}
                             manager={themesManager}
                             enabled={enableThemesToolToggle}
@@ -456,7 +458,7 @@ const ReactGeovistoDemo = () : JSX.Element => {
                             // ])}
                             // enabled={true}
                             theme={theme}
-                        />
+                        /> */}
                     </ToolGroup>
                     
                 </GeovistoMap>

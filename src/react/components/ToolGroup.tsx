@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { forwardRef, ReactElement, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 import { Geovisto, ILayerTool, IMapTool, IMapToolsManager } from 'geovisto';
 import { ISidebarTool, SidebarToolDefaults } from 'geovisto-sidebar';
@@ -22,6 +22,8 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
 
     const sidebarRef = useRef<ISidebarToolHandle>(null);
     
+    const childrenExtended: ReactElement[] = [];
+
     let updatingManagerLock = false;
     const setLock = (value: boolean) => updatingManagerLock = value;
 
@@ -47,10 +49,11 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
             const id = toolData[0] as string;
             const enabled = toolData[1] as boolean; 
             const tool = manager.getById(id) as IMapTool;
-            // TODO: can tool became undefined here?
-
-            tool.setEnabled(enabled);
-            tool.getProps().enabled = enabled;    
+            
+            if(tool !== undefined) {
+                tool.setEnabled(enabled);
+                tool.getProps().enabled = enabled;    
+            }
           });
 
           setEnabledToolQueue([]);
@@ -119,14 +122,12 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
         const sidebarTool = manager.getByType(SidebarToolDefaults.TYPE)[0];
 
         // Disable also checkbox on the tab when the tool is disabled
-        // TODO: smazat tool !== sidebarTool (skrze ILayertool by se sem neměl dostat)
-        if(sidebarTool !== undefined && tool !== sidebarTool) {
+        if(sidebarTool !== undefined) {
 
             const tabs = (sidebarTool as ISidebarTool).getTabs();
             
             // Find the sidebar tab corresponding to the tool
-            // TODO: Maybe getById
-            const tab = tabs.find(tab => tab.getTool().getProps().id === toolData.id);
+            const tab = tabs.find(tab => tab.getTool().getId() === toolData.id);
             
             // Enable or disable the tool tab
             tab?.setChecked(toolData.enabled);    
@@ -325,7 +326,7 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
     /**
      * Validate and process all children elements and add additional props
      */
-    const childrenExtended = React.Children.map(props.children, (child, index) => {
+    React.Children.forEach(props.children, (child, index) => {
     
         // Ignore components that are not supported (= provided by this library)
         if (!React.isValidElement(child) || !supportedComponentTypes.includes(child.type)) {
@@ -333,8 +334,13 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
             console.warn(`Following element is not supported and will be skipped.`);
             console.warn(child);            
             return;
-        }            
-
+        }
+        else if(childrenExtended.some(el => (el as ReactElement).props.id === (child as ReactElement).props.id))
+        {
+            console.warn(`Component with the id "${(child as ReactElement).props.id}" is already defined and duplicate will be skipped.`);
+            return;
+        }
+       
         const toolProps = {...child.props};
 
         toolProps.key = index;
@@ -345,7 +351,7 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
             toolProps.ref = sidebarRef;
         }
 
-        return React.cloneElement(child, toolProps, child.props.children);
+        childrenExtended.push(React.cloneElement(child, toolProps, child.props.children));
     });
 
     return <>{childrenExtended}</>;

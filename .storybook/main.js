@@ -1,4 +1,3 @@
-const path = require("path");
 const baseConfig = require('../webpack.config.js');
 
 module.exports = {
@@ -12,7 +11,7 @@ module.exports = {
   stories: ["../src/**/*.stories.@(ts|tsx)"],
 
   addons: [
-    // "@storybook/preset-scss",
+    'storybook-dark-mode',
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
