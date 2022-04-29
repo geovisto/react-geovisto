@@ -301,7 +301,7 @@ const ReactGeovistoDemo = () : JSX.Element => {
                     className="geovisto-map"
                     data={dataManager}
                     geoData={geoDataManager}
-                    config={Geovisto.getMapConfigManagerFactory().default(config)}
+                    // config={Geovisto.getMapConfigManagerFactory().default(config)}
                     globals={undefined}
                     templates={undefined}
                 >
