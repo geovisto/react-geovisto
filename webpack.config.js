@@ -1,11 +1,7 @@
 const path = require('path');
-var HtmlWebpackPlugin = require("html-webpack-plugin");
-
-const env = process.env.BABEL_ENV || process.env.NODE_ENV;
 
 module.exports = {
   mode: "development",
-  //devtool: "none",
   entry: './src/index.ts',
   output: {
     filename: 'geovisto-map.js',
@@ -14,11 +10,6 @@ module.exports = {
 
   module: {
     rules: [
-        // {
-        //     test: /\.(ts|tsx)$/,
-        //     exclude: /node_modules/,
-        //     use: [ "babel-loader" ]
-        // },
         {
           test: /\.ts$|tsx/,
           loader: require.resolve("babel-loader"),
@@ -27,10 +18,6 @@ module.exports = {
             presets: [["react-app", { flow: false, typescript: true }]]
           }
         },
-        // {
-        //     test: /\.tsx?$/,
-        //     loader: "ts-loader"
-        // },
         {
           test:  /\.(s?css)$/i,// /\.s[ac]ss$/i,
             use: [
@@ -40,18 +27,9 @@ module.exports = {
               'postcss-loader'
             ],
         },
-        // {
-        //     test: /\.(eot|woff|ttf|gif|png|jpe?g|svg)/,
-        //     use: [ "file-loader" ]
-        // },
     ],
   },
   resolve: {
     extensions: ['*', '.js', '.jsx', '.ts', '.tsx'],
-  },
-  /*devServer: {
-    contentBase: path.join(__dirname, 'dist'),
-    compress: true,
-    port: 9000,
-  },*/
+  }
 };

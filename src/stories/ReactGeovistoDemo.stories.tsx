@@ -4,10 +4,20 @@ import { Story, Meta } from '@storybook/react/types-6-0';
 // React
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
-// Geovisto
 import { CHOROPLETH_ID, CONNECTION_ID, FILTERS_ID, MARKER_ID, SELECTION_ID, SIDEBAR_ID, THEMES_ID, TILES_ID } from '../react/Constants';
 
+// Geovisto
+import { GeovistoThemesTool, IMapTheme, IMapThemesManager } from 'geovisto-themes';
+import { Geovisto, IGeoDataManager, IMapDataManager, IMapTilesModel } from 'geovisto';
+// import { SidebarFragment } from 'geovisto-sidebar';
 
+// Internal imports
+import { ConnectionLayerTool, ChoroplethLayerTool, MarkerLayerTool, SidebarTab, GeovistoMap,
+    SidebarTool, ThemesTool, TilesLayerTool, ToolGroup, SelectionTool, FiltersTool, CustomTool } from '../react/components/';
+import { IGeovistoMapHandle } from '../react/types';
+
+
+// Styles
 import './Demo.scss';
 import '../styles/common.scss';
 
@@ -24,24 +34,17 @@ import 'leaflet.markercluster';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 
-import { ConnectionLayerTool, ChoroplethLayerTool, MarkerLayerTool, SidebarTab, GeovistoMap,
-         SidebarTool, ThemesTool, TilesLayerTool, ToolGroup, SelectionTool, FiltersTool, CustomTool } from '../react/components/';
+// Configuration data
+// import demoData from '../../static/data/covidCzechDistricts.json';
+import demoData from '../../static/data/demo1.json';
+import demoConfig from '../../static/config/config.json';
 
-
-
+// Data
 import polygons from '../../static/geo/country_polygons.json';
 import polygons2 from '../../static/geo/czech_districts_polygons.json';
 import centroids from '../../static/geo/country_centroids.json';
 import centroids2 from '../../static/geo/czech_districts_centroids.json';
 
-// import demoData from '../../static/data/covidCzechDistricts.json';
-import demoData from '../../static/data/demo1.json';
-import demoConfig from '../../static/config/config.json';
-// import { BlueSkyLayerTool, IBlueSkyLayerToolProps } from '../tools/layers/bluesky';
-import { IGeovistoMapHandle } from '../react/types';
-import { GeovistoThemesTool, IMapTheme, IMapThemesManager } from 'geovisto-themes';
-import { Geovisto, IGeoDataManager, IMapDataManager, IMapTilesModel } from 'geovisto';
-// import { SidebarFragment } from 'geovisto-sidebar';
 
 const ReactGeovistoDemo = () : JSX.Element => {
 

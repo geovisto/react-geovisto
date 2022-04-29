@@ -2,10 +2,8 @@
   "name": "react-geovisto",
   "version": "1.0.0",
   "main": "index.js",
-  "types": "index.d.ts",
   "dependencies": {
     "deep-equal": "^2.0.5",
-    "font-awesome": "^4.7.0",
     "geovisto": "^1.0.0",
     "geovisto-filters": "^1.0.2",
     "geovisto-layer-choropleth": "^1.0.1",
@@ -18,9 +16,7 @@
     "leaflet": "^1.7.1",
     "leaflet-sidebar-v2": "^3.2.3",
     "react-refresh": "^0.12.0",
-    "react-scripts": "^5.0.0",
-    "request": "^2.88.2",
-    "typescript": "^4.6.3"
+    "react-scripts": "^5.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.17.9",
@@ -40,6 +36,7 @@
     "@storybook/testing-library": "0.0.9",
     "@types/deep-equal": "^1.0.1",
     "@types/leaflet": "^1.7.9",
+    "@types/leaflet.markercluster": "^1.4.6",
     "@types/react": "^18.0.5",
     "@types/react-native": "^0.67.4",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
@@ -47,6 +44,7 @@
     "babel-loader": "^8.2.5",
     "css-loader": "^6.7.1",
     "eslint": "^8.13.0",
+    "font-awesome": "^4.7.0",
     "postcss": "^8.4.12",
     "postcss-loader": "^6.2.1",
     "react": "^16.13.1",
@@ -54,6 +52,7 @@
     "sass": "^1.51.0",
     "sass-loader": "^10.2.1",
     "style-loader": "^3.3.1",
+    "typescript": "^4.6.3",
     "webpack": "^5.72.0",
     "webpack-cli": "^4.9.2"
   },
@@ -68,11 +67,11 @@
     "type": "git",
     "url": "git+https://github.com/chladekm/react-geovisto.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/chladekm/react-geovisto/issues"
-  },
+  "keywords": [
+    "react",
+    "geovisto"
+  ],
+  "author": "Martin Chládek",
+  "license": "MIT",
   "homepage": "https://github.com/chladekm/react-geovisto#readme"
 }
