@@ -52,7 +52,7 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
             
             if(tool !== undefined) {
                 tool.setEnabled(enabled);
-                tool.getProps().enabled = enabled;    
+                tool.getProps().enabled = enabled;
             }
           });
 
@@ -97,7 +97,6 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
      */
     const emitRerender = () => {
 
-        console.log(manager);
         const map = props.onRenderChange?.(manager);
         
         if(map !== undefined) {
@@ -132,9 +131,8 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
             // Enable or disable the tool tab
             tab?.setChecked(toolData.enabled);    
         }
-        
-        if(toolData.enabled && getDirtyBit(toolData.id)) {
 
+        if(toolData.enabled && getDirtyBit(toolData.id)) {
             // Reset the dirty bit and proceed the tool to process         
             setDirtyBit(toolData.id, false);
             handleToolChange(toolData);
@@ -185,7 +183,7 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
         // - the tool is not layer tool, so 'enabled' property change requires re-render
         const rerenderTool = toolData.enabled || property === ID_PROP || !currentTool.isLayerTool;
 
-        if(sidebarTool !== undefined && sidebarTool.isEnabled() && rerenderTool) {
+        if(sidebarTool !== undefined && sidebarTool.getProps().enabled && rerenderTool) {
 
             // Process all the sidebar tabs so the tool tab reflects changes in tool properties
             // Ref call will result in calling 'handleToolChange' method directly from Sidebar component with updated data
@@ -236,6 +234,8 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
      * Resolves tool manager initialization and tool components updates
      */
     const handleToolChange = (toolData: IToolData, property?: string) => {
+
+        console.warn((property ? "[PPP]\t" : "[___]\t") + "Toolchange from " + toolData.id + "\n" + property);
 
         // Get original react element of the tool
         const toolElement = childrenExtended?.find(el => el.props.id === toolData.id);

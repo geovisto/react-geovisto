@@ -68,7 +68,8 @@ export const SidebarTool = forwardRef<ISidebarToolHandle, ISidebarToolDataProps<
 
     // Emitter from parent component to process all tabs 
     useImperativeHandle(ref, () => ({
-        getTabs: () => props.onToolChange?.(formSidebarProps())
+        getTabs: () => {
+            return props.onToolChange?.(formSidebarProps())}
     }));
 
     /**

@@ -1,4 +1,3 @@
-import '/src/stories/Demo.scss';
 import '/src/styles/common.scss';
 
 export const parameters = {

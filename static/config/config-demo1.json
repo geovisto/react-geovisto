@@ -33,7 +33,7 @@
           "checkButton": true
         },
         {
-          "tool": "geovisto-tool-layer-mapX",
+          "tool": "geovisto-tool-layer-map",
           "enabled": true,
           "name": "Map layer settings",
           "icon": "<i class=\"fa fa-globe\"></i>",

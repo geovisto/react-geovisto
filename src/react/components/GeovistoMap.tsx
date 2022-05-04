@@ -60,7 +60,7 @@ export const GeovistoMap = forwardRef<IGeovistoMapHandle, IGeovistoMapProps>((pr
             
             // Draw map with the current config
             mapObject.draw(props.config ?? Geovisto.getMapConfigManagerFactory().default({}));                
-
+            console.warn(mapObject);
             return mapObject as IMap;
         }
         else
@@ -100,8 +100,7 @@ export const GeovistoMap = forwardRef<IGeovistoMapHandle, IGeovistoMapProps>((pr
         return React.cloneElement(child, newProps, child.props.children);
     });
 
-
     return (
-        <div id={props.id} className={props.className}>{childrenWithRenderCallback}</div>
+        <div id={props.id} className={props.className} >{childrenWithRenderCallback}</div>
     );
 });
