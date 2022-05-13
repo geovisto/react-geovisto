@@ -77,9 +77,8 @@ export const ExportMapWrapper = (props: any) : JSX.Element => {
                 templates={undefined}
                 >
                 <ToolGroup>
-                    {props.showBaseTileLayerMap && 
-                        <TilesLayerTool id='demo-base-map' enabled={props.showBaseTileLayerMap}/>
-                    }
+                    {/*  */}
+                    <TilesLayerTool id='demo-base-map' enabled={props.showBaseTileLayerMap}/>
 
                     {props.children}
                 </ToolGroup>

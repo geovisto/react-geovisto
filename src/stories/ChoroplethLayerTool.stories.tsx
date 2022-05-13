@@ -7,7 +7,7 @@ import React from "react";
 // Geovisto
 import { ISidebarTabProps } from 'geovisto-sidebar';
 import { IChoroplethLayerToolDimensions } from 'geovisto-layer-choropleth';
-import { IGeoDataManager } from 'geovisto';
+import { Geovisto, IGeoDataManager } from 'geovisto';
 
 // Internal imports
 import '../react/Constants';
@@ -20,6 +20,8 @@ import '../styles/common.scss';
 // Stories internal helper components
 import { ExportMapWrapper } from '../storiesHelpers/ExportMapWrapper';
 
+// Polygons & Centroids
+import polygons from '../../static/geo/country_polygons.json';
 
 const ChoroplethLayerToolDemo = (props: IChoroplethLayerToolDemoProps) : JSX.Element => {
 
@@ -27,6 +29,12 @@ const ChoroplethLayerToolDemo = (props: IChoroplethLayerToolDemoProps) : JSX.Ele
         mapId: 'geovisto-map-choropleth-demo',
         ...props
     }
+
+    // const dimensions = useMemo((): IChoroplethLayerToolDimensions => {
+    //     return Geovisto.getMapDomainManagerFactory().array([{
+
+    //     }])
+    //  }, []); 
 
     return (
         <ExportMapWrapper {...extendedProps}>
@@ -44,7 +52,6 @@ const ChoroplethLayerToolDemo = (props: IChoroplethLayerToolDemoProps) : JSX.Ele
                 name={props.toolName}
                 label={props.toolLabel}
                 geoData={props.toolGeoData}
-                dimensions={props.toolDimensions}
             />
         </ExportMapWrapper>
     );
@@ -115,6 +122,7 @@ GeovistoChoroplethLayerTool.args = {
     toolId: 'geovisto-choropleth-layer-tool-map',
     toolName: 'Choropleth Layer Tool',
     toolLabel: 'Choropleth Layer Tool label',
+    // toolDimensions: dimensions,
     sidebarToolEnabled: true,
     sidebarTabTool: {
         tool: 'geovisto-choropleth-layer-tool-map',
