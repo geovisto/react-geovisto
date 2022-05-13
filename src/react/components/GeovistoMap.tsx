@@ -1,6 +1,6 @@
 import React, { forwardRef, ReactElement, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
-import { Geovisto, IMap, IMapToolsManager } from 'geovisto';
+import { Geovisto, IMap, IMapToolsManager, MapConfigManagerFactory } from 'geovisto';
 
 import { supportedTopLevelComponentTypes } from '../Constants';
 import { useDidUpdateEffect } from '../Hooks';
@@ -11,6 +11,9 @@ export const GeovistoMap = forwardRef<IGeovistoMapHandle, IGeovistoMapProps>((pr
 
     const [map, setMap] = useState<IMap>();
     const toolGroupRef = useRef<IToolGroupHandle>(null);
+    let mapInitialized = false;
+
+    const mapxy = useRef<IMap>();
 
     // Expose map object to the user
     useImperativeHandle(ref, () => ({
@@ -51,34 +54,59 @@ export const GeovistoMap = forwardRef<IGeovistoMapHandle, IGeovistoMapProps>((pr
 
         const mapProps = toolsManager ? {...props, tools: toolsManager} : {...props};
             
-        if(map === undefined)
+        console.warn(map);
+        console.warn(mapInitialized);
+
+        // TODO: Change this
+        console.log(mapxy.current);
+        if(mapxy.current == undefined)
         {
             console.warn("--------------MAP DRAW--------------");
             
             const mapObject = Geovisto.createMap(mapProps);
-            setMap(mapObject);
+            mapInitialized = true;
+            // setMap(mapObject);
+            mapxy.current = mapObject;
             
             // Draw map with the current config
-            mapObject.draw(props.config ?? Geovisto.getMapConfigManagerFactory().default({}));                
-            console.warn(mapObject);
-            return mapObject as IMap;
+            mapxy.current.draw(props.config ?? Geovisto.getMapConfigManagerFactory().default({}));                
+            
+            return mapxy.current as IMap;
         }
         else
         {
             console.warn("--------------MAP RE-DRAW--------------");
         
             // Redraw map with the updated properties
-            map.redraw(props.config ?? Geovisto.getMapConfigManagerFactory().default({}), mapProps);
+            mapxy.current.redraw(props.config ?? Geovisto.getMapConfigManagerFactory().default({}), mapProps);
 
-            return map;
+            return mapxy.current;
         }
     };
 
 
     /**
+     * Detach the map container on component unmount
+     */
+    const detachMapContainerOnUnmount = (id: string) => {
+        const willMount = useRef(true)
+    
+        // Remove the map container, co it can be initialized again in the future
+        if (willMount.current) {
+            console.error("Called");
+            document.getElementById(id)?.remove();
+        }
+    
+        willMount.current = false
+    }
+
+    detachMapContainerOnUnmount(props.id);
+
+
+    /**
      * Returns children elements with additional callback
      */
-    const childrenWithRenderCallback = React.Children.map(props.children, (child, index) => {
+     const childrenWithRenderCallback = React.Children.map(props.children, (child, index) => {
 
         if (!React.isValidElement(child) || !supportedTopLevelComponentTypes.includes(child.type)) {
             
@@ -100,7 +128,11 @@ export const GeovistoMap = forwardRef<IGeovistoMapHandle, IGeovistoMapProps>((pr
         return React.cloneElement(child, newProps, child.props.children);
     });
 
+
     return (
-        <div id={props.id} className={props.className} >{childrenWithRenderCallback}</div>
+        <div className={props.className}>
+
+        <div id={props.id}  style={{height: '100%'}}>{childrenWithRenderCallback}</div>
+        </div>
     );
 });

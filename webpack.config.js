@@ -2,7 +2,6 @@ const path = require('path');
 
 module.exports = {
   mode: "development",
-  entry: './src/index.ts',
   output: {
     filename: 'geovisto-map.js',
     path: path.resolve(__dirname, 'dist')

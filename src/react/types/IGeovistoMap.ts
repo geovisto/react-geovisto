@@ -4,6 +4,7 @@ import { IMap, IMapConfigManager, IMapProps } from "geovisto";
 export type IGeovistoMapProps = IMapProps & {
     children?: React.ReactNode;
     config?: IMapConfigManager;
+    id: string;
     className: string;
 }
 

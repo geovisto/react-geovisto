@@ -8,7 +8,7 @@ module.exports = {
     "builder": "@storybook/builder-webpack5"
   },
 
-  stories: ["../src/**/*.stories.@(ts|tsx)"],
+  stories: ["../src/stories/*.stories.@(ts|tsx)"],
 
   addons: [
     'storybook-dark-mode',
@@ -26,4 +26,4 @@ module.exports = {
       rules: baseConfig.module.rules
     }
   })
-}
+} 

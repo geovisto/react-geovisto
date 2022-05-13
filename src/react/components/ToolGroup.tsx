@@ -1,4 +1,4 @@
-import React, { forwardRef, ReactElement, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { forwardRef, ReactElement, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 
 import { Geovisto, ILayerTool, IMapTool, IMapToolsManager } from 'geovisto';
 import { ISidebarTool, SidebarToolDefaults } from 'geovisto-sidebar';
@@ -7,6 +7,7 @@ import { SidebarTool } from '.';
 import { ENABLED_PROP, ID_PROP, supportedComponentTypes } from '../Constants';
 import { isLayerTool, getToolInstance } from '../Helpers';
 import { IReactElement, ISidebarToolHandle, IToolData, IToolGroupHandle, IToolGroupProps, IToolInfo } from '../types';
+import { useDidUpdateEffect } from '../Hooks';
 
 
 export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, ref) : JSX.Element => {
@@ -29,14 +30,7 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
 
     // Expose method to process and re-render the tools
     useImperativeHandle(ref, () => ({
-        rerenderTools: () => {
-            if(childrenExtended?.some(el => el.type === SidebarTool)) {
-                sidebarRef.current?.getTabs();
-            }
-            else {
-                emitRerender();
-            }
-        }
+        rerenderTools: () => rerender()
     }));
 
     // After the updated manager was set, run the queued enable/disable tool tasks
@@ -91,6 +85,18 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
         toolDirtyBitArrayCopy[index][0] = newId;
         setToolDirtyBitArray(toolDirtyBitArrayCopy);
     };
+
+    /**
+     * Rerenders the content with the Sidebar in mind
+     */
+    const rerender = () => {
+        if(childrenExtended?.some(el => el.type === SidebarTool)) {
+            sidebarRef.current?.getTabs();
+        }
+        else {
+            emitRerender();
+        }
+    }
 
     /**
      * Emits parent callback to re-render the map and sets the current state
@@ -150,7 +156,7 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
     /**
      * Initializes the tool internal reprezentation from React element
      */
-    const initTool = (toolData: IToolData, type: IReactElement, childrenCount: number) => {
+    const initTool = (toolData: IToolData, type: IReactElement) => {
         
         const tool = getToolInstance(type, toolData);
         manager.add(tool);
@@ -235,20 +241,15 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
      */
     const handleToolChange = (toolData: IToolData, property?: string) => {
 
-        console.warn((property ? "[PPP]\t" : "[___]\t") + "Toolchange from " + toolData.id + "\n" + property);
-
         // Get original react element of the tool
         const toolElement = childrenExtended?.find(el => el.props.id === toolData.id);
         
-        // Get count of all tools configured by user
-        const childrenCount = React.Children.count(childrenExtended);
-
         if(React.isValidElement(toolElement))
         {
             // Initialization: All tools were not initialized yet
             if(manager.getAll().length < childrenCount)
             {
-                initTool(toolData, toolElement.type, childrenCount);
+                initTool(toolData, toolElement.type);
                 return;
             }
             
@@ -329,8 +330,10 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
     React.Children.forEach(props.children, (child, index) => {
     
         // Ignore components that are not supported (= provided by this library)
-        if (!React.isValidElement(child) || !supportedComponentTypes.includes(child.type)) {
-            
+        if(!React.isValidElement(child)) {
+            return;
+        }
+        else if (!supportedComponentTypes.includes(child.type)) {   
             console.warn(`Following element is not supported and will be skipped.`);
             console.warn(child);            
             return;
@@ -353,6 +356,24 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
 
         childrenExtended.push(React.cloneElement(child, toolProps, child.props.children));
     });
+
+    // Get count of all tools configured by user
+    const childrenCount = useMemo(() : number => React.Children.count(childrenExtended)
+    , [childrenExtended]);
+    
+    // Execute when user changes number of ToolGroup child using the conditional rendering
+    useDidUpdateEffect(() => {
+        const validIds = React.Children.map(childrenExtended, (child) => child.props.id);
+        const managerIds = manager.getIds();
+
+        if((managerIds.length != validIds.length)) {
+
+            const invalidIds = managerIds.filter(id => !validIds.includes(id));            
+            invalidIds.forEach(id => manager.removeById(id));
+        }
+
+        rerender();
+    }, [childrenCount]);
 
     return <>{childrenExtended}</>;
 });

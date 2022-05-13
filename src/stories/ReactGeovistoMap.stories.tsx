@@ -1,36 +1,22 @@
-// Storybook
-import { Story, Meta } from '@storybook/react/types-6-0';
-
 // React
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef } from "react";
 
-// TODO: Delete
-import { CHOROPLETH_ID, CONNECTION_ID, FILTERS_ID, MARKER_ID, SELECTION_ID, SIDEBAR_ID, THEMES_ID, TILES_ID } from '../react/Constants';
+// Storybook
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 // Geovisto
 import { GeovistoThemesTool, IMapTheme, IMapThemesManager } from 'geovisto-themes';
-import { Geovisto, IGeoDataManager, IMapDataManager, IMapTilesModel } from 'geovisto';
-// import { SidebarFragment } from 'geovisto-sidebar';
+import { Geovisto, IGeoDataManager, IMapConfigManager, IMapDataManager, IMapTilesModel } from 'geovisto';
+import { ISidebarFragment, ISidebarTabProps, SidebarFragment } from 'geovisto-sidebar';
 
 // Internal imports
-import { ConnectionLayerTool, ChoroplethLayerTool, MarkerLayerTool, SidebarTab, GeovistoMap,
-    SidebarTool, ThemesTool, TilesLayerTool, ToolGroup, SelectionTool, FiltersTool, CustomTool } from '../react/components/';
-import { IGeovistoMapHandle } from '../react/types';
-    
+import '../react/Constants';
+import { ChoroplethLayerTool, ConnectionLayerTool, CustomTool, FiltersTool, GeovistoMap, SelectionTool,
+    MarkerLayerTool, SidebarTool, ThemesTool, TilesLayerTool, ToolGroup, SidebarTab } from '../react/components';
+import { IGeovistoMapHandle, ISidebarTabDataProps } from '../react/types';    
+import { IImageLayerToolProps, ImageLayerTool } from '../storiesHelpers/imageLayerTool';
 
-
-// Styles
-import '../styles/common.scss';
-
-import 'font-awesome/css/font-awesome.min.css';
-
-import "geovisto/dist/index.css";
-import "geovisto-sidebar/dist/index.css";
-import "geovisto-filters/dist/index.css";
-import 'geovisto-layer-choropleth/dist/index.css';
-import 'geovisto-layer-marker/dist/index.css';
-import 'geovisto-layer-connection/dist/index.css';
-
+// Leaflet styles
 import 'leaflet';
 import 'leaflet-sidebar-v2';
 import "leaflet/dist/leaflet.css";
@@ -38,188 +24,77 @@ import 'leaflet.markercluster';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 
-// Configuration data
-// import demoData from '../../static/data/covidCzechDistricts.json';
-import demoData from '../../static/data/demo1.json';
-import demoConfig from '../../static/config/config.json';
+// Font awesome styles
+import 'font-awesome/css/font-awesome.min.css';
+
+// Geovisto styles
+import "geovisto/dist/index.css";
+import "geovisto-sidebar/dist/index.css";
+import "geovisto-filters/dist/index.css";
+import 'geovisto-layer-choropleth/dist/index.css';
+import 'geovisto-layer-marker/dist/index.css';
+import 'geovisto-layer-connection/dist/index.css';
+
+// Library styles
+import '../styles/common.scss';
 
 // Data
+import covidCzechDistricts from '../../static/data/covidCzechDistricts.json';
+import covidCzechDistrictsCategoric from '../../static/data/covidCzechDistrictsCategoric.json';
+import covidCzechDistrictsCumulative from '../../static/data/covidCzechDistrictsCumulative.json';
+import demo1 from '../../static/data/demo1.json';
+import demo2 from '../../static/data/demo2.json';
+import timeData from '../../static/data/timeData.json';
+
+// Config
+import config from '../../static/config/config.json';
+import configDemo1 from '../../static/config/config-demo1.json';
+import configDemo2 from '../../static/config/config-demo2.json';
+import configFeature from '../../static/config/config-feature18.json';
+import configTimeline from '../../static/config/config-timeline.json';
+
+// Polygons & Centroids
 import polygons from '../../static/geo/country_polygons.json';
 import polygons2 from '../../static/geo/czech_districts_polygons.json';
 import centroids from '../../static/geo/country_centroids.json';
 import centroids2 from '../../static/geo/czech_districts_centroids.json';
 
-const ReactGeovistoMap = () : JSX.Element => {
-
-    // implicit data
-    const [data, setData] = useState<unknown>(demoData);
-
-    // implicit config
-    const [config, setConfig] = useState<Record<string, unknown>>(demoConfig);
+const ReactGeovistoMapDemo = (props: IMapDemoProps) : JSX.Element => {
 
     const map = useRef<IGeovistoMapHandle>(null);
 
-    const basemap1 = {
-        url:'https://mapserver.mapy.cz/turist-m/{z}-{x}-{y}',
-        maxZoom: 20,
-        maxNativeZoom: 19
+    /* 
+     * Exporting current map configuration to JSON file
+     */
+    const exportAction = () => {
+        
+        const mapObj = map.current?.getMap(); 
+
+        if(mapObj === undefined) {
+            console.error("Map is not initialized, cannot export.");
+            return;
+        }
+
+        // Export map configuration
+        const config = JSON.stringify(mapObj.export(), null, 2);
+        
+        // Download file
+        const element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(config));
+        element.setAttribute('download', "config.json");
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
     };
 
-    const basemap2 = {
-        url:'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    };
-
-
-    const [enableToggle, setEnableToggle] = useState(true);
-    const [enableCustomToolToggle, setEnableCustomToolToggle] = useState(true);
-    const [enableThemesToolToggle, setEnableThemesToolToggle] = useState(true);
-    const [stringToggle, setStringToggle] = useState("string111");
-    const [idToggle, setIdToggle] = useState(TILES_ID);
-    const [idToggle2, setIdToggle2] = useState(CHOROPLETH_ID);
-    const [idToggle3, setIdToggle3] = useState(SIDEBAR_ID);
-    const [idToggle4, setIdToggle4] = useState(THEMES_ID);
-    const [idUndefinedToggle, setIdUndefinedToggle] = useState(TILES_ID + "2");
-    const [iconToggle, setIconToggle] = useState('<i class="fa fa-try" aria-hidden="true"></i>');
-    const [basemapToggle, setBasemapToggle] = useState<IMapTilesModel>(basemap1);
-    const [enableSidebarToggle, setEnableSidebarToggle] = useState(true);
-    const [enableSidebarTabToggle, setEnableSidebarTabToggle] = useState(true);
-    const [imageToggle, setImageToggle] = useState('https://cdn.xsd.cz/resize/6bbae9c4cff83ba7a9bdc895ed37caac_resize=900,525_.jpg?hash=ca48d5243fd1f8f2e2285f33d02e2b9b');
-
-    const C_ID_select_data = "leaflet-combined-map-select-data";
-    const C_ID_check_data = "leaflet-combined-map-check-data";
-    const C_ID_input_data = "leaflet-combined-map-input-data";
-    const C_ID_check_config = "leaflet-combined-map-check-config";
-    const C_ID_input_config = "leaflet-combined-map-input-config";
-    const C_ID_input_import = "leaflet-combined-map-input-import";
-    const C_ID_input_export = "leaflet-combined-map-input-export";
-
-    useEffect(() => {
-        // map.current.getMap().redraw(map.current.getMap().getProps(), )
-    }, [data, config]);
-    
-
-    // useEffect(() => {
-        
-    //     // ------ enable check boxes ------ //
-
-    //     const enableInput = function(checked: boolean, id: string) {
-    //         if(checked) {
-    //             document.getElementById(id).removeAttribute("disabled");
-    //         } else {
-    //             document.getElementById(id).setAttribute("disabled", "disabled");
-    //         }
-    //     };
-
-    //     // enable data check box
-    //     const enableDataInput = function(e: Event) {
-    //         enableInput((e.target as HTMLInputElement).checked, C_ID_input_data);
-    //     };
-    //     document.getElementById(C_ID_input_data).setAttribute("disabled", "disabled");
-    //     document.getElementById(C_ID_check_data).onchange = enableDataInput;
-
-    //     // enable config check box
-    //     const enableConfigInput = function(e: Event) {
-    //         enableInput((e.target as HTMLInputElement).checked, C_ID_input_config);
-    //     };
-    //     document.getElementById(C_ID_input_config).setAttribute("disabled", "disabled");
-    //     document.getElementById(C_ID_check_config).onchange = enableConfigInput;
-
-    //     // ------ process files ------ //
-
-    //     // process path
-    //     const pathSubmitted = function(file: File, result: { json: unknown | undefined }) {
-    //         const reader = new FileReader();
-    //         const onLoadAction = function(e: ProgressEvent<FileReader>) {
-    //             try {
-    //                 console.log(e);
-    //                 //console.log(reader.result);
-    //                 if(typeof reader.result == "string") {
-    //                     result.json = JSON.parse(reader.result);
-    //                 }
-    //             } catch(ex) {
-    //                 console.log("unable to read file");
-    //                 console.log(ex);
-    //             }
-    //         };
-    //         reader.onload = onLoadAction;
-    //         reader.readAsText(file);
-    //     };
-
-    //     // process data path
-    //     const inputData = {
-    //         json: undefined
-    //     };
-    //     const dataPathSubmitted = function(this: HTMLInputElement) {
-    //         console.log(this.files);
-    //         pathSubmitted(this.files[0], inputData);
-    //     };
-    //     document.getElementById(C_ID_input_data).addEventListener('change', dataPathSubmitted, false);
-        
-    //     // process config path
-    //     const inputConfig = {
-    //         json: undefined
-    //     };
-    //     const configPathSubmitted = function(this: HTMLInputElement) {
-    //         console.log(this.files);
-    //         pathSubmitted(this.files[0], inputConfig);
-    //     };
-    //     document.getElementById(C_ID_input_config).addEventListener('change', configPathSubmitted, false);
-
-    //     // ------ import ------ //
-
-    //     // import action
-    //     const importAction = (e: MouseEvent) => {
-
-    //         console.log(e);
-    //         console.log("data: ", data);
-    //         console.log("config: ", config);
-
-    //         // process data json
-    //         if(!(document.getElementById(C_ID_check_data) as HTMLInputElement).checked || inputData.json == undefined) {
-    //             const fileName = (document.getElementById(C_ID_select_data) as HTMLInputElement).value;
-    //             console.log(fileName);
-    //             inputData.json = require('/static/data/' + fileName);
-    //         }
-            
-    //         // process config json
-    //         if(!(document.getElementById(C_ID_check_config) as HTMLInputElement).checked || inputConfig.json == undefined) {
-    //             inputConfig.json = require('/static/config/config.json');
-    //         }
-
-    //         // update state
-    //         setData(inputData.json);
-    //         setConfig(inputConfig.json);
-    //     };
-
-    //     document.getElementById(C_ID_input_import).addEventListener('click', importAction);
-
-    //     // ------ export ------ //
-        
-    //     // export action
-    //     const exportAction = (e: MouseEvent) => {
-    //         console.log(e);
-            
-    //         // expert map configuration
-    //         const config = JSON.stringify(map.current.getMap().export(), null, 2);
-            
-    //         // download file
-    //         const element = document.createElement('a');
-    //         element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(config));
-    //         element.setAttribute('download', "config.json");
-    //         element.style.display = 'none';
-    //         document.body.appendChild(element);
-    //         element.click();
-    //         document.body.removeChild(element);
-
-    //         console.log("rendered map:", );
-    //     };
-    //     document.getElementById(C_ID_input_export).addEventListener('click', exportAction);
-
-    // }, []);
-    
     const dataManager = useMemo((): IMapDataManager => {
-        return Geovisto.getMapDataManagerFactory().json(data);
-     }, [data]); 
+        return Geovisto.getMapDataManagerFactory().json(props.data);
+     }, [props.data]); 
+
+     const configManager = useMemo((): IMapConfigManager | undefined => {
+        return props.config ? Geovisto.getMapConfigManagerFactory().default(props.config) : undefined;
+     }, [props.config]); 
 
      const geoDataManager = useMemo((): IGeoDataManager => {
         return Geovisto.getGeoDataManager([
@@ -242,96 +117,267 @@ const ReactGeovistoMap = () : JSX.Element => {
         ]);
     }, []); 
     
+    const baseMap = useMemo((): IMapTilesModel => {
+        return {
+            url: props.tilesLayerToolBaseMapUrl,
+            maxZoom: 20,
+            maxNativeZoom: 19
+        };
+    }, [props.tilesLayerToolBaseMapUrl]);
+
+    const fragments = useMemo((): [string, ISidebarFragment][] => {
+        return [
+            ['geovisto-tool-themes', new SidebarFragment({ enabled:true })],
+            ['geovisto-tool-selection', new SidebarFragment({ enabled:true })]
+        ];
+    }, []);
+
     const theme = useMemo(() : IMapTheme => {
         return GeovistoThemesTool.createThemeDark3();
      }, []);  
 
      return (
-
-                <GeovistoMap
-                    ref={map}
-                    id="my-new-geovisto-map"
-                    className="geovisto-map-styles"
-                    data={dataManager}
-                    geoData={geoDataManager}
-                    // config={Geovisto.getMapConfigManagerFactory().default(config)}
-                    globals={undefined}
-                    templates={undefined}
+        <React.Fragment>
+            <GeovistoMap
+                ref={map}
+                id='geovisto-map'
+                className={props.className}
+                data={dataManager}
+                geoData={geoDataManager}
+                config={configManager}
+                globals={undefined}
+                templates={undefined}
                 >
-                    <ToolGroup>
-                        <SidebarTool id={idToggle3} label="label" enabled={enableSidebarToggle}>
-                            <SidebarTab
-                                tool={TILES_ID}
-                                enabled={enableSidebarTabToggle}
-                                name={stringToggle}
-                                icon={iconToggle}
-                                checkButton={true}
-                            /> 
-                            <SidebarTab
-                                tool={idToggle2}
-                                enabled={true}
-                                name="[My] Choropleth"
-                                icon='<i class="fa fa-usd"></i>'
-                                checkButton={true}
-                            />
-                            <SidebarTab
-                                tool={MARKER_ID}
-                                enabled={true}
-                                name="[My] MARKER"
-                                icon='<i class="fa fa-gbp"></i>'
-                                checkButton={true}
-                            />
-                            <SidebarTab
-                                tool='my-bluesky-tool'
-                                enabled={true}
-                                name="[My] Blue sky tool"
-                                icon='<i class="fa fa-image"></i>'
-                                checkButton={true}
-                            />
-                            <SidebarTab
-                                tool={CONNECTION_ID}
-                                enabled={true}
-                                name="[My] Connection layer"
-                                icon='<i class="fa fa-inr"></i>'
-                                checkButton={true}
-                            />
-                            <SidebarTab
-                                tool={FILTERS_ID}
-                                enabled={true}
-                                name="[My] Filter tool"
-                                icon='<i class="fa fa-filter"></i>'
-                                checkButton={true}
-                            />
-                        </SidebarTool>
-                        <TilesLayerTool 
-                                id={idToggle}
-                                enabled={enableToggle}
-                                label={"Awesome tiles layer label"}
-                                baseMap={basemapToggle}
-                            />
-                        <MarkerLayerTool 
-                            id={MARKER_ID}
+                <ToolGroup>
+                    <SidebarTool 
+                        id='geovisto-tool-sidebar'
+                        enabled={props.sidebarToolEnable}
+                    >
+                        <SidebarTab
                             enabled={true}
+                            name="General settings"
+                            icon='<i class="fa fa-gear"></i>'
+                            checkButton={false}
+                            fragments={fragments}
                         />
-                        <ConnectionLayerTool
-                            id={CONNECTION_ID}
+                        <SidebarTab
+                            {...props.sidebarTabTilesLayerTool}
+                        />
+                        <SidebarTab
+                            tool='geovisto-tool-layer-choropleth'
                             enabled={true}
+                            name='Choropleth layer settings'
+                            icon='<i class="fa fa-th-large"></i>'
+                            checkButton={true}
                         />
-                        <SelectionTool
-                            id={SELECTION_ID}
+                        <SidebarTab
+                            tool='geovisto-tool-layer-marker'
+                            enabled={true}
+                            name='Marker layer settings'
+                            icon='<i class="fa fa-map-marker"></i>'
+                            checkButton={true}
                         />
-                        <FiltersTool
-                            id={FILTERS_ID}
+                        <SidebarTab
+                            tool='geovisto-tool-layer-connection'
+                            enabled={true}
+                            name='Connection layer settings'
+                            icon='<i class="fa fa-road"></i>'
+                            checkButton={true}
                         />
-                    </ToolGroup>
-                    
-                </GeovistoMap>
+                        <SidebarTab
+                            tool='geovisto-tool-filters'
+                            enabled={true}
+                            name='Filters'
+                            icon='<i class="fa fa-filter"></i>'
+                            checkButton={true}
+                        />
+                    </SidebarTool>
+
+                    <CustomTool 
+                            id='custom-tool-images'
+                            enabled={true}
+                            url='https://i.pinimg.com/564x/e1/12/d8/e112d8ba7689be718fcef0985fea296c.jpg'
+                            bounds={[[73.37895759245632, -54.7147379072844], [82.16679982188535, -19.997940517446235]]}
+                            createTool={(props: IImageLayerToolProps) => new ImageLayerTool(props)}
+                    />
+                    <TilesLayerTool 
+                        id={props.tilesLayerToolId}
+                        enabled={props.tilesLayerToolEnable}
+                        label="Awesome tiles layer label"
+                        baseMap={baseMap}
+                    />
+                    <ThemesTool
+                        id='geovisto-tool-themes'
+                        manager={themesManager}
+                        enabled={props.themesToolEnable}
+                        theme={theme}
+                    />
+                    <ChoroplethLayerTool 
+                        id='geovisto-tool-layer-choropleth' 
+                        enabled={true}
+                        name='Choropleth layer'
+                    />
+                    <MarkerLayerTool 
+                        id='geovisto-tool-layer-marker'
+                        enabled={true}
+                    />
+                    <ConnectionLayerTool
+                        id='geovisto-tool-layer-connection'
+                        enabled={true}
+                    />
+                    <SelectionTool
+                        id='geovisto-tool-selection'
+                        enabled={true}
+                    />
+                    <FiltersTool
+                        id='geovisto-tool-filters'
+                        enabled={true}
+                    />
+                </ToolGroup>
+            </GeovistoMap>
+
+            <div className='demo-footer'>
+                <div>
+                    <button className='export-btn' onClick={exportAction}>Export</button>
+                </div>
+            </div>
+        </React.Fragment>
     );
 };
 
 export default {
-    title: 'Maps',
-    component: ReactGeovistoMap,
-} as Meta;
+    component: ReactGeovistoMapDemo,
+    title: 'Maps/React Geovisto Map',
+    argTypes: {
+        data: {
+            name: "Data",
+            description: "Select data for the map content.",
+            options: ["covidCzechDistricts", "covidCzechDistrictsCategoric", "covidCzechDistrictsCumulative", "demo1", "demo2", "timeData"],
+            mapping: {
+                covidCzechDistricts: covidCzechDistricts,
+                covidCzechDistrictsCategoric: covidCzechDistrictsCategoric,
+                covidCzechDistrictsCumulative: covidCzechDistrictsCumulative,
+                demo1: demo1,
+                demo2: demo2,
+                timeData: timeData
+            },
+            sort: 'requiredFirst',
+            control: {
+              type: "select",
+              labels: {
+                covidCzechDistricts: "Covid Czech Districts",
+                covidCzechDistrictsCategoric: "Covid Czech Districts Categoric",
+                covidCzechDistrictsCumulative: "Covid Czech Districts Cumulative",
+                demo1: "Demo 1",
+                demo2: "Demo 2",
+                timeData: "Time Data"
+              },
+            },
+        },
+        config: {
+            name: "Config",
+            description: "Select map configuration file.",
+            options: ["none", "config", "configDemo1", "configDemo2", "configFeature", "configTimeline"],
+            mapping: {
+                none: undefined,
+                config: config,
+                configDemo1: configDemo1,
+                configDemo2: configDemo2,
+                configFeature: configFeature,
+                configTimeline: configTimeline
+            },
+            sort: 'requiredFirst',
+            control: {
+                type: "select",
+                defaultValue: 'geovisto-map-styles',
+                labels: {
+                    none: "No configuration file",
+                    config: "Base config",
+                    configDemo1: "Demo 1 config",
+                    configDemo2: "Demo 2 config",
+                    configFeature: "Feature config",
+                    configTimeline: "Timeline config"
+                },
+            },
+        },
+        className: {
+            name: "Class name",
+            description: "Class name to style the map container element.",
+            defaultValue: 'geovisto-map-styles'
+        },
+        sidebarToolEnable: {
+            name: "SidebarTool: enabled",
+            description: "Enabled property of the SidebarTool instance.",
+            defaultValue: false
+        },
+        sidebarTabTilesLayerTool: {
+            name: "SidebarTab - TilesLayerTool",
+            description: "Properties of the sidebar tab of the TilesLayerTool",
+            defaultValue: false
+        },
+        themesToolEnable: {
+            name: "ThemesTool: enabled",
+            description: "Enabled property of the ThemesTool instance.",
+            defaultValue: false
+        },
+        tilesLayerToolEnable: {
+            name: "TilesLayerTool: enabled",
+            description: "Enabled property of the TilesLayerTool instance.",
+            defaultValue: false
+        },
+        tilesLayerToolBaseMapUrl: {
+            name: "TilesLayerTool: BaseMap Url",
+            description: "Url source for the base map tiles.",
+            options: ["mapycz", "openstreetmap"],
+            mapping: {
+                mapycz: 'https://mapserver.mapy.cz/turist-m/{z}-{x}-{y}',
+                openstreetmap: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+            },
+            control: {
+              type: "select",
+              defaultValue: 'mapycz',
+              labels: {
+                mapycz: "Mapy.cz",
+                openstreetmap: "Openstreetmap",
+              },
+            },
+        },
+        tilesLayerToolId: {
+            name: "TilesLayerTool: id",
+            description: "Id property of the TilesLayerTool instance.",
+        },
+      },
+} as ComponentMeta<typeof ReactGeovistoMapDemo>;
 
-export const ReactGeovistoMapAlternative: Story = () => <ReactGeovistoMap />;
+export type IMapDemoProps = {
+    data: unknown;
+    config: Record<string, unknown>;
+    className: string;
+    sidebarToolEnable: boolean;
+    themesToolEnable: boolean;
+    tilesLayerToolEnable: boolean;
+    tilesLayerToolBaseMapUrl: string;
+    tilesLayerToolId: string;
+    sidebarTabTilesLayerTool: ISidebarTabDataProps<ISidebarTabProps>;
+} 
+
+const Template: ComponentStory<typeof ReactGeovistoMapDemo> = (args: IMapDemoProps) => <ReactGeovistoMapDemo {...args} />
+
+export const ReactGeovistoMap = Template.bind({});
+
+ReactGeovistoMap.args = {
+    className: 'geovisto-map-styles',
+    data: demo1,
+    sidebarToolEnable: true,
+    themesToolEnable: false,
+    tilesLayerToolEnable: true,
+    tilesLayerToolBaseMapUrl: 'mapycz',
+    tilesLayerToolId: 'geovisto-tool-layer-map',
+    sidebarTabTilesLayerTool: {
+        tool: 'geovisto-tool-layer-map',
+        enabled: true,
+        name: 'Map layer settings',
+        icon: '<i class="fa fa-globe"></i>',
+        checkButton: true
+    }
+}
