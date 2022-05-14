@@ -1,20 +1,23 @@
 // React
-import React, { useMemo, useRef } from "react";
+import React, { useMemo } from "react";
 
 // Storybook
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 // Geovisto
 import { GeovistoThemesTool, IMapTheme, IMapThemesManager } from 'geovisto-themes';
-import { Geovisto, IGeoDataManager, IMapConfigManager, IMapDataManager, IMapTilesModel } from 'geovisto';
+import { IMapTilesModel } from 'geovisto';
 import { ISidebarFragment, ISidebarTabProps, SidebarFragment } from 'geovisto-sidebar';
 
 // Internal imports
 import '../react/Constants';
-import { ChoroplethLayerTool, ConnectionLayerTool, CustomTool, FiltersTool, GeovistoMap, SelectionTool,
-    MarkerLayerTool, SidebarTool, ThemesTool, TilesLayerTool, ToolGroup, SidebarTab } from '../react/components';
-import { IGeovistoMapHandle, ISidebarTabDataProps } from '../react/types';    
+import { ChoroplethLayerTool, ConnectionLayerTool, CustomTool, FiltersTool, SelectionTool,
+    MarkerLayerTool, SidebarTool, ThemesTool, TilesLayerTool, SidebarTab } from '../react/components';
+import { ISidebarTabDataProps } from '../react/types';    
 import { IImageLayerToolProps, ImageLayerTool } from '../storiesHelpers/imageLayerTool';
+
+// Stories internal helper components
+import { ExportMapWrapper } from '../storiesHelpers/ExportMapWrapper';
 
 // Leaflet styles
 import 'leaflet';
@@ -54,56 +57,14 @@ import configFeature from '../../static/config/config-feature18.json';
 import configTimeline from '../../static/config/config-timeline.json';
 
 // Polygons & Centroids
-import polygons from '../../static/geo/country_polygons.json';
-import polygons2 from '../../static/geo/czech_districts_polygons.json';
-import centroids from '../../static/geo/country_centroids.json';
-import centroids2 from '../../static/geo/czech_districts_centroids.json';
 
 const ReactGeovistoMapDemo = (props: IMapDemoProps) : JSX.Element => {
 
-    const map = useRef<IGeovistoMapHandle>(null);
-
-    /* 
-     * Exporting current map configuration to JSON file
-     */
-    const exportAction = () => {
-        
-        const mapObj = map.current?.getMap(); 
-
-        if(mapObj === undefined) {
-            console.error("Map is not initialized, cannot export.");
-            return;
-        }
-
-        // Export map configuration
-        const config = JSON.stringify(mapObj.export(), null, 2);
-        
-        // Download file
-        const element = document.createElement('a');
-        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(config));
-        element.setAttribute('download', "config.json");
-        element.style.display = 'none';
-        document.body.appendChild(element);
-        element.click();
-        document.body.removeChild(element);
+    const extendedProps = {
+        mapId: 'geovisto-map',
+        showBaseTileLayerMap: false,
+        ...props
     };
-
-    const dataManager = useMemo((): IMapDataManager => {
-        return Geovisto.getMapDataManagerFactory().json(props.data);
-     }, [props.data]); 
-
-     const configManager = useMemo((): IMapConfigManager | undefined => {
-        return props.config ? Geovisto.getMapConfigManagerFactory().default(props.config) : undefined;
-     }, [props.config]); 
-
-     const geoDataManager = useMemo((): IGeoDataManager => {
-        return Geovisto.getGeoDataManager([
-            Geovisto.getGeoDataFactory().geojson("world polygons", polygons),
-            Geovisto.getGeoDataFactory().geojson("world centroids", centroids),
-            Geovisto.getGeoDataFactory().geojson("czech polygons", polygons2),
-            Geovisto.getGeoDataFactory().geojson("czech centroids", centroids2)
-        ]);
-     }, []); 
 
     const themesManager = useMemo((): IMapThemesManager => {
        return GeovistoThemesTool.createThemesManager([
@@ -136,119 +97,100 @@ const ReactGeovistoMapDemo = (props: IMapDemoProps) : JSX.Element => {
         return GeovistoThemesTool.createThemeDark3();
      }, []);  
 
-     return (
-        <React.Fragment>
-            <GeovistoMap
-                ref={map}
-                id='geovisto-map'
-                className={props.className}
-                data={dataManager}
-                geoData={geoDataManager}
-                config={configManager}
-                globals={undefined}
-                templates={undefined}
-                >
-                <ToolGroup>
-                    <SidebarTool 
-                        id='geovisto-tool-sidebar'
-                        enabled={props.sidebarToolEnable}
-                    >
-                        <SidebarTab
-                            enabled={true}
-                            name="General settings"
-                            icon='<i class="fa fa-gear"></i>'
-                            checkButton={false}
-                            fragments={fragments}
-                        />
-                        <SidebarTab
-                            {...props.sidebarTabTilesLayerTool}
-                        />
-                        <SidebarTab
-                            tool='geovisto-tool-layer-choropleth'
-                            enabled={true}
-                            name='Choropleth layer settings'
-                            icon='<i class="fa fa-th-large"></i>'
-                            checkButton={true}
-                        />
-                        <SidebarTab
-                            tool='geovisto-tool-layer-marker'
-                            enabled={true}
-                            name='Marker layer settings'
-                            icon='<i class="fa fa-map-marker"></i>'
-                            checkButton={true}
-                        />
-                        <SidebarTab
-                            tool='geovisto-tool-layer-connection'
-                            enabled={true}
-                            name='Connection layer settings'
-                            icon='<i class="fa fa-road"></i>'
-                            checkButton={true}
-                        />
-                        <SidebarTab
-                            tool='geovisto-tool-filters'
-                            enabled={true}
-                            name='Filters'
-                            icon='<i class="fa fa-filter"></i>'
-                            checkButton={true}
-                        />
-                        <SidebarTab
-                            tool='custom-tool-layer-image'
-                            enabled={true}
-                            name='Custom tool settings'
-                            icon='<i class="fa fa-image"></i>'
-                            checkButton={true}
-                        />
-                    </SidebarTool>
+    return (
+        <ExportMapWrapper {...extendedProps}>
+            <SidebarTool 
+                id='geovisto-tool-sidebar'
+                enabled={props.sidebarToolEnable}
+            >
+                <SidebarTab
+                    enabled={true}
+                    name="General settings"
+                    icon='<i class="fa fa-gear"></i>'
+                    checkButton={false}
+                    fragments={fragments}
+                />
+                <SidebarTab
+                    {...props.sidebarTabTilesLayerTool}
+                />
+                <SidebarTab
+                    tool='geovisto-tool-layer-choropleth'
+                    enabled={true}
+                    name='Choropleth layer settings'
+                    icon='<i class="fa fa-th-large"></i>'
+                    checkButton={true}
+                />
+                <SidebarTab
+                    tool='geovisto-tool-layer-marker'
+                    enabled={true}
+                    name='Marker layer settings'
+                    icon='<i class="fa fa-map-marker"></i>'
+                    checkButton={true}
+                />
+                <SidebarTab
+                    tool='geovisto-tool-layer-connection'
+                    enabled={true}
+                    name='Connection layer settings'
+                    icon='<i class="fa fa-road"></i>'
+                    checkButton={true}
+                />
+                <SidebarTab
+                    tool='geovisto-tool-filters'
+                    enabled={true}
+                    name='Filters'
+                    icon='<i class="fa fa-filter"></i>'
+                    checkButton={true}
+                />
+                <SidebarTab
+                    tool='custom-tool-layer-image'
+                    enabled={true}
+                    name='Custom tool settings'
+                    icon='<i class="fa fa-image"></i>'
+                    checkButton={true}
+                />
+            </SidebarTool>
 
-                    <CustomTool 
-                            id='custom-tool-layer-image'
-                            enabled={false}
-                            url='https://i.pinimg.com/564x/e1/12/d8/e112d8ba7689be718fcef0985fea296c.jpg'
-                            bounds={[[73.37895759245632, -54.7147379072844], [82.16679982188535, -19.997940517446235]]}
-                            createTool={(props: IImageLayerToolProps) => new ImageLayerTool(props)}
-                    />
-                    <TilesLayerTool 
-                        id={props.tilesLayerToolId}
-                        enabled={props.tilesLayerToolEnable}
-                        label="Awesome tiles layer label"
-                        baseMap={baseMap}
-                    />
-                    <ThemesTool
-                        id='geovisto-tool-themes'
-                        manager={themesManager}
-                        enabled={props.themesToolEnable}
-                        theme={theme}
-                    />
-                    <ChoroplethLayerTool 
-                        id='geovisto-tool-layer-choropleth' 
-                        enabled={true}
-                        name='Choropleth layer'
-                    />
-                    <MarkerLayerTool 
-                        id='geovisto-tool-layer-marker'
-                        enabled={true}
-                    />
-                    <ConnectionLayerTool
-                        id='geovisto-tool-layer-connection'
-                        enabled={true}
-                    />
-                    <SelectionTool
-                        id='geovisto-tool-selection'
-                        enabled={true}
-                    />
-                    <FiltersTool
-                        id='geovisto-tool-filters'
-                        enabled={true}
-                    />
-                </ToolGroup>
-            </GeovistoMap>
-
-            <div className='demo-footer'>
-                <div>
-                    <button className='export-btn' onClick={exportAction}>Export</button>
-                </div>
-            </div>
-        </React.Fragment>
+            <CustomTool 
+                    id='custom-tool-layer-image'
+                    enabled={false}
+                    url='https://i.pinimg.com/564x/e1/12/d8/e112d8ba7689be718fcef0985fea296c.jpg'
+                    bounds={[[73.37895759245632, -54.7147379072844], [82.16679982188535, -19.997940517446235]]}
+                    createTool={(props: IImageLayerToolProps) => new ImageLayerTool(props)}
+            />
+            <TilesLayerTool 
+                id={props.tilesLayerToolId}
+                enabled={props.tilesLayerToolEnable}
+                label="Awesome tiles layer label"
+                baseMap={baseMap}
+            />
+            <ChoroplethLayerTool 
+                id='geovisto-tool-layer-choropleth' 
+                enabled={true}
+                name='Choropleth layer'
+            />
+            <MarkerLayerTool 
+                id='geovisto-tool-layer-marker'
+                enabled={true}
+            />
+            <ConnectionLayerTool
+                id='geovisto-tool-layer-connection'
+                enabled={true}
+            />
+            <SelectionTool
+                id='geovisto-tool-selection'
+                enabled={true}
+            />
+            <FiltersTool
+                id='geovisto-tool-filters'
+                enabled={true}
+            />
+            <ThemesTool
+                id='geovisto-tool-themes'
+                manager={themesManager}
+                enabled={false}
+                theme={theme}
+            />
+    </ExportMapWrapper>
     );
 };
 
@@ -322,11 +264,6 @@ export default {
             description: "Properties of the sidebar tab of the TilesLayerTool",
             defaultValue: false
         },
-        themesToolEnable: {
-            name: "ThemesTool: enabled",
-            description: "Enabled property of the ThemesTool instance.",
-            defaultValue: false
-        },
         tilesLayerToolEnable: {
             name: "TilesLayerTool: enabled",
             description: "Enabled property of the TilesLayerTool instance.",
@@ -361,7 +298,6 @@ export type IMapDemoProps = {
     config: Record<string, unknown>;
     className: string;
     sidebarToolEnable: boolean;
-    themesToolEnable: boolean;
     tilesLayerToolEnable: boolean;
     tilesLayerToolBaseMapUrl: string;
     tilesLayerToolId: string;
@@ -376,7 +312,6 @@ ReactGeovistoMap.args = {
     className: 'geovisto-map-styles',
     data: demo1,
     sidebarToolEnable: true,
-    themesToolEnable: false,
     tilesLayerToolEnable: true,
     tilesLayerToolBaseMapUrl: 'mapycz',
     tilesLayerToolId: 'geovisto-tool-layer-map',
