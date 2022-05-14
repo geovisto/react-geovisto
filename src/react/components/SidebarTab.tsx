@@ -1,7 +1,10 @@
+// React
 import React from 'react';
 
+// Geovisto
 import { ISidebarTabProps } from 'geovisto-sidebar';
 
+// Internal imports
 import { useDidUpdateEffect } from '../Hooks';
 import { ISidebarTabDataProps } from '../types';
 

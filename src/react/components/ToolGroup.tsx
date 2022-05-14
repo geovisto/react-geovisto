@@ -1,8 +1,11 @@
+// React
 import React, { forwardRef, ReactElement, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 
+// Geovisto
 import { Geovisto, ILayerTool, IMapTool, IMapToolsManager } from 'geovisto';
 import { ISidebarTool, SidebarToolDefaults } from 'geovisto-sidebar';
 
+// Internal imports
 import { SidebarTool } from '.';
 import { ENABLED_PROP, ID_PROP, supportedComponentTypes } from '../Constants';
 import { isLayerTool, getToolInstance } from '../Helpers';

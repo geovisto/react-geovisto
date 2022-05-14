@@ -1,3 +1,4 @@
+// Internal imports
 import { IToolDataProps } from "./IComponentTool";
 
 // Sidebar tab data props extended of tool id

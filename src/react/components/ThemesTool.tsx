@@ -1,7 +1,10 @@
+// React
 import React from 'react';
 
+// Geovisto
 import { IThemesToolProps } from 'geovisto-themes';
 
+// Internal imports
 import { useDidToolEnabledUpdate, useDidToolIdUpdate, useToolEffect } from '../Hooks';
 import { IToolDataProps } from '../types/IComponentTool';
 

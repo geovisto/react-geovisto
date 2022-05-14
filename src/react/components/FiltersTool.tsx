@@ -1,7 +1,11 @@
+// React
 import React from 'react';
 
+// Geovisto
 import { IFiltersToolProps } from 'geovisto-filters';
 
+// Internal imports
+import '../Constants';
 import { useDidToolEnabledUpdate, useDidToolIdUpdate, useToolEffect } from '../Hooks';
 import { IToolDataProps } from '../types';
 

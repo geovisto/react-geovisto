@@ -1,3 +1,4 @@
+// Geovisto
 import { IMap, IMapConfigManager, IMapProps } from "geovisto";
 
 // Default Geovisto Map component props

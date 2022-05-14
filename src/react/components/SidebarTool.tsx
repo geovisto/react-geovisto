@@ -1,7 +1,10 @@
+// React
 import React, { forwardRef, useImperativeHandle } from 'react';
 
+// Geovisto
 import { ISidebarTabProps, ISidebarToolProps, SidebarTab } from 'geovisto-sidebar';
 
+// Internal imports
 import { SidebarTab as SidebarTabType }  from '.';
 import { useDidToolEnabledUpdate, useDidToolIdUpdate, useToolEffect } from '../Hooks';
 import { ISidebarTabs, ISidebarToolDataProps, ISidebarToolHandle, IToolDataProps } from '../types';

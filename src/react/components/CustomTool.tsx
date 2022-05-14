@@ -1,11 +1,15 @@
+// React
 import React, { useEffect, useMemo, useState } from 'react';
 
+// Deep-equal
+import deepEqual from "deep-equal";
+
+// Geovisto
 import { IMapToolProps } from 'geovisto';
 
+// Internal imports
 import { useDidToolEnabledUpdate, useDidToolIdUpdate } from '../Hooks';
 import { ICustomToolProps, ICustomToolPropsValues } from '../types';
-
-import deepEqual from "deep-equal";
 
 
 export const CustomTool = (props: ICustomToolProps<IMapToolProps>) : JSX.Element => {

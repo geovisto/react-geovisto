@@ -1,9 +1,13 @@
 const path = require('path');
 
+// Required for babel-preset-react-app
+const mode = 'development';
+process.env.NODE_ENV = mode;
+
 module.exports = {
-  mode: "development",
+  mode: mode,
   output: {
-    filename: 'geovisto-map.js',
+    filename: 'react-geovisto.js',
     path: path.resolve(__dirname, 'dist')
   },
 
@@ -13,7 +17,6 @@ module.exports = {
           test: /\.ts$|tsx/,
           loader: require.resolve("babel-loader"),
           options: {
-            envName: 'development',
             presets: [["react-app", { flow: false, typescript: true }]]
           }
         },

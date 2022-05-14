@@ -11,6 +11,28 @@ import '../react/Constants';
 import { GeovistoMap, TilesLayerTool, ToolGroup } from '../react/components/';
 import { IGeovistoMapHandle } from '../react/types';
 
+// Leaflet styles
+import 'leaflet';
+import 'leaflet-sidebar-v2';
+import "leaflet/dist/leaflet.css";
+import 'leaflet.markercluster';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+
+// Font awesome styles
+import 'font-awesome/css/font-awesome.min.css';
+
+// Geovisto styles
+import "geovisto/dist/index.css";
+import "geovisto-sidebar/dist/index.css";
+import "geovisto-filters/dist/index.css";
+import 'geovisto-layer-choropleth/dist/index.css';
+import 'geovisto-layer-marker/dist/index.css';
+import 'geovisto-layer-connection/dist/index.css';
+
+// Library styles
+import '../styles/common.scss';
+
 // Data
 import demo1 from '../../static/data/demo1.json';
 

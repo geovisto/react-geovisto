@@ -1,5 +1,7 @@
+// Geovisto
 import { IMapToolProps } from "geovisto";
 
+// Internal imports
 import { IToolDataProps } from "./IComponentTool";
 
 // Default type of a user-specified custom geovisto tool 

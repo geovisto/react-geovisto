@@ -1,5 +1,7 @@
+// React
 import { JSXElementConstructor } from "react";
 
+// Geovisto
 import { IMapToolProps } from "geovisto";
 
 

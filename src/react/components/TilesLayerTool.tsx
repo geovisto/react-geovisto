@@ -1,7 +1,10 @@
+// React
 import React from 'react';
 
+// Geovisto
 import { ITilesLayerToolProps } from 'geovisto-layer-tiles';
 
+// Internal imports
 import { useDidToolEnabledUpdate, useDidToolIdUpdate, useToolEffect } from '../Hooks';
 import { IToolDataProps } from '../types/IComponentTool';
 

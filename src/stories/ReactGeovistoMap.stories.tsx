@@ -19,26 +19,7 @@ import { IImageLayerToolProps, ImageLayerTool } from '../storiesHelpers/imageLay
 // Stories internal helper components
 import { ExportMapWrapper } from '../storiesHelpers/ExportMapWrapper';
 
-// Leaflet styles
-import 'leaflet';
-import 'leaflet-sidebar-v2';
-import "leaflet/dist/leaflet.css";
-import 'leaflet.markercluster';
-import 'leaflet.markercluster/dist/MarkerCluster.css';
-import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
-
-// Font awesome styles
-import 'font-awesome/css/font-awesome.min.css';
-
-// Geovisto styles
-import "geovisto/dist/index.css";
-import "geovisto-sidebar/dist/index.css";
-import "geovisto-filters/dist/index.css";
-import 'geovisto-layer-choropleth/dist/index.css';
-import 'geovisto-layer-marker/dist/index.css';
-import 'geovisto-layer-connection/dist/index.css';
-
-// Library styles
+// Styles
 import '../styles/common.scss';
 
 // Data

@@ -1,7 +1,10 @@
+// React
 import React, { forwardRef, ReactElement, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
+// Geovisto
 import { Geovisto, IMap, IMapToolsManager } from 'geovisto';
 
+// Internal imports
 import { supportedTopLevelComponentTypes } from '../Constants';
 import { useDidUpdateEffect } from '../Hooks';
 import { IGeovistoMapHandle, IGeovistoMapProps, IToolGroupHandle } from '../types';

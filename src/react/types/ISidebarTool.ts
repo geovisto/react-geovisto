@@ -1,5 +1,7 @@
+// Geovisto
 import { ISidebarTab } from "geovisto-sidebar";
 
+// Internal imports
 import { IToolDataProps } from "./IComponentTool";
 
 // Exclude undesirable default sidebar properties
