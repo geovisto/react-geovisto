@@ -22,13 +22,16 @@ import '../styles/common.scss';
 import { ExportMapWrapper } from '../storiesHelpers/ExportMapWrapper';
 import { IImageLayerToolProps, ImageLayerTool } from '../storiesHelpers/imageLayerTool';
 
+// Config
+import imgDefaultMapPosition from '../../static/config/defaultPosition/config-imgDefaultPosition.json';
 
 const CustomToolDemo = (props: ICustomToolDemoProps) : JSX.Element => {
 
     const extendedProps = {
         mapId: 'geovisto-map-custom-demo',
+        config: props.defaultMapPosition ? imgDefaultMapPosition : undefined,
         ...props
-    } 
+    }; 
 
     return (
         <ExportMapWrapper {...extendedProps}>
@@ -36,7 +39,7 @@ const CustomToolDemo = (props: ICustomToolDemoProps) : JSX.Element => {
                 id='geovisto-tool-sidebar'
                 enabled={props.sidebarToolEnabled}
             >
-                <SidebarTab
+            <SidebarTab
                     {...props.sidebarTabTool}
                 />
             </SidebarTool>
@@ -55,7 +58,7 @@ const CustomToolDemo = (props: ICustomToolDemoProps) : JSX.Element => {
 
 export default {
     component: CustomToolDemo,
-    title: 'Tools/CustomLayer Tool',
+    title: 'Tools/Custom Tool',
     argTypes: {
         sidebarToolEnabled: {
             name: "SidebarTool: enabled",
@@ -92,11 +95,16 @@ export default {
         toolBounds: {
             name: "Boundaries",
             description: "Bounds property of the CustomTool instance.",
+        },
+        defaultMapPosition: {
+            name: "Default map position:",
+            description: "Enables/Disables config with the position of the map set to the image.",
         }
     },
 } as ComponentMeta<typeof CustomToolDemo>;
 
 export type ICustomToolDemoProps = {
+    defaultMapPosition: boolean,
     toolId: string;
     toolEnabled: boolean;
     toolName: string;
@@ -110,10 +118,11 @@ export type ICustomToolDemoProps = {
 
 const Template : ComponentStory<typeof CustomToolDemo> = args => <CustomToolDemo {...args} />
 
-export const GeovistoCustomTool = Template.bind({});
+export const GeovistoCustomToolStory = Template.bind({});
 
-GeovistoCustomTool.storyName = 'Custom Tool';
-GeovistoCustomTool.args = {
+GeovistoCustomToolStory.storyName = 'Custom Tool';
+GeovistoCustomToolStory.args = {
+    defaultMapPosition: true,
     toolEnabled: true,
     toolId: 'geovisto-custom-tool-map',
     toolName: 'Custom Tool',

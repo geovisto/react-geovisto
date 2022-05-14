@@ -9,7 +9,7 @@ import { ISidebarTabProps } from 'geovisto-sidebar';
 
 // Internal imports
 import '../react/Constants';
-import { SidebarTab, SidebarTool, MarkerLayerTool } from '../react/components';
+import { SidebarTab, SidebarTool, ConnectionLayerTool } from '../react/components';
 import { ISidebarTabDataProps } from '../react/types';
 
 // Styles
@@ -19,19 +19,15 @@ import '../styles/common.scss';
 import { ExportMapWrapper } from '../storiesHelpers/ExportMapWrapper';
 
 // Data
-import covidCzechDistrictsCumulative from '../../static/data/covidCzechDistrictsCumulative.json';
+import demo1 from '../../static/data/demo1.json';
 
-// Config
-import czDefaultMapPosition from '../../static/config/defaultPosition/config-czDefaultPosition.json';
-
-const MarkerLayerToolDemo = (props: IMarkerLayerToolDemoProps) : JSX.Element => {
+const ConnectionLayerToolDemo = (props: IConnectionLayerToolDemoProps) : JSX.Element => {
 
     const extendedProps = {
-        mapId: 'geovisto-map-marker-demo',
-        data: covidCzechDistrictsCumulative,
-        config: props.defaultMapPosition ? czDefaultMapPosition : undefined,
+        mapId: 'geovisto-map-connection-demo',
+        data: demo1,
         ...props
-    }; 
+    };
 
     return (
         <ExportMapWrapper {...extendedProps}>
@@ -43,7 +39,7 @@ const MarkerLayerToolDemo = (props: IMarkerLayerToolDemoProps) : JSX.Element => 
                     {...props.sidebarTabTool}
                 />
             </SidebarTool>
-            <MarkerLayerTool 
+            <ConnectionLayerTool 
                 id={props.toolId}
                 enabled={props.toolEnabled}
                 name={props.toolName}
@@ -54,16 +50,16 @@ const MarkerLayerToolDemo = (props: IMarkerLayerToolDemoProps) : JSX.Element => 
 };
 
 export default {
-    component: MarkerLayerToolDemo,
-    title: 'Tools/Marker Layer Tool',
+    component: ConnectionLayerToolDemo,
+    title: 'Tools/Connection Layer Tool',
     argTypes: {
         sidebarToolEnabled: {
             name: "SidebarTool: enabled",
             description: "Enabled property of the SidebarTool instance.",
         },
         sidebarTabTool: {
-            name: "SidebarTab - MarkerLayerTool",
-            description: "Properties of the sidebar tab of the MarkerLayerTool.",
+            name: "SidebarTab - ConnectionLayerTool",
+            description: "Properties of the sidebar tab of the ConnectionLayerTool.",
         },
         showBaseTileLayerMap: {
             name: "Base tile layer: enabled",
@@ -71,29 +67,24 @@ export default {
         },
         toolId: {
             name: "Id",
-            description: "Id property of the MarkerLayerTool instance.",
+            description: "Id property of the ConnectionLayerTool instance.",
         },
         toolName: {
             name: "Name",
-            description: "Name property of the MarkerLayerTool instance.",
+            description: "Name property of the ConnectionLayerTool instance.",
         },
         toolLabel: {
             name: "Label",
-            description: "Label property of the MarkerLayerTool instance.",
+            description: "Label property of the ConnectionLayerTool instance.",
         },
         toolEnabled: {
             name: "Enabled",
-            description: "Enabled property of the MarkerLayerTool instance.",
-        },
-        defaultMapPosition: {
-            name: "Default map position (CZ):",
-            description: "Enables/Disables config with the center of the map set on Czech republic.",
+            description: "Enabled property of the ConnectionLayerTool instance.",
         }
     },
-} as ComponentMeta<typeof MarkerLayerToolDemo>;
+} as ComponentMeta<typeof ConnectionLayerToolDemo>;
 
-export type IMarkerLayerToolDemoProps = {
-    defaultMapPosition: boolean,
+export type IConnectionLayerToolDemoProps = {
     toolId: string;
     toolEnabled: boolean;
     toolName: string;
@@ -103,23 +94,22 @@ export type IMarkerLayerToolDemoProps = {
     showBaseTileLayerMap: boolean;
 } 
 
-const Template : ComponentStory<typeof MarkerLayerToolDemo> = args => <MarkerLayerToolDemo {...args} />
+const Template : ComponentStory<typeof ConnectionLayerToolDemo> = args => <ConnectionLayerToolDemo {...args} />
 
-export const GeovistoMarkerLayerToolStory = Template.bind({});
+export const GeovistoConnectionLayerToolStory = Template.bind({});
 
-GeovistoMarkerLayerToolStory.storyName = 'Marker Layer Tool';
-GeovistoMarkerLayerToolStory.args = {
-    defaultMapPosition: true,
+GeovistoConnectionLayerToolStory.storyName = 'Connection Layer Tool';
+GeovistoConnectionLayerToolStory.args = {
     toolEnabled: true,
-    toolId: 'geovisto-marker-layer-tool-map',
-    toolName: 'Marker Layer Tool',
-    toolLabel: 'Marker Layer Tool label',
+    toolId: 'geovisto-connection-layer-tool-map',
+    toolName: 'Connection Layer Tool',
+    toolLabel: 'Connection Layer Tool label',
     sidebarToolEnabled: true,
     sidebarTabTool: {
-        tool: 'geovisto-marker-layer-tool-map',
+        tool: 'geovisto-connection-layer-tool-map',
         enabled: true,
-        name: 'Marker layer settings',
-        icon: '<i class="fa fa-map-marker"></i>',
+        name: 'Connection layer settings',
+        icon: '<i class="fa fa-road"></i>',
         checkButton: true
     },
     showBaseTileLayerMap: true

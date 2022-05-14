@@ -1,10 +1,10 @@
 // Storybook
 
 // React
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useMemo, useRef } from "react";
 
 // Geovisto
-import { Geovisto, IGeoDataManager, IMapDataManager } from 'geovisto';
+import { Geovisto, IGeoDataManager, IMapConfigManager, IMapDataManager } from 'geovisto';
 
 // Internal imports
 import '../react/Constants';
@@ -19,8 +19,6 @@ import polygons from '../../static/geo/country_polygons.json';
 import polygons2 from '../../static/geo/czech_districts_polygons.json';
 import centroids from '../../static/geo/country_centroids.json';
 import centroids2 from '../../static/geo/czech_districts_centroids.json';
-
-
 
 export const ExportMapWrapper = (props: any) : JSX.Element => {
 
@@ -53,7 +51,13 @@ export const ExportMapWrapper = (props: any) : JSX.Element => {
 
     const dataManager = useMemo((): IMapDataManager => {
         return Geovisto.getMapDataManagerFactory().json(props.data ?? demo1);
-     }, [props.data]); 
+    }, [props.data]); 
+
+    
+    
+    const configManager = useMemo((): IMapConfigManager | undefined => {
+        return props.config ? Geovisto.getMapConfigManagerFactory().default(props.config) : undefined;
+    }, [props.config]); 
 
 
     const geoDataManager = useMemo((): IGeoDataManager => {
@@ -63,7 +67,7 @@ export const ExportMapWrapper = (props: any) : JSX.Element => {
             Geovisto.getGeoDataFactory().geojson("czech polygons", polygons2),
             Geovisto.getGeoDataFactory().geojson("czech centroids", centroids2)
         ]);
-     }, []); 
+    }, []); 
 
     return (
         <React.Fragment>
@@ -72,12 +76,13 @@ export const ExportMapWrapper = (props: any) : JSX.Element => {
                 id={props.mapId ?? 'geovisto-map'}
                 className={props.mapClassName ?? 'geovisto-map-styles'}
                 data={dataManager}
+                config={configManager}
                 geoData={geoDataManager}
                 globals={undefined}
                 templates={undefined}
                 >
                 <ToolGroup>
-                    {/*  */}
+                    {/* Base tiles layer - remove if you want to debug the tool only */}
                     <TilesLayerTool id='demo-base-map' enabled={props.showBaseTileLayerMap}/>
 
                     {props.children}

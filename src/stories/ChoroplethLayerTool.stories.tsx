@@ -6,8 +6,6 @@ import React from "react";
 
 // Geovisto
 import { ISidebarTabProps } from 'geovisto-sidebar';
-import { IChoroplethLayerToolDimensions } from 'geovisto-layer-choropleth';
-import { Geovisto, IGeoDataManager } from 'geovisto';
 
 // Internal imports
 import '../react/Constants';
@@ -20,21 +18,20 @@ import '../styles/common.scss';
 // Stories internal helper components
 import { ExportMapWrapper } from '../storiesHelpers/ExportMapWrapper';
 
-// Polygons & Centroids
-import polygons from '../../static/geo/country_polygons.json';
+// Data
+import covidCzechDistricts from '../../static/data/covidCzechDistricts.json';
+
+// Config
+import czDefaultMapPosition from '../../static/config/defaultPosition/config-czDefaultPosition.json';
 
 const ChoroplethLayerToolDemo = (props: IChoroplethLayerToolDemoProps) : JSX.Element => {
 
     const extendedProps = {
         mapId: 'geovisto-map-choropleth-demo',
+        data: covidCzechDistricts,
+        config: props.defaultMapPosition ? czDefaultMapPosition : undefined,
         ...props
-    }
-
-    // const dimensions = useMemo((): IChoroplethLayerToolDimensions => {
-    //     return Geovisto.getMapDomainManagerFactory().array([{
-
-    //     }])
-    //  }, []); 
+    };
 
     return (
         <ExportMapWrapper {...extendedProps}>
@@ -51,7 +48,6 @@ const ChoroplethLayerToolDemo = (props: IChoroplethLayerToolDemoProps) : JSX.Ele
                 enabled={props.toolEnabled}
                 name={props.toolName}
                 label={props.toolLabel}
-                geoData={props.toolGeoData}
             />
         </ExportMapWrapper>
     );
@@ -59,7 +55,7 @@ const ChoroplethLayerToolDemo = (props: IChoroplethLayerToolDemoProps) : JSX.Ele
 
 export default {
     component: ChoroplethLayerToolDemo,
-    title: 'Tools/ChoroplethLayer Tool',
+    title: 'Tools/Choropleth Layer Tool',
     argTypes: {
         sidebarToolEnabled: {
             name: "SidebarTool: enabled",
@@ -89,24 +85,19 @@ export default {
             name: "Enabled",
             description: "Enabled property of the ChoroplethLayerTool instance.",
         },
-        dimensions: {
-            name: "Dimensions",
-            description: "Dimensions property of the ChoroplethLayerTool instance.",
-        },
-        geoData: {
-            name: "GeoData",
-            description: "GeoData property of the ChoroplethLayerTool instance.",
+        defaultMapPosition: {
+            name: "Default map position (CZ):",
+            description: "Enables/Disables config with the center of the map set on Czech republic.",
         }
     },
 } as ComponentMeta<typeof ChoroplethLayerToolDemo>;
 
 export type IChoroplethLayerToolDemoProps = {
+    defaultMapPosition: boolean,
     toolId: string;
     toolEnabled: boolean;
     toolName: string;
     toolLabel: string;
-    toolDimensions: IChoroplethLayerToolDimensions;
-    toolGeoData: IGeoDataManager;
     sidebarToolEnabled: boolean;
     sidebarTabTool: ISidebarTabDataProps<ISidebarTabProps>;
     showBaseTileLayerMap: boolean;
@@ -114,15 +105,15 @@ export type IChoroplethLayerToolDemoProps = {
 
 const Template : ComponentStory<typeof ChoroplethLayerToolDemo> = args => <ChoroplethLayerToolDemo {...args} />
 
-export const GeovistoChoroplethLayerTool = Template.bind({});
+export const GeovistoChoroplethLayerToolStory = Template.bind({});
 
-GeovistoChoroplethLayerTool.storyName = 'Choropleth Layer Tool';
-GeovistoChoroplethLayerTool.args = {
+GeovistoChoroplethLayerToolStory.storyName = 'Choropleth Layer Tool';
+GeovistoChoroplethLayerToolStory.args = {
+    defaultMapPosition: true,
     toolEnabled: true,
     toolId: 'geovisto-choropleth-layer-tool-map',
     toolName: 'Choropleth Layer Tool',
     toolLabel: 'Choropleth Layer Tool label',
-    // toolDimensions: dimensions,
     sidebarToolEnabled: true,
     sidebarTabTool: {
         tool: 'geovisto-choropleth-layer-tool-map',

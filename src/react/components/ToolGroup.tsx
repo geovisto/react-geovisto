@@ -1,4 +1,4 @@
-import React, { forwardRef, ReactElement, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
+import React, { forwardRef, ReactElement, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 
 import { Geovisto, ILayerTool, IMapTool, IMapToolsManager } from 'geovisto';
 import { ISidebarTool, SidebarToolDefaults } from 'geovisto-sidebar';
@@ -374,6 +374,14 @@ export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, r
 
         rerender();
     }, [childrenCount]);
+
+    // Check on start if ToolGrorup has any valid child elements
+    useEffect(() => {
+        // Tool component are not specified -> render map with basic props only 
+        if(!childrenExtended?.some((el : ReactElement) => supportedComponentTypes.includes(el.type))) {
+            rerender();
+        }
+    }, []);
 
     return <>{childrenExtended}</>;
 });

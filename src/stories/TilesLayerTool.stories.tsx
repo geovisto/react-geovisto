@@ -24,9 +24,9 @@ const TilesLayerToolDemo = (props: ITilesLayerToolDemoProps) : JSX.Element => {
     
     const extendedProps = {
         mapId: 'geovisto-map-tiles-demo',
-        showBaseTileLayerMap: true,
+        showBaseTileLayerMap: false,
         ...props
-    } 
+    };
 
     const baseMap = useMemo((): IMapTilesModel => {
         return {
@@ -59,7 +59,7 @@ const TilesLayerToolDemo = (props: ITilesLayerToolDemoProps) : JSX.Element => {
 
 export default {
     component: TilesLayerToolDemo,
-    title: 'Tools/TilesLayer Tool',
+    title: 'Tools/Tiles Layer Tool',
     argTypes: {
         sidebarToolEnabled: {
             name: "SidebarTool: enabled",
@@ -83,7 +83,7 @@ export default {
             name: "TilesLayerTool: label",
             description: "Label property of the TilesLayerTool instance.",
         },
-        toolEnable: {
+        toolEnabled: {
             name: "TilesLayerTool: enabled",
             description: "Enabled property of the TilesLayerTool instance.",
             defaultValue: false
@@ -120,10 +120,10 @@ export type ITilesLayerToolDemoProps = {
 
 const Template : ComponentStory<typeof TilesLayerToolDemo> = args => <TilesLayerToolDemo {...args} />
 
-export const GeovistoTilesLayerTool = Template.bind({});
+export const GeovistoTilesLayerToolStory = Template.bind({});
 
-GeovistoTilesLayerTool.storyName = 'Tiles Layer Tool';
-GeovistoTilesLayerTool.args = {
+GeovistoTilesLayerToolStory.storyName = 'Tiles Layer Tool';
+GeovistoTilesLayerToolStory.args = {
     toolEnabled: true,
     toolBaseMap: 'mapycz',
     toolId: 'geovisto-tool-layer-map',

@@ -4,25 +4,29 @@
   
   .geovisto-map-styles {
     height: 85vh;
-    width: 90vw;
+    width: 95vw;
     font-family: var(--default-font);
   }
   
   .demo-footer {
     height: 10vh;
-    width: 90vw;
+    width: 95vw;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
     gap: 10px;
     padding-top: 10px;
     
+    $btn-color: #777;
+
     .export-btn {
-      color:gray;
-      border-radius: 12px;
+      color: $btn-color;
+      border-radius: 20px;
+      font-weight: bolder;
       display: inline-block;
       background: none;
-      border: 2px solid gray;
+      transition: all 0.5s ease;
+      border: 2px solid $btn-color;
       padding: 10px 100px;
       text-align: center;
       text-decoration: none;
@@ -30,7 +34,8 @@
       font-size: 14px;
       
       &:hover {
-          background-color: gray;
+          transition: all 0.5s ease;
+          background-color: $btn-color;
           color: whitesmoke;
           cursor: pointer;
       }

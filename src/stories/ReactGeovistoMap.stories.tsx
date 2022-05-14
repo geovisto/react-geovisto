@@ -191,11 +191,18 @@ const ReactGeovistoMapDemo = (props: IMapDemoProps) : JSX.Element => {
                             icon='<i class="fa fa-filter"></i>'
                             checkButton={true}
                         />
+                        <SidebarTab
+                            tool='custom-tool-layer-image'
+                            enabled={true}
+                            name='Custom tool settings'
+                            icon='<i class="fa fa-image"></i>'
+                            checkButton={true}
+                        />
                     </SidebarTool>
 
                     <CustomTool 
-                            id='custom-tool-images'
-                            enabled={true}
+                            id='custom-tool-layer-image'
+                            enabled={false}
                             url='https://i.pinimg.com/564x/e1/12/d8/e112d8ba7689be718fcef0985fea296c.jpg'
                             bounds={[[73.37895759245632, -54.7147379072844], [82.16679982188535, -19.997940517446235]]}
                             createTool={(props: IImageLayerToolProps) => new ImageLayerTool(props)}

@@ -52,21 +52,16 @@ export const GeovistoMap = forwardRef<IGeovistoMapHandle, IGeovistoMapProps>((pr
         const mapProps = toolsManager ? {...props, tools: toolsManager} : {...props};
             
         if(map === undefined)
-        {
-            console.warn("--------------MAP DRAW--------------");
-            
+        {   
             const mapObject = Geovisto.createMap(mapProps);
             setMap(mapObject);
             
             // Draw map with the current config
             mapObject.draw(props.config ?? Geovisto.getMapConfigManagerFactory().default({}));                
-            console.warn(mapObject);
             return mapObject as IMap;
         }
         else
-        {
-            console.warn("--------------MAP RE-DRAW--------------");
-        
+        {        
             // Redraw map with the updated properties
             map.redraw(props.config ?? Geovisto.getMapConfigManagerFactory().default({}), mapProps);
 
@@ -119,9 +114,8 @@ export const GeovistoMap = forwardRef<IGeovistoMapHandle, IGeovistoMapProps>((pr
 
 
     return (
-        <div className={props.className}>
-
-        <div id={props.id}  style={{height: '100%'}}>{childrenWithRenderCallback}</div>
-        </div>
+    <div className={props.className}>
+        <div id={props.id} style={{height: '100%'}}>{childrenWithRenderCallback}</div>
+    </div>
     );
 });

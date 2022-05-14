@@ -1,6 +1,6 @@
 {
     "zoom": 2,
-    "center": {
+    "mapCenter": {
       "lat": 50.064191736659104,
       "lng": 0
     },

@@ -5,7 +5,6 @@ import { ISelectionToolProps } from 'geovisto-selection';
 import { useDidToolEnabledUpdate, useDidToolIdUpdate, useToolEffect } from '../Hooks';
 import { IToolDataProps } from '../types';
 
-
 export const SelectionTool = (props: IToolDataProps<ISelectionToolProps>) : JSX.Element => {
 
     // Run on component mount or any dependency update
