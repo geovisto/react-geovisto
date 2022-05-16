@@ -54,7 +54,7 @@ export default {
     title: 'Tools/Sidebar Tool',
     argTypes: {
         showBaseTileLayerMap: {
-            name: "Base tile layer: enabled",
+            name: "Base tile layer: Enabled",
             description: "Toggles the base tiles layer.",
         },
         toolId: {

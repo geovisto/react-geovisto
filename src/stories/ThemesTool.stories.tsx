@@ -79,7 +79,7 @@ export default {
     title: 'Tools/Themes Tool',
     argTypes: {
         sidebarToolEnabled: {
-            name: "SidebarTool: enabled",
+            name: "SidebarTool: Enabled",
             description: "Enabled property of the SidebarTool instance.",
         },
         sidebarTabTool: {

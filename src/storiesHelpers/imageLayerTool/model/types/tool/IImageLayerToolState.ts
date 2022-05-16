@@ -8,7 +8,6 @@ import IImageLayerToolConfig from "./IImageLayerToolConfig";
 import IImageLayerToolDefaults from "./IImageLayerToolDefaults";
 import IImageLayerToolProps from "./IImageLayerToolProps";
 
-
 /**
  * This interface declares functions for using the state of the layer tool.
  */

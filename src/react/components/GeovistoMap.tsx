@@ -75,7 +75,6 @@ export const GeovistoMap = forwardRef<IGeovistoMapHandle, IGeovistoMapProps>((pr
         }
     };
 
-
     /**
      * Detach the map container on component unmount
      */
@@ -91,7 +90,6 @@ export const GeovistoMap = forwardRef<IGeovistoMapHandle, IGeovistoMapProps>((pr
     }
 
     detachMapContainerOnUnmount(props.id);
-
 
     /**
      * Returns children elements with additional callback
@@ -117,7 +115,6 @@ export const GeovistoMap = forwardRef<IGeovistoMapHandle, IGeovistoMapProps>((pr
         
         return React.cloneElement(child, newProps, child.props.children);
     });
-
 
     return (
     <div className={props.className}>

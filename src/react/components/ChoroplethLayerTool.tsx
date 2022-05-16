@@ -2,7 +2,7 @@
 import React from 'react';
 
 // Geovisto
-import {IChoroplethLayerToolProps } from 'geovisto-layer-choropleth';
+import { IChoroplethLayerToolProps } from 'geovisto-layer-choropleth';
 
 // Internal imports
 import { useDidToolEnabledUpdate, useDidToolIdUpdate, useToolEffect } from '../Hooks';

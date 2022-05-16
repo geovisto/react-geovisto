@@ -28,7 +28,6 @@ import ImageLayerToolDefaults from './ImageLayerToolDefaults';
 import ImageLayerToolMapForm from '../form/ImageLayerToolMapForm';
 import ImageLayerToolState from './ImageLayerToolState';
 
-
 /**
  * This class represents Image layer tool.
  */
@@ -102,7 +101,6 @@ class ImageLayerTool extends AbstractLayerTool implements IImageLayerTool, IMapF
      * It creates new tab control.
      */
     protected createMapForm(): IMapForm {
-        // override if needed
         return new ImageLayerToolMapForm(this);
     }
 
@@ -132,10 +130,8 @@ class ImageLayerTool extends AbstractLayerTool implements IImageLayerTool, IMapF
      * It creates layer items.
      */
     protected createLayerItems(): L.Layer[] {
-        // create aa image layer
         const layer: L.ImageOverlay = this.createImageLayer(this.getState().getUrl(), this.getState().getBounds());
 
-        // update state
         this.getState().setImageLayer(layer);
 
         return [ layer ];

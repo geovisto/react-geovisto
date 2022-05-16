@@ -236,7 +236,7 @@ export default {
             defaultValue: 'geovisto-map-styles'
         },
         sidebarToolEnable: {
-            name: "SidebarTool: enabled",
+            name: "SidebarTool: Enabled",
             description: "Enabled property of the SidebarTool instance.",
             defaultValue: false
         },

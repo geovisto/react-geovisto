@@ -70,7 +70,7 @@ export default {
     title: 'Tools/Filters Tool',
     argTypes: {
         sidebarToolEnabled: {
-            name: "SidebarTool: enabled",
+            name: "SidebarTool: Enabled",
             description: "Enabled property of the SidebarTool instance.",
         },
         sidebarTabTool: {
@@ -78,7 +78,7 @@ export default {
             description: "Properties of the sidebar tab of the FiltersTool.",
         },
         showBaseTileLayerMap: {
-            name: "Base tile layer: enabled",
+            name: "Base tile layer: Enabled",
             description: "Toggles the base tiles layer.",
         },
         toolId: {

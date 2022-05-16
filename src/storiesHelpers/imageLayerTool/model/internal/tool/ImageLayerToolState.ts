@@ -10,7 +10,6 @@ import IImageLayerToolProps from "../../types/tool/IImageLayerToolProps";
 import IImageLayerToolDefaults from "../../types/tool/IImageLayerToolDefaults";
 import IImageLayerToolConfig from "../../types/tool/IImageLayerToolConfig";
 
-
 /**
  * This class provide functions for using the state of the image layer tool.
  */

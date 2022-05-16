@@ -62,7 +62,7 @@ export default {
     title: 'Tools/Tiles Layer Tool',
     argTypes: {
         sidebarToolEnabled: {
-            name: "SidebarTool: enabled",
+            name: "SidebarTool: Enabled",
             description: "Enabled property of the SidebarTool instance.",
             defaultValue: false
         },

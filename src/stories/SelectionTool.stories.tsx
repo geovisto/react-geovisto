@@ -98,7 +98,7 @@ export default {
     title: 'Tools/Selection Tool',
     argTypes: {
         sidebarToolEnabled: {
-            name: "SidebarTool: enabled",
+            name: "SidebarTool: Enabled",
             description: "Enabled property of the SidebarTool instance.",
         },
         sidebarTabTool: {
