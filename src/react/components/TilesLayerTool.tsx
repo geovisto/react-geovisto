@@ -8,7 +8,9 @@ import { ITilesLayerToolProps } from 'geovisto-layer-tiles';
 import { useDidToolEnabledUpdate, useDidToolIdUpdate, useToolEffect } from '../Hooks';
 import { IToolDataProps } from '../types/IComponentTool';
 
-
+/**
+ * Component wrapping the Geovisto TilesLayerTool module
+ */
 export const TilesLayerTool = (props: IToolDataProps<ITilesLayerToolProps>) : JSX.Element => {
 
     // Run on component mount or any dependency update

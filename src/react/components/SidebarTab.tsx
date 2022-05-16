@@ -8,7 +8,9 @@ import { ISidebarTabProps } from 'geovisto-sidebar';
 import { useDidUpdateEffect } from '../Hooks';
 import { ISidebarTabDataProps } from '../types';
 
-
+/**
+ * Component wrapping the SidebarTab class as part of the SidebarTool module
+ */
 export const SidebarTab = (props: ISidebarTabDataProps<ISidebarTabProps>) : JSX.Element => {
 
     // Run on any dependency update

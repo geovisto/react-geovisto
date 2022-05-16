@@ -1,16 +1,22 @@
 // Geovisto
-import { ILayerToolDefaults, IMapTilesModel } from "geovisto";
+import { ILayerToolDefaults } from "geovisto";
+
+// Leaflet
+import { LatLngBoundsLiteral } from "leaflet";
 
 /**
  * This interface declares functions which return the default state values.
- * 
- * @author Jiri Hynek
  */
 interface IImageLayerToolDefaults extends ILayerToolDefaults {
 
     /**
-     * It returns the preferred base map.
+     * It returns the default image url.
      */
-    getBaseMap(): IMapTilesModel;
+    getUrl(): string;
+
+     /**
+     * It returns the default boundaries.
+     */
+    getBounds(): LatLngBoundsLiteral;
 }
 export default IImageLayerToolDefaults;

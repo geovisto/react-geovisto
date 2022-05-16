@@ -10,6 +10,9 @@ import { useDidUpdateEffect } from '../Hooks';
 import { IGeovistoMapHandle, IGeovistoMapProps, IToolGroupHandle } from '../types';
 import { ToolGroup } from './ToolGroup';
 
+/**
+ * Component which wraps Geovisto map.
+ */
 export const GeovistoMap = forwardRef<IGeovistoMapHandle, IGeovistoMapProps>((props, ref) : JSX.Element => {
 
     const [map, setMap] = useState<IMap>();

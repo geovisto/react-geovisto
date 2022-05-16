@@ -1,5 +1,7 @@
+// Geovisto core
 import { ILayerTool, IMapTool } from 'geovisto';
 
+// Geovisto modules
 import { GeovistoFiltersTool, IFiltersToolProps } from 'geovisto-filters';
 import { GeovistoChoroplethLayerTool, IChoroplethLayerToolProps } from 'geovisto-layer-choropleth';
 import { GeovistoConnectionLayerTool, IConnectionLayerToolProps } from 'geovisto-layer-connection';
@@ -9,9 +11,9 @@ import { GeovistoSelectionTool, ISelectionToolProps } from 'geovisto-selection';
 import { GeovistoSidebarTool, ISidebarToolProps } from 'geovisto-sidebar';
 import { GeovistoThemesTool, IThemesToolProps } from 'geovisto-themes';
 
+// Internal imports
 import { ChoroplethLayerTool, ConnectionLayerTool, CustomTool, FiltersTool, MarkerLayerTool, 
-         SelectionTool, 
-         SidebarTool, ThemesTool, TilesLayerTool } from './components';
+         SelectionTool, SidebarTool, ThemesTool, TilesLayerTool } from './components';
 import { IReactElement, IToolData } from './types';
 
 

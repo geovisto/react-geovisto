@@ -8,7 +8,9 @@ import { IThemesToolProps } from 'geovisto-themes';
 import { useDidToolEnabledUpdate, useDidToolIdUpdate, useToolEffect } from '../Hooks';
 import { IToolDataProps } from '../types/IComponentTool';
 
-
+/**
+ * Component wrapping the Geovisto ThemesTool module
+ */
 export const ThemesTool = (props: IToolDataProps<IThemesToolProps>) : JSX.Element => {
 
     // Run on component mount or any dependency update

@@ -7,9 +7,7 @@ import IImageLayerToolState from "./IImageLayerToolState";
 import IImageLayerToolProps from "./IImageLayerToolProps";
 
 /**
- * This interface declares Tiles layer tool.
- * 
- * @author Jiri Hynek
+ * This interface declares Image layer tool.
  */
 interface IImageLayerTool<
     TProps extends IImageLayerToolProps = IImageLayerToolProps,

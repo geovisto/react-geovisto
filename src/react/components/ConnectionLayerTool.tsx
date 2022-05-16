@@ -8,7 +8,9 @@ import { IConnectionLayerToolProps } from 'geovisto-layer-connection';
 import { useDidToolEnabledUpdate, useDidToolIdUpdate, useToolEffect } from '../Hooks';
 import { IToolDataProps } from '../types';
 
-
+/**
+ * Component wrapping the Geovisto ConnectionLayerTool module
+ */
 export const ConnectionLayerTool = (props: IToolDataProps<IConnectionLayerToolProps>) : JSX.Element => {
 
     // Run on component mount or any dependency update

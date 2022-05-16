@@ -9,6 +9,9 @@ import { SidebarTab as SidebarTabType }  from '.';
 import { useDidToolEnabledUpdate, useDidToolIdUpdate, useToolEffect } from '../Hooks';
 import { ISidebarTabs, ISidebarToolDataProps, ISidebarToolHandle, IToolDataProps } from '../types';
 
+/**
+ * Component wrapping the Geovisto SidebarTool module
+ */
 export const SidebarTool = forwardRef<ISidebarToolHandle, ISidebarToolDataProps<ISidebarToolProps>>((props, ref) : JSX.Element => {
     
     /**

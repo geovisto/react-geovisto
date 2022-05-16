@@ -30,9 +30,7 @@ import ImageLayerToolState from './ImageLayerToolState';
 
 
 /**
- * This class represents Map layer tool. It use tile layer and OSM maps.
- * 
- * @author Jiri Hynek
+ * This class represents Image layer tool.
  */
 class ImageLayerTool extends AbstractLayerTool implements IImageLayerTool, IMapFormControl {
     
@@ -134,7 +132,7 @@ class ImageLayerTool extends AbstractLayerTool implements IImageLayerTool, IMapF
      * It creates layer items.
      */
     protected createLayerItems(): L.Layer[] {
-        // create aa imagetile layer
+        // create aa image layer
         const layer: L.ImageOverlay = this.createImageLayer(this.getState().getUrl(), this.getState().getBounds());
 
         // update state
@@ -179,7 +177,7 @@ class ImageLayerTool extends AbstractLayerTool implements IImageLayerTool, IMapF
             if(leafltMap) {
                 leafltMap.removeLayer(layer);
 
-                // create a new tile layer
+                // create a new image layer
                 layer = this.createImageLayer(this.getState().getUrl(), this.getState().getBounds());
 
                 // update state

@@ -34,13 +34,6 @@ const SelectionToolDemo = (props: ISelectionToolDemoProps) : JSX.Element => {
         ...props
     };
     
-    // const tool = map.current!.getMap()!.getState().getTools().getById('tool-id');
-    // GeovistoSelectionTool.createSelection(tool!, ["CZE", "BEL"]);
-
-    // const selection = useMemo((): IMapSelectionManager => {
-    //     return GeovistoSelectionTool.createSelection();
-    // }, []); 
-
     const selectionFragment = useMemo((): [string, ISidebarFragment][] => 
         [['geovisto-tool-selection', new SidebarFragment({ enabled:true })]]
     , []);

@@ -8,7 +8,9 @@ import {IChoroplethLayerToolProps } from 'geovisto-layer-choropleth';
 import { useDidToolEnabledUpdate, useDidToolIdUpdate, useToolEffect } from '../Hooks';
 import { IToolDataProps } from '../types';
 
-
+/**
+ * Component wrapping the Geovisto ChoroplethLayerTool module
+ */
 export const ChoroplethLayerTool = (props: IToolDataProps<IChoroplethLayerToolProps>) : JSX.Element => {
 
     // Run on component mount or any dependency update

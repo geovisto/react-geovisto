@@ -11,7 +11,6 @@ import IImageLayerToolProps from "./IImageLayerToolProps";
 
 /**
  * This interface declares functions for using the state of the layer tool.
- * 
  */
 interface IImageLayerToolState<
     TProps extends IImageLayerToolProps = IImageLayerToolProps,
@@ -46,7 +45,7 @@ interface IImageLayerToolState<
      */
     setBounds(bounds: LatLngBoundsLiteral): void;
 
-        
+
     /**
      * It returns a Leaflet image layer.
      */

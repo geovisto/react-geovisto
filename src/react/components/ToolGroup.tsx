@@ -12,7 +12,9 @@ import { isLayerTool, getToolInstance } from '../Helpers';
 import { IReactElement, ISidebarToolHandle, IToolData, IToolGroupHandle, IToolGroupProps, IToolInfo } from '../types';
 import { useDidUpdateEffect } from '../Hooks';
 
-
+/**
+ * Component which processes all supported modules
+ */
 export const ToolGroup = forwardRef<IToolGroupHandle, IToolGroupProps>((props, ref) : JSX.Element => {
 
     const [manager, setManager] = useState<IMapToolsManager>(Geovisto.createMapToolsManager([]));

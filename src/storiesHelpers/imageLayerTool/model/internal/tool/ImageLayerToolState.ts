@@ -2,10 +2,7 @@
 import { LatLngBoundsLiteral } from "leaflet";
 
 // Geovisto
-import {
-    LayerToolState,
-    IMapToolInitProps,
-} from "geovisto";
+import { LayerToolState, IMapToolInitProps } from "geovisto";
 
 import IImageLayerToolState from "../../types/tool/IImageLayerToolState";
 import IImageLayerTool from "../../types/tool/IImageLayerTool";
@@ -15,9 +12,7 @@ import IImageLayerToolConfig from "../../types/tool/IImageLayerToolConfig";
 
 
 /**
- * This class provide functions for using the state of the tiles layer tool.
- * 
- * @author Jiri Hynek
+ * This class provide functions for using the state of the image layer tool.
  */
 class ImageLayerToolState extends LayerToolState implements IImageLayerToolState {
     
@@ -36,11 +31,11 @@ class ImageLayerToolState extends LayerToolState implements IImageLayerToolState
      * It resets state with respect to initial props.
      */
     public initialize(defaults: IImageLayerToolDefaults, props: IImageLayerToolProps, initProps: IMapToolInitProps<IImageLayerToolConfig>): void {
-        // the map layer tool properties
-        // this.setBaseMap(props.baseMap == undefined ? defaults.getBaseMap() : props.baseMap);
 
-        this.setUrl(props.url == undefined ? 'https://cdn.mos.cms.futurecdn.net/mZb3Q79jgPAXAcag7CutLW-970-80.jpg.webp' : props.url);
-        this.setBounds(props.bounds == undefined ? [[-81.00145417371247, -66.30666147868511], [-36.863192079346526, 50.1016129498304]] : props.bounds);
+        this.setUrl(props.url == undefined ? defaults.getUrl() : props.url);
+        this.setBounds(props.bounds == undefined ? defaults.getBounds() : props.bounds);
+
+        console.log(this.getUrl());
 
         // set super props
         super.initialize(defaults, props, initProps);
@@ -53,9 +48,6 @@ class ImageLayerToolState extends LayerToolState implements IImageLayerToolState
      */
     public deserialize(config: IImageLayerToolConfig): void {
         super.deserialize(config);
-
-        // the map layer tool config
-        // TODO
     }
 
     /**
@@ -65,9 +57,6 @@ class ImageLayerToolState extends LayerToolState implements IImageLayerToolState
      */
     public serialize(defaults: IImageLayerToolDefaults | undefined): IImageLayerToolConfig {
         const config: IImageLayerToolConfig = <IImageLayerToolConfig> super.serialize(defaults);
-
-        // serialize the map layer tool properties
-        // TODO
 
         return config;
     }
@@ -105,14 +94,14 @@ class ImageLayerToolState extends LayerToolState implements IImageLayerToolState
     }
 
     /**
-     * It returns a Leaflet tile layer.
+     * It returns a Leaflet image layer.
      */
     public getImageLayer(): L.ImageOverlay | undefined {
         return this.layer;
     }
 
     /**
-     * It sets a Leaflet tile layer.
+     * It sets a Leaflet image layer.
      * 
      * @param layer 
      */

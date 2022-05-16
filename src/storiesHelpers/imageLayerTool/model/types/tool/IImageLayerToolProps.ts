@@ -5,9 +5,7 @@ import { ILayerToolProps } from "geovisto";
 import { LatLngBoundsLiteral } from "leaflet";
 
 /**
- * This type provides the specification of the tiles layer tool props model.
- * 
- * @author Jiri Hynek
+ * This type provides the specification of the image layer tool props model.
  */
 type IImageLayerToolProps = ILayerToolProps & {
     url: string;

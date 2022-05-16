@@ -1,15 +1,13 @@
 // Geovisto
-import {
-    IMapTilesModel,
-    LayerToolDefaults
-} from "geovisto";
+import { LayerToolDefaults } from "geovisto";
+
+// Leaflet
+import { LatLngBoundsLiteral } from "leaflet";
 
 import IImageLayerToolDefaults from "../../types/tool/IImageLayerToolDefaults";
 
 /**
  * This class provide functions which return the default state values.
- * 
- * @author Jiri Hynek
  */
 class ImageLayerToolDefaults extends LayerToolDefaults implements IImageLayerToolDefaults {
 
@@ -29,7 +27,7 @@ class ImageLayerToolDefaults extends LayerToolDefaults implements IImageLayerToo
      * It returns the layer name.
      */
     public getLayerName(): string {
-        return "Map layer";
+        return "Image layer";
     }
 
     /**
@@ -43,23 +41,21 @@ class ImageLayerToolDefaults extends LayerToolDefaults implements IImageLayerToo
      * It returns the icon of the tool.
      */
     public getIcon(): string {
-        return '<i class="fa fa-globe"></i>';
+        return '<i class="fa fa-image"></i>';
     }
 
     /**
-     * It returns the preferred base map.
+     * It returns the default image url.
      */
-    public getBaseMap(): IMapTilesModel {
-        return {
-            url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            //url: 'http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}';
-            //url: 'https://mapserver.mapy.cz/turist-m/{z}-{x}-{y}';
-            //url: 'http://mapserver.mapy.cz/base-m/{z}-{x}-{y}';
-            maxZoom: 20,
-            maxNativeZoom: 19
-            //subdomains:['mt0','mt1','mt2','mt3']
-        };
-        
+    public getUrl(): string {
+        return 'https://cdn.mos.cms.futurecdn.net/mZb3Q79jgPAXAcag7CutLW-970-80.jpg.webp';
+    }
+
+    /**
+     * It returns the default boundaries.
+     */
+    public getBounds(): LatLngBoundsLiteral {
+        return [[50.61234612962773, 36.80436286581505], [75.9832318764685, 139.0663053092597]];   
     }
 }
 export default ImageLayerToolDefaults;

@@ -8,7 +8,10 @@ module.exports = {
     "builder": "@storybook/builder-webpack5"
   },
 
-  stories: ["../src/stories/*.stories.@(ts|tsx)"],
+  // The first story is specified as the "default story" shown when storybook starts
+  stories: [
+    "../src/stories/ReactGeovistoMap.stories.tsx",
+    "../src/stories/*.stories.@(ts|tsx)"],
 
   addons: [
     'storybook-dark-mode',

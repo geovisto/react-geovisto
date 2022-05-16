@@ -1,3 +1,4 @@
+// Internal imports
 import { ChoroplethLayerTool, ConnectionLayerTool, CustomTool, FiltersTool, SelectionTool,
          MarkerLayerTool, SidebarTool, ThemesTool, TilesLayerTool, ToolGroup } from "./components/index";
 import { ISupportedToolComponent, ISupportedTopLevelComponent } from "./types";

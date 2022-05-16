@@ -230,7 +230,7 @@ export default {
                 },
             },
         },
-        className: {
+        mapClassName: {
             name: "Class name",
             description: "Class name to style the map container element.",
             defaultValue: 'geovisto-map-styles'
@@ -277,7 +277,7 @@ export default {
 export type IMapDemoProps = {
     data: unknown;
     config: Record<string, unknown>;
-    className: string;
+    mapClassName: string;
     sidebarToolEnable: boolean;
     tilesLayerToolEnable: boolean;
     tilesLayerToolBaseMapUrl: string;
@@ -290,7 +290,7 @@ const Template: ComponentStory<typeof ReactGeovistoMapDemo> = (args: IMapDemoPro
 export const ReactGeovistoMap = Template.bind({});
 
 ReactGeovistoMap.args = {
-    className: 'geovisto-map-styles',
+    mapClassName: 'geovisto-map-styles',
     data: demo1,
     sidebarToolEnable: true,
     tilesLayerToolEnable: true,

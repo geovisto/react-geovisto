@@ -4,7 +4,6 @@ import { JSXElementConstructor } from "react";
 // Geovisto
 import { IMapToolProps } from "geovisto";
 
-
 export type IToolDataProps<T> = T & {
     children?: React.ReactNode;
     onToolChange?: (data: IToolData, property?: string) => void;

@@ -11,7 +11,9 @@ import { IMapToolProps } from 'geovisto';
 import { useDidToolEnabledUpdate, useDidToolIdUpdate } from '../Hooks';
 import { ICustomToolProps, ICustomToolPropsValues } from '../types';
 
-
+/**
+ * Component wrapping users custom modules
+ */
 export const CustomTool = (props: ICustomToolProps<IMapToolProps>) : JSX.Element => {
     
     const [toolPropsValues, setToolPropsValues] = useState<ICustomToolPropsValues>();

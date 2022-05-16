@@ -74,13 +74,10 @@ export const ExportMapWrapper = (props: any) : JSX.Element => {
     const dataManager = useMemo((): IMapDataManager => {
         return Geovisto.getMapDataManagerFactory().json(props.data ?? demo1);
     }, [props.data]); 
-
-    
     
     const configManager = useMemo((): IMapConfigManager | undefined => {
         return props.config ? Geovisto.getMapConfigManagerFactory().default(props.config) : undefined;
     }, [props.config]); 
-
 
     const geoDataManager = useMemo((): IGeoDataManager => {
         return Geovisto.getGeoDataManager([
