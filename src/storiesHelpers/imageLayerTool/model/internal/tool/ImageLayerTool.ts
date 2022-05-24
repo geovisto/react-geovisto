@@ -3,21 +3,11 @@ import * as L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 // Geovisto
-import {
-    AbstractLayerTool,
-    IMapChangeEvent,
-    IMapEvent,
-    IMapForm,
-    IMapFormControl,
-    IMapToolInitProps
-} from 'geovisto';
+import { AbstractLayerTool, IMapChangeEvent, IMapEvent, IMapForm, IMapFormControl,
+    IMapToolInitProps } from 'geovisto';
 
 // Geovisto Themes Tool API
-import {
-    IMapTheme,
-    IThemesToolAPI,
-    IThemesToolAPIGetter
-} from 'geovisto-themes';
+import { IMapTheme, IThemesToolAPI, IThemesToolAPIGetter } from 'geovisto-themes';
 
 import IImageLayerTool from '../../types/tool/IImageLayerTool';
 import IImageLayerToolConfig from '../../types/tool/IImageLayerToolConfig';

@@ -36,7 +36,6 @@ class ImageLayerToolState extends LayerToolState implements IImageLayerToolState
 
         console.log(this.getUrl());
 
-        // set super props
         super.initialize(defaults, props, initProps);
     }
 
@@ -61,32 +60,32 @@ class ImageLayerToolState extends LayerToolState implements IImageLayerToolState
     }
 
      /**
-     * It returns a base map ID.
+     * It returns an image source url.
      */
       public getUrl(): string {
         return this.url;
     }
 
     /**
-     * It sets a base map ID.
+     * It sets an image source url.
      * 
-     * @param baseMap
+     * @param url
      */
     public setUrl(url: string): void {
         this.url = url;
     }
 
     /**
-     * It returns a base map ID.
+     * It returns an image boundaries.
      */
     public getBounds(): LatLngBoundsLiteral {
         return this.bounds;
     }
     
     /**
-     * It sets a base map ID.
+     * It sets an image boundaries.
      * 
-     * @param baseMap
+     * @param bounds
      */
     public setBounds(bounds: LatLngBoundsLiteral): void {
         this.bounds = bounds;
