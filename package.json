@@ -4,15 +4,15 @@
   "main": "index.js",
   "dependencies": {
     "deep-equal": "^2.0.5",
-    "geovisto": "^1.0.0",
-    "geovisto-filters": "^1.0.2",
-    "geovisto-layer-choropleth": "^1.0.1",
-    "geovisto-layer-connection": "^1.0.0",
-    "geovisto-layer-marker": "^1.0.1",
-    "geovisto-layer-tiles": "^1.0.1",
-    "geovisto-selection": "^1.0.2",
-    "geovisto-sidebar": "^1.0.0",
-    "geovisto-themes": "^1.0.1",
+    "geovisto": "^2.0.0",
+    "geovisto-filters": "^2.0.0",
+    "geovisto-layer-choropleth": "^2.0.0",
+    "geovisto-layer-connection": "^2.0.0",
+    "geovisto-layer-marker": "^2.0.0",
+    "geovisto-layer-tiles": "^2.0.0",
+    "geovisto-selection": "^2.0.0",
+    "geovisto-sidebar": "^2.0.0",
+    "geovisto-themes": "^2.0.1",
     "leaflet": "^1.7.1",
     "leaflet-sidebar-v2": "^3.2.3",
     "react-refresh": "^0.12.0",
@@ -66,7 +66,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chladekm/react-geovisto.git"
+    "url": "git+https://github.com/geovisto/react-geovisto.git"
   },
   "keywords": [
     "react",
@@ -74,5 +74,5 @@
   ],
   "author": "Martin Chládek",
   "license": "MIT",
-  "homepage": "https://github.com/chladekm/react-geovisto#readme"
+  "homepage": "https://github.com/geovisto/react-geovisto#readme"
 }
