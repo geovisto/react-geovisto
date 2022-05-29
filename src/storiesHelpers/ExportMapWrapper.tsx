@@ -99,7 +99,7 @@ export const ExportMapWrapper = (props: any) : JSX.Element => {
                 geoData={geoDataManager}
                 globals={undefined}
                 templates={undefined}
-                >
+            >
                 <ToolGroup>
                     {/* Base tiles layer - remove if you want to debug the tool only */}
                     <TilesLayerTool id='demo-base-map' enabled={props.showBaseTileLayerMap}/>

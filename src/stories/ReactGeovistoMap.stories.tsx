@@ -75,7 +75,7 @@ const ReactGeovistoMapDemo = (props: IMapDemoProps) : JSX.Element => {
     }, []);
 
     const theme = useMemo(() : IMapTheme => {
-        return GeovistoThemesTool.createThemeDark3();
+        return GeovistoThemesTool.createThemeBasic();
      }, []);  
 
     return (
@@ -132,16 +132,16 @@ const ReactGeovistoMapDemo = (props: IMapDemoProps) : JSX.Element => {
             </SidebarTool>
 
             <CustomTool 
-                    id='custom-tool-layer-image'
-                    enabled={false}
-                    url='https://i.pinimg.com/564x/e1/12/d8/e112d8ba7689be718fcef0985fea296c.jpg'
-                    bounds={[[73.37895759245632, -54.7147379072844], [82.16679982188535, -19.997940517446235]]}
-                    createTool={(props: IImageLayerToolProps) => new ImageLayerTool(props)}
+                id='custom-tool-layer-image'
+                enabled={false}
+                url='https://i.pinimg.com/564x/e1/12/d8/e112d8ba7689be718fcef0985fea296c.jpg'
+                bounds={[[73.37895759245632, -54.7147379072844], [82.16679982188535, -19.997940517446235]]}
+                createTool={(props: IImageLayerToolProps) => new ImageLayerTool(props)}
             />
             <TilesLayerTool 
                 id={props.tilesLayerToolId}
                 enabled={props.tilesLayerToolEnable}
-                label="Awesome tiles layer label"
+                label="Tiles layer tool label"
                 baseMap={baseMap}
             />
             <ChoroplethLayerTool 
@@ -168,7 +168,7 @@ const ReactGeovistoMapDemo = (props: IMapDemoProps) : JSX.Element => {
             <ThemesTool
                 id='geovisto-tool-themes'
                 manager={themesManager}
-                enabled={false}
+                enabled={props.themesToolEnable}
                 theme={theme}
             />
     </ExportMapWrapper>
@@ -250,6 +250,11 @@ export default {
             description: "Enabled property of the TilesLayerTool instance.",
             defaultValue: false
         },
+        themesToolEnable: {
+            name: "ThemesTool: enabled",
+            description: "Enabled property of the ThemesTool instance.",
+            defaultValue: false
+        },
         tilesLayerToolBaseMapUrl: {
             name: "TilesLayerTool: BaseMap Url",
             description: "Url source for the base map tiles.",
@@ -282,6 +287,7 @@ export type IMapDemoProps = {
     tilesLayerToolEnable: boolean;
     tilesLayerToolBaseMapUrl: string;
     tilesLayerToolId: string;
+    themesToolEnable: boolean;
     sidebarTabTilesLayerTool: ISidebarTabDataProps<ISidebarTabProps>;
 } 
 
@@ -296,6 +302,7 @@ ReactGeovistoMap.args = {
     tilesLayerToolEnable: true,
     tilesLayerToolBaseMapUrl: 'mapycz',
     tilesLayerToolId: 'geovisto-tool-layer-map',
+    themesToolEnable: false,
     sidebarTabTilesLayerTool: {
         tool: 'geovisto-tool-layer-map',
         enabled: true,
