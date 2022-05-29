@@ -5,95 +5,95 @@ A library providing set of React components to easily configure Geospatial Data 
 ## Usage 
 
 ```jsx
-    const map = useRef(null);
+const map = useRef(null);
 
-    const dataManager = useMemo(() => {
-        return Geovisto.getMapDataManagerFactory().json([
-            // list of data records (JSON structures)
+const dataManager = useMemo(() => {
+    return Geovisto.getMapDataManagerFactory().json([
+        // list of data records (JSON structures)
+        // ...
+    ]);
+}, []); 
+
+const configManager = useMemo(() => {
+    return Geovisto.getMapConfigManagerFactory().default({
+        // initial configuration
+    });
+}, []); 
+
+const geoDataManager = useMemo(() => {
+    return Geovisto.getGeoDataManager([
+        Geovisto.getGeoDataFactory().geojson("world polygons", {
+            // GeoJSON definition
             // ...
-        ]);
-    }, []); 
-    
-    const configManager = useMemo(() => {
-        return Geovisto.getMapConfigManagerFactory().default({
-            // initial configuration
-        });
-    }, []); 
+        ),
+        // other geographic data
+        // ...
+    ]);
+}, []); 
 
-    const geoDataManager = useMemo(() => {
-        return Geovisto.getGeoDataManager([
-            Geovisto.getGeoDataFactory().geojson("world polygons", {
-                // GeoJSON definition
-                // ...
-            ),
-            // other geographic data
-            // ...
-        ]);
-    }, []); 
+const fragments = useMemo(() => {
+    return [
+        ['geovisto-selection-tool', new SidebarFragment({ enabled:true })]
+        // other fragments definitions
+        // ...
+    ];
+}, []);
 
-    const fragments = useMemo(() => {
-        return [
-            ['geovisto-selection-tool', new SidebarFragment({ enabled:true })]
-            // other fragments definitions
-            // ...
-        ];
-    }, []);
-
-    return (
-        <GeovistoMap
-            ref={map}
-            id='geovisto-map'
-            className='geovisto-map-styles' // class with container dimensions
-            data={dataManager}
-            config={configManager}
-            geoData={geoDataManager}
-            {/* other properties that can be set... */}
-        >
-            <ToolGroup>
-                <SidebarTool 
-                    id='geovisto-tool-sidebar'
+return (
+    <GeovistoMap
+        ref={map}
+        id='geovisto-map'
+        className='geovisto-map-styles' // class with container dimensions
+        data={dataManager}
+        config={configManager}
+        geoData={geoDataManager}
+        {/* other properties that can be set... */}
+    >
+        <ToolGroup>
+            <SidebarTool 
+                id='geovisto-tool-sidebar'
+                enabled={true}
+            >
+                <SidebarTab
                     enabled={true}
-                >
-                    <SidebarTab
-                        enabled={true}
-                        name="General settings"
-                        icon='<i class="fa fa-gear"></i>'
-                        checkButton={false}
-                        fragments={fragments}
-                    />
-                    <SidebarTab
-                        tool='geovisto-choropleth-layer-tool'
-                        enabled={true}
-                        name='Choropleth layer settings'
-                        icon='<i class="fa fa-th-large"></i>'
-                        checkButton={true}
-                    />
-                    {/* other SidebarTab instances ...*/}
-                </SidebarTool>
-                <TilesLayerTool 
-                    id='geovisto-tiles-layer-tool'
-                    enabled={true}
-                    label="Tiles layer label"
-                    baseMap={baseMap}
-                    {/* other configurable props of the tool instance ...*/}
+                    name="General settings"
+                    icon='<i class="fa fa-gear"></i>'
+                    checkButton={false}
+                    fragments={fragments}
                 />
-                <ChoroplethLayerTool 
-                    id='geovisto-choropleth-layer-tool' 
+                <SidebarTab
+                    tool='geovisto-choropleth-layer-tool'
                     enabled={true}
-                    name='Choropleth layer'
+                    name='Choropleth layer settings'
+                    icon='<i class="fa fa-th-large"></i>'
+                    checkButton={true}
                 />
-                <ConnectionLayerTool
-                    id='geovisto-connection-layer-tool'
-                    enabled={true}
-                />
-                <SelectionTool
-                    id='geovisto-selection-tool'
-                    enabled={true}
-                />
-                {/* other instances of Geovisto tools (extensions) which will be directly used in the map ...*/}
-            </ToolGroup>
-        </GeovistoMap>
-    );
+                {/* other SidebarTab instances ...*/}
+            </SidebarTool>
+            <TilesLayerTool 
+                id='geovisto-tiles-layer-tool'
+                enabled={true}
+                label="Tiles layer label"
+                baseMap={baseMap}
+                {/* other configurable props of the tool instance ...*/}
+            />
+            <ChoroplethLayerTool 
+                id='geovisto-choropleth-layer-tool' 
+                enabled={true}
+                name='Choropleth layer'
+            />
+            <ConnectionLayerTool
+                id='geovisto-connection-layer-tool'
+                enabled={true}
+            />
+            <SelectionTool
+                id='geovisto-selection-tool'
+                enabled={true}
+            />
+            {/* other instances of Geovisto tools (extensions) which will be directly used in the map ...*/}
+        </ToolGroup>
+    </GeovistoMap>
+);
 ```
 
 ## Installation
