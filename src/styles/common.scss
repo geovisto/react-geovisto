@@ -1,0 +1,44 @@
+:root {
+    --default-font: "Helvetica Neue", Arial, Helvetica, sans-serif;
+  }
+  
+  .geovisto-map-styles {
+    height: 85vh;
+    width: 100%;
+    font-family: var(--default-font);
+  }
+  
+  .demo-footer {
+    height: 10vh;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 10px;
+    padding-top: 10px;
+    
+    $btn-color: #777;
+
+    .export-btn {
+      color: $btn-color;
+      border-radius: 20px;
+      font-weight: bolder;
+      display: inline-block;
+      background: none;
+      transition: all 0.5s ease;
+      border: 2px solid $btn-color;
+      padding: 10px 100px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 14px;
+      
+      &:hover {
+          transition: all 0.5s ease;
+          background-color: $btn-color;
+          color: whitesmoke;
+          cursor: pointer;
+      }
+    }
+  }
+  
