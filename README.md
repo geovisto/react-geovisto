@@ -39,6 +39,14 @@ const fragments = useMemo(() => {
     ];
 }, []);
 
+const baseMap = useMemo(() => {
+    return {
+        url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        maxZoom: 20,
+        maxNativeZoom: 19
+    };
+}, []);
+
 return (
     <GeovistoMap
         ref={map}
