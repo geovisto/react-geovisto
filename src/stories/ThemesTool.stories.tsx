@@ -9,7 +9,6 @@ import { ISidebarFragment, ISidebarTabProps, SidebarFragment } from 'geovisto-si
 import { GeovistoThemesTool, IMapTheme, IMapThemesManager } from 'geovisto-themes';
 
 // Internal imports
-import '../react/Constants';
 import { SidebarTab, SidebarTool, ThemesTool } from '../react/components';
 import { ISidebarTabDataProps } from '../react/types';
 

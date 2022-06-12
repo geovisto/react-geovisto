@@ -11,7 +11,6 @@ import { LatLngBoundsLiteral } from 'leaflet';
 import { ISidebarTabProps } from 'geovisto-sidebar';
 
 // Internal imports
-import '../react/Constants';
 import { SidebarTab, SidebarTool, CustomTool } from '../react/components';
 import { ISidebarTabDataProps } from '../react/types';
 

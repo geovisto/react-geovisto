@@ -5,7 +5,6 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import React from "react";
 
 // Internal imports
-import '../react/Constants';
 import { ChoroplethLayerTool, SidebarTab, SidebarTool } from '../react/components';
 
 // Styles

@@ -8,7 +8,6 @@ import React, { useMemo } from "react";
 import { ISidebarFragment, ISidebarTabProps, SidebarFragment } from 'geovisto-sidebar';
 
 // Internal imports
-import '../react/Constants';
 import { SidebarTab, SidebarTool, SelectionTool, ChoroplethLayerTool, MarkerLayerTool, ConnectionLayerTool } from '../react/components';
 import { ISidebarTabDataProps } from '../react/types';
 

@@ -5,7 +5,7 @@ import React, { forwardRef, ReactElement, useEffect, useImperativeHandle, useRef
 import { Geovisto, IMap, IMapToolsManager } from 'geovisto';
 
 // Internal imports
-import { supportedTopLevelComponentTypes } from '../Constants';
+import { supportedTopLevelComponentTypes } from '../SupportedTopLevelTypes';
 import { useDidUpdateEffect } from '../Hooks';
 import { IGeovistoMapHandle, IGeovistoMapProps, IToolGroupHandle } from '../types';
 import { ToolGroup } from './ToolGroup';
