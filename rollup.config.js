@@ -27,11 +27,18 @@ export default {
     plugins: [
         peerDepsExternal(),
         nodeResolve({ browser: true }),
-        typescript({ useTsconfigDeclarationDir: true }),
+        typescript({ 
+            useTsconfigDeclarationDir: true, 
+            exclude: [
+                'src/stories/*.stories.(js|jsx|ts|tsx)',
+                'src/storiesHelpers/**/*.(ts|tsx)'
+            ]
+        }),
         babel({
             exclude: [
                 'node_modules/**',
                 'src/*/*.stories.(js|jsx|ts|tsx)',
+                'src/storiesHelpers/**/*.(ts|tsx)',
             ],
             babelHelpers: 'runtime',
         }),
