@@ -1,10 +1,10 @@
 // Internal imports
-import { ChoroplethLayerTool, ConnectionLayerTool, CustomTool, FiltersTool, SelectionTool,
-         MarkerLayerTool, SidebarTool, ThemesTool, TilesLayerTool, ToolGroup } from "./components/index";
+import { ChoroplethLayerToolType, ConnectionLayerToolType, CustomToolType, FiltersToolType, MarkerLayerToolType, 
+         SelectionToolType, SidebarToolType, ThemesToolType, TilesLayerToolType, ToolGroupType } from './internal';
 import { ISupportedToolComponent, ISupportedTopLevelComponent } from "./types";
 
 /**
- * Constants optionally passed as parameter in onToolChange callback
+ * Constants optionally passed as parameter in onToolTypeChange callback
  */
 export const ENABLED_PROP = 'enabled';
 export const ID_PROP = 'id';
@@ -13,20 +13,20 @@ export const ID_PROP = 'id';
  * Set of supported components 
  */
 export const supportedComponentTypes : ISupportedToolComponent[] = [
-    ChoroplethLayerTool,
-    ConnectionLayerTool,
-    CustomTool,
-    FiltersTool,
-    MarkerLayerTool,
-    SelectionTool,
-    SidebarTool,
-    ThemesTool,
-    TilesLayerTool,
+    ChoroplethLayerToolType,
+    ConnectionLayerToolType,
+    CustomToolType,
+    FiltersToolType,
+    MarkerLayerToolType,
+    SelectionToolType,
+    SidebarToolType,
+    ThemesToolType,
+    TilesLayerToolType,
 ];
 
 /**
  * Set of supported components 
  */
  export const supportedTopLevelComponentTypes : ISupportedTopLevelComponent[] = [
-    ToolGroup
+    ToolGroupType
 ];

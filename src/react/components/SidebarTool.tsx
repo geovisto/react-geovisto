@@ -5,9 +5,9 @@ import React, { forwardRef, useImperativeHandle } from 'react';
 import { ISidebarTabProps, ISidebarToolProps, SidebarTab } from 'geovisto-sidebar';
 
 // Internal imports
-import { SidebarTab as SidebarTabType }  from '.';
-import { useDidToolEnabledUpdate, useDidToolIdUpdate, useToolEffect } from '../Hooks';
 import { ISidebarTabs, ISidebarToolDataProps, ISidebarToolHandle, IToolDataProps } from '../types';
+import { useDidToolEnabledUpdate, useDidToolIdUpdate, useToolEffect } from '../Hooks';
+import { isSidebarTab } from '../Helpers';
 
 /**
  * Component wrapping the Geovisto SidebarTool module
@@ -23,15 +23,15 @@ export const SidebarTool = forwardRef<ISidebarToolHandle, ISidebarToolDataProps<
         
         React.Children.forEach(props.children, (child, index) => {
         
-            if (!React.isValidElement(child) || child.type !== SidebarTabType) {
+            if (!React.isValidElement(child) || !isSidebarTab) {
                 return;
             }
 
-            const tabProps = {...child.props};
+            const tabProps = {...child!.props};
             tabProps.key = index;
 
             // Export and delete additional property used to identify the tool
-            const toolId = child.props.tool as string;
+            const toolId = child!.props.tool as string;
             delete tabProps.tool;
 
             // Skip the tab if some tab for the same tool was already defined
@@ -84,9 +84,9 @@ export const SidebarTool = forwardRef<ISidebarToolHandle, ISidebarToolDataProps<
     const childrenExtended = React.Children.map(props.children, (child, index) => {
     
         // Only SidebarTab component is expected as a children
-        if (!React.isValidElement(child) || child.type !== SidebarTabType) {
-            return; 
-        } 
+        if (!React.isValidElement(child) || !isSidebarTab) {
+            return;
+        }
 
         const tabProps = {...child.props};
         tabProps.key = index;

@@ -1,3 +1,6 @@
+// React
+import React, { ReactNode } from 'react';
+
 // Geovisto core
 import { ILayerTool, IMapTool } from 'geovisto';
 
@@ -12,8 +15,8 @@ import { GeovistoSidebarTool, ISidebarToolProps } from 'geovisto-sidebar';
 import { GeovistoThemesTool, IThemesToolProps } from 'geovisto-themes';
 
 // Internal imports
-import { ChoroplethLayerTool, ConnectionLayerTool, CustomTool, FiltersTool, MarkerLayerTool, 
-         SelectionTool, SidebarTool, ThemesTool, TilesLayerTool } from './components';
+import { ChoroplethLayerToolType, ConnectionLayerToolType, CustomToolType, FiltersToolType, MarkerLayerToolType, 
+         SelectionToolType, SidebarTabType, SidebarToolType, ThemesToolType, TilesLayerToolType } from './internal';
 import { IReactElement, IToolData } from './types';
 
 
@@ -35,23 +38,23 @@ export const getToolInstance = (toolType: IReactElement, toolData: IToolData): I
     const { children, onToolChange, ...toolProps } = toolData;
 
     switch (toolType) {
-        case SidebarTool:
+        case SidebarToolType:
             return GeovistoSidebarTool?.createTool(toolProps as ISidebarToolProps);
-        case ChoroplethLayerTool:
+        case ChoroplethLayerToolType:
             return GeovistoChoroplethLayerTool?.createTool(toolProps as IChoroplethLayerToolProps);
-        case ConnectionLayerTool:
+        case ConnectionLayerToolType:
             return GeovistoConnectionLayerTool?.createTool(toolProps as IConnectionLayerToolProps);
-        case FiltersTool:
+        case FiltersToolType:
             return GeovistoFiltersTool?.createTool(toolProps as IFiltersToolProps);
-        case MarkerLayerTool:
+        case MarkerLayerToolType:
             return GeovistoMarkerLayerTool?.createTool(toolProps as IMarkerLayerToolProps);
-        case SelectionTool:
+        case SelectionToolType:
             return GeovistoSelectionTool?.createTool(toolProps as ISelectionToolProps);
-        case ThemesTool:
+        case ThemesToolType:
             return GeovistoThemesTool?.createTool(toolProps as IThemesToolProps);
-        case TilesLayerTool:
+        case TilesLayerToolType:
             return GeovistoTilesLayerTool?.createTool(toolProps as ITilesLayerToolProps);
-        case CustomTool:
+        case CustomToolType:
             return toolData.createTool(toolProps);
         default:
             throw new Error('Unknown component type to process. Please add constructor of the tool instance.');
@@ -64,3 +67,11 @@ export const getToolInstance = (toolType: IReactElement, toolData: IToolData): I
 export const isLayerTool = (tool: IMapTool): tool is ILayerTool => {
     return 'getLayerItems' in tool;
 };
+
+/**
+ * Check if React element is SidebarTab
+ * Exported as helper method because of circular dependency
+ */
+export const isSidebarTab = (element: ReactNode) => {
+    return React.isValidElement(element) && element.type == SidebarTabType;
+}
