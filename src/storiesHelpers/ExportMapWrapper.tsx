@@ -7,7 +7,6 @@ import React, { useMemo, useRef } from "react";
 import { Geovisto, IGeoDataManager, IMapConfigManager, IMapDataManager } from 'geovisto';
 
 // Internal imports
-import '../react/Constants';
 import { GeovistoMap, TilesLayerTool, ToolGroup } from '../react/components/';
 import { IGeovistoMapHandle } from '../react/types';
 

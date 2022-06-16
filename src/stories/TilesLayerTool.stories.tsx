@@ -9,7 +9,6 @@ import { IMapTilesModel } from 'geovisto';
 import { ISidebarTabProps } from 'geovisto-sidebar';
 
 // Internal imports
-import '../react/Constants';
 import { SidebarTab, SidebarTool, TilesLayerTool } from '../react/components/';
 import { ISidebarTabDataProps } from '../react/types';
 
