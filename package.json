@@ -6,6 +6,7 @@
   "module": "dist/index.es.js",
   "style": "dist/index.css",
   "types": "dist/index.d.ts",
+  "description": "React components for Geovisto toolkit",
   "homepage": "https://github.com/geovisto/react-geovisto#readme",
   "repository": {
     "type": "git",
