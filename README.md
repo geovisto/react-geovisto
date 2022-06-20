@@ -104,7 +104,7 @@ return (
 );
 ```
 
-Please ake sure you have all neccesarry styles included. You can use the library styles bundle:
+Please make sure you have all neccesarry styles included. You can use the library styles bundle:
 ```js
 import 'react-geovisto/dist/index.css'
 ```
