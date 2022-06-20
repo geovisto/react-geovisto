@@ -6,11 +6,13 @@ import { Geovisto, ILayerTool, IMapTool, IMapToolsManager } from 'geovisto';
 import { ISidebarTool, SidebarToolDefaults } from 'geovisto-sidebar';
 
 // Internal imports
-import { SidebarTool } from '.';
-import { ENABLED_PROP, ID_PROP, supportedComponentTypes } from '../Constants';
-import { isLayerTool, getToolInstance } from '../Helpers';
-import { IReactElement, ISidebarToolHandle, IToolData, IToolGroupHandle, IToolGroupProps, IToolInfo } from '../types';
+import { SidebarTool } from './SidebarTool';
+import { ENABLED_PROP, ID_PROP } from '../Constants';
+import { getToolInstance } from '../Constructor';
+import { isLayerTool } from '../Helpers';
 import { useDidUpdateEffect } from '../Hooks';
+import { supportedComponentTypes } from '../SupportedToolTypes';
+import { IReactElement, ISidebarToolHandle, IToolData, IToolGroupHandle, IToolGroupProps, IToolInfo } from '../types';
 
 /**
  * Component which processes all supported modules

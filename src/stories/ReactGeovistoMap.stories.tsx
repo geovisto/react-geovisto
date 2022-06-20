@@ -10,7 +10,6 @@ import { IMapTilesModel } from 'geovisto';
 import { ISidebarFragment, ISidebarTabProps, SidebarFragment } from 'geovisto-sidebar';
 
 // Internal imports
-import '../react/Constants';
 import { ChoroplethLayerTool, ConnectionLayerTool, CustomTool, FiltersTool, SelectionTool,
     MarkerLayerTool, SidebarTool, ThemesTool, TilesLayerTool, SidebarTab } from '../react/components';
 import { ISidebarTabDataProps } from '../react/types';    

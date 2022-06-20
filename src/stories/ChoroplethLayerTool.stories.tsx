@@ -8,7 +8,6 @@ import React from "react";
 import { ISidebarTabProps } from 'geovisto-sidebar';
 
 // Internal imports
-import '../react/Constants';
 import { SidebarTab, SidebarTool, ChoroplethLayerTool } from '../react/components';
 import { ISidebarTabDataProps } from '../react/types';
 
